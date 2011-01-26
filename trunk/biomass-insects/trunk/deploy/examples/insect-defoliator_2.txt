@@ -1,0 +1,52 @@
+LandisData InsectDefoliatior
+
+InsectName	GypsyMoth
+
+MeanDuration	5
+
+StdDevDuration	0
+
+MeanTimeBetweenOutbreaks	7
+
+StdDevTimeBetweenOutbreaks	0
+
+NeighborhoodSize	250	<< meters
+
+>> Lower this number to lower probabilities of patch generation, i.e. start fewer patches. 
+InitialAreaCalibrator	0.02 	<< must be > 0.0
+
+InitialPatchDistribution	Weibull	<<Weibull, Beta, or Gamma
+>> Patch size distribution should be based on patch radius distribution? patch area distribution? Units?
+InitialPatchValue1	.7	<<depends on the distribution, must be > 0.0
+InitialPatchValue2	25	<<depends on the distribution, must be > 0.0
+
+SpeciesParameters
+>> Susceptibility class by species (from Liebhold et al... reference here)
+>> Species	Susceptibility	 Growth Reduction Parameters  Mortality Parameters
+>>		Class		 Slope	Intercept	      Slope	Intercept
+>>--------------------------------------------------------------------------------
+   abiebals	2		-1	1		     		.1	0
+   acerrubr	2		-1	1		     		.1	0
+   acersacc	2		-1	1		     		.1	0
+   betualle	2		-1	1		     		.1	0
+   betupapy	1		-1	1		     		.1	0
+   fraxamer	3		-1	1		     		.1	0
+   piceglau	3		-1	1		     		.1	0
+   pinubank	3		-1	1		     		.1	0
+   pinuresi	3		-1	1		     		.1	0
+   pinustro	3		-1	1		     		.1	0
+   poputrem	1		-1	1		     		.1	0
+   querelli	1		-1	1		     		.1	0
+   querrubr	1		-1	1		     		.1	0
+   thujocci	3		-1	1		     		.1	0
+   tiliamer	2		-1	1		     		.1	0
+   tsugcana	2		-1	1		     		.1	0
+   
+Susceptibilities
+>> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
+1	Beta	0.84	0.33	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.76	1.68	Beta	0.8	6.0
+2	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.8	1.68	Beta	0.5	1.68	Beta	0.7	6.0
+3	Beta	1	1	Beta	0.8	1.68	Beta	0.5	1.68	Beta	0.3	1.68	Beta	0.5	6.0
+
+MapNames  insects/severity-{timestep}.gis
+LogFile   insects/log.csv

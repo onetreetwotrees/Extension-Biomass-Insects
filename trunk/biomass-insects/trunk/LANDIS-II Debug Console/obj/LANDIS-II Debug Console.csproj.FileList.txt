@@ -1,0 +1,7 @@
+bin\Debug\Landis.Console-Debug.exe
+bin\Debug\Landis.Console-Debug.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Landis.Console-Debug.exe
+obj\Debug\Landis.Console-Debug.pdb
+..\..\..\..\..\..\..\..\Program Files\Landis-II\5.1\bin\Landis.Console-Debug.exe
+..\..\..\..\..\..\..\..\Program Files\Landis-II\5.1\bin\Landis.Console-Debug.pdb

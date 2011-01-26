@@ -1,0 +1,34 @@
+LandisData  "Output Biomass"
+
+Timestep  10
+
+Species   ACERRUBR
+	  ACERSACC
+	  CARYGLAB
+	  FRAXAMER
+	  JUGLNIGR
+	  LIRITULI
+ 	  MAGNACUM
+          NYSSSYLV
+	  PINUECHI
+	  PINUPUNG
+	  PINURIGI
+	  PINUSTRO
+	  PINUVIRG
+	  POPUGRAN
+	  POPUTREM
+	  PRUNSERO
+	  QUERALBA
+	  QUERCOCC
+	  QUERPRIN
+	  QUERRUBR
+	  QUERVELU
+	  ROBIPSEU
+	  SASSALBI
+	  TILIAMER
+	  TSUGCANA
+	  ULMUAMER
+	  
+MapNames  output/biomass/{species}-{timestep}.gis
+
+

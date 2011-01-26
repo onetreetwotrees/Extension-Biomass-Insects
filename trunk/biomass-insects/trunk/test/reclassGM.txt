@@ -1,0 +1,25 @@
+LandisData  "Reclass Biomass Output"
+
+Timestep   15
+
+
+ReclassMaps
+
+>> Map Name    Forest Type    Species
+>> --------    -------------  -------
+   reclass1 -> MapleHardwood  ACERSACC ACERRUBR FRAXAMER PRUNSERO
+               WhitePine  PINUSTRO
+	       HardPines  PINUVIRG PINUPUNG PINURIGI PINUECHI
+	       WhiteOak   QUERALBA CARYGLAB
+               OtherOaks     QUERRUBR QUERVELU QUERCOCC QUERPRIN CARYGLAB
+	       TulipPoplar  LIRITULI
+               Hemlock  TSUGCANA
+               Other	POPUTREM POPUGRAN ROBIPSEU SASSALBI TILIAMER ULMUAMER MAGNACUM JUGLNIGR
+
+  reclass2 -> GMsuscep1 POPUGRAN POPUTREM QUERALBA QUERCOCC QUERPRIN QUERRUBR QUERVELU TILIAMER
+  	      GMsuscep2 ACERRUBR ACERSACC CARYGLAB JUGLNIGR PINUECHI PINUPUNG PINURIGI PINUSTRO PINUVIRG PRUNSERO SASSALBI TSUGCANA ULMUAMER
+	      GMsuscep3 FRAXAMER LIRITULI MAGNACUM NYSSSYLV ROBIPSEU JUGLNIGR
+
+
+
+MapFileNames   output/biomass-reclass/bio-{reclass-map-name}-{timestep}.gis

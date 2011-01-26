@@ -1,0 +1,10 @@
+LandisData "Biomass Insects"
+
+Timestep	1
+
+MapNames	Insects/{insectName}-{timestep}.gis
+
+LogFile		Insects/Insect-log.csv
+
+InsectInputFiles	insect-defoliator.txt
+

@@ -1,0 +1,9 @@
+LandisData   Extension
+
+Name         "Biomass Insects"
+Version      1.0
+Type         disturbance:insects
+Assembly     Landis.Insects
+Class        Landis.Insects.PlugIn
+Description  "Insect defoliation that affects biomass and net primary productivity"
+CoreVersion  5.1
