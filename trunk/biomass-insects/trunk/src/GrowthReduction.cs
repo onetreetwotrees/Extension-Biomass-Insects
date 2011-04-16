@@ -14,7 +14,7 @@ using Edu.Wisc.Forest.Flel.Grids;
 using System;
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     public class GrowthReduction
     {

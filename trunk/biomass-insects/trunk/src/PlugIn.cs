@@ -17,7 +17,7 @@ using Landis.RasterIO;
 using Edu.Wisc.Forest.Flel.Grids;
 using Troschuetz.Random;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     ///<summary>
     /// A disturbance plug-in that simulates Biological Agents.

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using Edu.Wisc.Forest.Flel.Util;
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// Parameters for the extension.
@@ -53,7 +53,7 @@ namespace Landis.Insects
     }
 }
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// Parameters for the plug-in.

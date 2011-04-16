@@ -8,7 +8,7 @@
 using Edu.Wisc.Forest.Flel.Util;
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// Extra Spp Paramaters
@@ -26,7 +26,7 @@ namespace Landis.Insects
 }
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     public class SppParameters
         : ISppParameters

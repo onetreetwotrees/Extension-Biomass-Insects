@@ -9,7 +9,7 @@ using Edu.Wisc.Forest.Flel.Util;
 using Landis.Species;
 using System.Collections.Generic;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// Methods for working with the template for map filenames.

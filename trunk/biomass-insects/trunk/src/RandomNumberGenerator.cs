@@ -4,7 +4,7 @@
 //  http://landis.forest.wisc.edu/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
 
 using System;
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// A random number generator.

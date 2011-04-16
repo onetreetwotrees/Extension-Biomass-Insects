@@ -8,7 +8,7 @@
 
 using Landis.RasterIO;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     public class UShortPixel
         : SingleBandPixel<ushort>

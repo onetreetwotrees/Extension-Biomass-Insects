@@ -4,9 +4,9 @@
 //  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
 
 using Edu.Wisc.Forest.Flel.Util;
-using Troschuetz.Random;
+//using Troschuetz.Random;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     public enum DistributionType {Gamma, Beta, Weibull};
 

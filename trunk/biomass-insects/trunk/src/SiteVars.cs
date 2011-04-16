@@ -10,7 +10,7 @@ using Landis.Biomass;
 using Landis.Landscape;
 using System.Collections.Generic;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     ///<summary>
     /// Site Variables for a disturbance plug-in that simulates Biological Agents.

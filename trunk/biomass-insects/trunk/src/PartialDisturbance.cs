@@ -11,7 +11,7 @@ using Landis.PlugIns;
 using System.Collections.Generic;
 using System;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// A biomass disturbance that handles partial thinning of cohorts.

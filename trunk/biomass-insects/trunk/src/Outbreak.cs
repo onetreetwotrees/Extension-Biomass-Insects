@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System;
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     public class Outbreak
 

@@ -11,7 +11,7 @@ using Landis.Util;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// A parser that reads the extension parameters from text input.

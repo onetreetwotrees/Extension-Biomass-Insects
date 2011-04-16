@@ -18,6 +18,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,7 +31,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -53,29 +53,25 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Edu.Wisc.Forest.Flel.Grids">
-      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Edu.Wisc.Forest.Flel.Grids.dll</HintPath>
-    </Reference>
     <Reference Include="Edu.Wisc.Forest.Flel.Util">
-      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
-    </Reference>
-    <Reference Include="Landis.AgeCohort">
-      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Landis.AgeCohort.dll</HintPath>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Core">
-      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Landis.Core.dll</HintPath>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Cohorts.Biomass">
-      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Landis.Library.Cohorts.Biomass.dll</HintPath>
+    <Reference Include="Landis.Extension.Succession.Biomass">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Extension.Succession.Biomass.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.AgeOnlyCohorts">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.SpatialModeling">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.SpatialModeling.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Troschuetz.Random">
-      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Troschuetz.Random.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Defoliate.cs" />
-    <Compile Include="Distribution.cs" />
     <Compile Include="GrowthReduction.cs" />
     <Compile Include="InputParameterParser.cs" />
     <Compile Include="InputParameters.cs" />

@@ -7,7 +7,7 @@
 
 using Edu.Wisc.Forest.Flel.Util;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     //public enum DistributionType {Gamma};
 
