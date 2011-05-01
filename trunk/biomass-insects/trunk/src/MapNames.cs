@@ -1,12 +1,8 @@
-//  Copyright 2007 University of Wisconsin-Madison
-//  Authors:  
-//      Robert M. Scheller
-//      Jane R. Foster
-//  License:  Available at  
-//  http://landis.forest.wisc.edu/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using Edu.Wisc.Forest.Flel.Util;
-using Landis.Species;
+using Landis.Core;
 using System.Collections.Generic;
 
 namespace Landis.Extension.Insects

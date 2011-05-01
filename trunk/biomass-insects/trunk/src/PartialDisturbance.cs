@@ -1,13 +1,10 @@
-//  Copyright 2006 University of Wisconsin, Conservation Biology Institute
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
-using Landis.Biomass;
-using Landis.Landscape;
-using Landis.PlugIns;
+using Landis.Core;
+using Landis.Library.BiomassCohorts;
+using Landis.SpatialModeling;
+
 using System.Collections.Generic;
 using System;
 
@@ -25,17 +22,20 @@ namespace Landis.Extension.Insects
 
         //---------------------------------------------------------------------
 
-        ActiveSite IDisturbance.CurrentSite
+        ActiveSite Landis.Library.BiomassCohorts.IDisturbance.CurrentSite
         {
-            get {
+            get
+            {
                 return currentSite;
             }
         }
+
         //---------------------------------------------------------------------
 
-        PlugInType IDisturbance.Type
+        ExtensionType IDisturbance.Type
         {
-            get {
+            get
+            {
                 return PlugIn.Type;
             }
         }
@@ -55,7 +55,7 @@ namespace Landis.Extension.Insects
 
         //---------------------------------------------------------------------
 
-        int IDisturbance.Damage(ICohort cohort)
+        int IDisturbance.ReduceOrKillMarkedCohort(ICohort cohort)
         {
             int biomassMortality = 0;
             double percentMortality = 0.0;
@@ -71,11 +71,10 @@ namespace Landis.Extension.Insects
                 int yearBack = 1;
                 double annualDefoliation = 0.0;
 
-                if (insect.HostDefoliationByYear[currentSite].ContainsKey(Model.Core.CurrentTime - yearBack))
+                if (insect.HostDefoliationByYear[currentSite].ContainsKey(PlugIn.ModelCore.CurrentTime - yearBack))
                 {
-                    //UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}.", (Model.Core.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name);
-                    annualDefoliation = insect.HostDefoliationByYear[currentSite][Model.Core.CurrentTime - yearBack][suscIndex];
-                    //UI.WriteLine("Test");
+                    //PlugIn.ModelCore.Log.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}.", (PlugIn.ModelCore.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name);
+                    annualDefoliation = insect.HostDefoliationByYear[currentSite][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
                 }
                 double cumulativeDefoliation = annualDefoliation;
                 double lastYearsCumulativeDefoliation = annualDefoliation;
@@ -84,20 +83,20 @@ namespace Landis.Extension.Insects
                 {
                     yearBack++;
                     annualDefoliation = 0.0;
-                    if (insect.HostDefoliationByYear[currentSite].ContainsKey(Model.Core.CurrentTime - yearBack))
+                    if (insect.HostDefoliationByYear[currentSite].ContainsKey(PlugIn.ModelCore.CurrentTime - yearBack))
                     {
-                        annualDefoliation = insect.HostDefoliationByYear[currentSite][Model.Core.CurrentTime - yearBack][suscIndex];
+                        annualDefoliation = insect.HostDefoliationByYear[currentSite][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
 
                         if(annualDefoliation > 0.0)
                         {
-                            //UI.WriteLine("Host Defoliation By Year:  Time={0}, spp={2}, defoliation={3:0.00}.", (Model.Core.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name, annualDefoliation);
+                            //PlugIn.ModelCore.Log.WriteLine("Host Defoliation By Year:  Time={0}, spp={2}, defoliation={3:0.00}.", (PlugIn.ModelCore.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name, annualDefoliation);
                         }
 
                         cumulativeDefoliation += annualDefoliation;
                     }
                 }
 
-                //UI.WriteLine("cumulativeDefoliation={0},annualDefoliation={1}.", cumulativeDefoliation,annualDefoliation);
+                //PlugIn.ModelCore.Log.WriteLine("cumulativeDefoliation={0},annualDefoliation={1}.", cumulativeDefoliation,annualDefoliation);
 
                 double slope = insect.SppTable[sppIndex].MortalitySlope;
                 double intercept = insect.SppTable[sppIndex].MortalityIntercept;
@@ -106,13 +105,13 @@ namespace Landis.Extension.Insects
                 //double lastYearsCumulativeDefoliation = cumulativeDefoliation - annualDefoliation;
                 double lastYearPercentMortality = ((intercept) * (double)Math.Exp((slope * lastYearsCumulativeDefoliation * 100))) / 100;
                 percentMortality = ((intercept) * (double) Math.Exp((slope * cumulativeDefoliation * 100)))/100;
-                       //UI.WriteLine("cumulativeDefoliation={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", cumulativeDefoliation, cohort.Biomass, percentMortality);
+                       //PlugIn.ModelCore.Log.WriteLine("cumulativeDefoliation={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", cumulativeDefoliation, cohort.Biomass, percentMortality);
                 percentMortality -= lastYearPercentMortality;
 
                 if (percentMortality > 0.0)
                 {
                     biomassMortality += (int)((double) cohort.Biomass * percentMortality);
-                    //UI.WriteLine("biomassMortality={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", biomassMortality, cohort.Biomass, percentMortality);
+                    //PlugIn.ModelCore.Log.WriteLine("biomassMortality={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", biomassMortality, cohort.Biomass, percentMortality);
 
                 }
             }  // end insect loop
@@ -121,11 +120,11 @@ namespace Landis.Extension.Insects
                 biomassMortality = cohort.Biomass;
 
             SiteVars.BiomassRemoved[currentSite] += biomassMortality;
-            //UI.WriteLine("biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
+            //PlugIn.ModelCore.Log.WriteLine("biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
 
             if(biomassMortality > cohort.Biomass || biomassMortality < 0)
             {
-                UI.WriteLine("Cohort Total Mortality={0}. Cohort Biomass={1}. Site R/C={2}/{3}.", biomassMortality, cohort.Biomass, currentSite.Location.Row, currentSite.Location.Column);
+                PlugIn.ModelCore.Log.WriteLine("Cohort Total Mortality={0}. Cohort Biomass={1}. Site R/C={2}/{3}.", biomassMortality, cohort.Biomass, currentSite.Location.Row, currentSite.Location.Column);
                 throw new System.ApplicationException("Error: Total Mortality is not between 0 and cohort biomass");
             }
 
@@ -142,7 +141,7 @@ namespace Landis.Extension.Insects
         public static void ReduceCohortBiomass(ActiveSite site)
         {
             currentSite = site;
-            Model.LandscapeCohorts[site].DamageBy(singleton);
+            SiteVars.Cohorts[site].ReduceOrKillBiomassCohorts(singleton);
         }
     }
 }

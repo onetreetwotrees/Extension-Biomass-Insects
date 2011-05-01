@@ -1,14 +1,9 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
-
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using Edu.Wisc.Forest.Flel.Util;
-using Edu.Wisc.Forest.Flel.Grids;
-using Landis.Landscape;
+using Landis.SpatialModeling;
+using Landis.Core;
 using System.Collections.Generic;
 
 namespace Landis.Extension.Insects
@@ -328,10 +323,10 @@ namespace Landis.Extension.Insects
             susceptibleTable = new List<ISusceptible>();
             neighbors = new List<RelativeLocation>();
 
-            hostDefoliationByYear = Model.Core.Landscape.NewSiteVar<Dictionary<int, double[]>>();
-            disturbed = Model.Core.Landscape.NewSiteVar<bool>();
-            lastYearDefoliation = Model.Core.Landscape.NewSiteVar<double>();
-            thisYearDefoliation = Model.Core.Landscape.NewSiteVar<double>();
+            hostDefoliationByYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double[]>>();
+            disturbed = PlugIn.ModelCore.Landscape.NewSiteVar<bool>();
+            lastYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            thisYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
 
             outbreakStopYear = 0;  //default = beginning of simulation
             outbreakStartYear = 0;  //default = beginning of simulation
@@ -339,7 +334,7 @@ namespace Landis.Extension.Insects
             activeOutbreak = false;
             
             //Initialize outbreaks:
-            foreach (ActiveSite site in Model.Core.Landscape)
+            foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 hostDefoliationByYear[site] = new Dictionary<int, double[]>();
             }
@@ -373,11 +368,11 @@ namespace Landis.Extension.Insects
             this.sppTable = sppTable;
             this.susceptible = susceptible;
 
-            this.hostDefoliationByYear = Model.Core.Landscape.NewSiteVar<Dictionary<int, double[]>>();
-            //this.severity = Model.Core.Landscape.NewSiteVar<byte>();
-            this.disturbed = Model.Core.Landscape.NewSiteVar<bool>();
-            this.lastYearDefoliation = Model.Core.Landscape.NewSiteVar<double>();
-            this.thisYearDefoliation = Model.Core.Landscape.NewSiteVar<double>();
+            this.hostDefoliationByYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double[]>>();
+            //this.severity = PlugIn.ModelCore.Landscape.NewSiteVar<byte>();
+            this.disturbed = PlugIn.ModelCore.Landscape.NewSiteVar<bool>();
+            this.lastYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            this.thisYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
 
             this.outbreakStopYear = 0;  //default = beginning of simulation
             this.outbreakStartYear = 0;  //default = beginning of simulation
@@ -385,7 +380,7 @@ namespace Landis.Extension.Insects
             this.activeOutbreak = false;
 
             //Initialize outbreaks:
-            foreach (ActiveSite site in Model.Core.Landscape)
+            foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 this.hostDefoliationByYear[site] = new Dictionary<int, double[]>();
             }

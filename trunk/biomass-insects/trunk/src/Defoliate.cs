@@ -1,15 +1,11 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using Landis.Extension.Succession.Biomass;
-using Landis.Landscape;
-using Troschuetz.Random;
+using Landis.Core;
+using Landis.SpatialModeling;
+using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Grids;
 using System;
 
 
@@ -37,10 +33,10 @@ namespace Landis.Extension.Insects
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
 
-        public static double DefoliateCohort(Biomass.ICohort cohort, Site site, int siteBiomass)
+        public static double DefoliateCohort(ICohort cohort, Site site, int siteBiomass)
         {
 
-            //UI.WriteLine("   Calculating insect defoliation...");
+            //PlugIn.ModelCore.Log.WriteLine("   Calculating insect defoliation...");
 
             int sppIndex = cohort.Species.Index;
             double totalDefoliation = 0.0;
@@ -64,7 +60,7 @@ namespace Landis.Extension.Insects
 
                 if(SiteVars.NeighborhoodDefoliation[site] > 0)
                 {
-                    //UI.WriteLine("   First Year of Defoliation:  Using initial patch defo={0:0.00}.", SiteVars.NeighborhoodDefoliation[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("   First Year of Defoliation:  Using initial patch defo={0:0.00}.", SiteVars.NeighborhoodDefoliation[site]);
                     meanNeighborhoodDefoliation = SiteVars.NeighborhoodDefoliation[site];
                 }
 
@@ -74,7 +70,7 @@ namespace Landis.Extension.Insects
                 {
                     double sumNeighborhoodDefoliation = 0.0;
 
-                    //UI.WriteLine("Look at the Neighbors... ");
+                    //PlugIn.ModelCore.Log.WriteLine("Look at the Neighbors... ");
                     foreach (RelativeLocation relativeLoc in insect.Neighbors)
                     {
                         Site neighbor = site.GetNeighbor(relativeLoc);
@@ -83,8 +79,8 @@ namespace Landis.Extension.Insects
                             neighborCnt++;
 
                             // The previous year...
-                            //if(SiteVars.DefoliationByYear[neighbor].ContainsKey(Model.Core.CurrentTime - 1))
-                            //    sumNeighborhoodDefoliation += SiteVars.DefoliationByYear[neighbor][Model.Core.CurrentTime - 1];
+                            //if(SiteVars.DefoliationByYear[neighbor].ContainsKey(PlugIn.ModelCore.CurrentTime - 1))
+                            //    sumNeighborhoodDefoliation += SiteVars.DefoliationByYear[neighbor][PlugIn.ModelCore.CurrentTime - 1];
                             sumNeighborhoodDefoliation += insect.LastYearDefoliation[neighbor];
                         }
                     }
@@ -96,7 +92,7 @@ namespace Landis.Extension.Insects
 
                 if(meanNeighborhoodDefoliation > 1.0 || meanNeighborhoodDefoliation < 0)
                 {
-                    UI.WriteLine("MeanNeighborhoodDefoliation={0}; NeighborCnt={1}.", meanNeighborhoodDefoliation, neighborCnt);
+                    PlugIn.ModelCore.Log.WriteLine("MeanNeighborhoodDefoliation={0}; NeighborCnt={1}.", meanNeighborhoodDefoliation, neighborCnt);
                     throw new ApplicationException("Error: Mean Neighborhood GrowthReduction is not between 1.0 and 0.0");
                 }
 
@@ -139,21 +135,21 @@ namespace Landis.Extension.Insects
                 // Next, ensure that all cohorts of the same susceptibility class
                 // receive the same level of defoliation.
 
-                if(insect.HostDefoliationByYear[site].ContainsKey(Model.Core.CurrentTime))
+                if(insect.HostDefoliationByYear[site].ContainsKey(PlugIn.ModelCore.CurrentTime))
                 {
-                    if(insect.HostDefoliationByYear[site][Model.Core.CurrentTime][suscIndex] <= 0.00000000)
+                    if(insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] <= 0.00000000)
                     {
                         defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
-                        insect.HostDefoliationByYear[site][Model.Core.CurrentTime][suscIndex] = defoliation;
+                        insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                     }
                     else
-                        defoliation = insect.HostDefoliationByYear[site][Model.Core.CurrentTime][suscIndex];
+                        defoliation = insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex];
                 }
                 else
                 {
-                    insect.HostDefoliationByYear[site].Add(Model.Core.CurrentTime, new Double[3]{0.0, 0.0, 0.0});
+                    insect.HostDefoliationByYear[site].Add(PlugIn.ModelCore.CurrentTime, new Double[3]{0.0, 0.0, 0.0});
                     defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
-                    insect.HostDefoliationByYear[site][Model.Core.CurrentTime][suscIndex] = defoliation;
+                    insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                 }
 
 
@@ -163,14 +159,14 @@ namespace Landis.Extension.Insects
 
                 if(defoliation > 1.0 || defoliation < 0)
                 {
-                    UI.WriteLine("DEFOLIATION TOO BIG or SMALL:  {0}, {1}, {2}, {3}.", dist, value1, value2, defoliation);
+                    PlugIn.ModelCore.Log.WriteLine("DEFOLIATION TOO BIG or SMALL:  {0}, {1}, {2}, {3}.", dist, value1, value2, defoliation);
                     throw new ApplicationException("Error: New defoliation is not between 1.0 and 0.0");
                 }
 
-                //UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
+                //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
 
                 double weightedDefoliation = (defoliation * ((double) cohort.Biomass / (double) siteBiomass));
-                //UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex+1), cohortDefoliation);
+                //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex+1), cohortDefoliation);
 
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
                 totalDefoliation += defoliation;
@@ -181,7 +177,7 @@ namespace Landis.Extension.Insects
 
             if(totalDefoliation > 1.0 || totalDefoliation < 0)
             {
-                UI.WriteLine("Cohort Total Defoliation = {0:0.00}.  Site R/C={1}/{2}.", totalDefoliation, site.Location.Row, site.Location.Column);
+                PlugIn.ModelCore.Log.WriteLine("Cohort Total Defoliation = {0:0.00}.  Site R/C={1}/{2}.", totalDefoliation, site.Location.Row, site.Location.Column);
                 throw new ApplicationException("Error: Total Defoliation is not between 1.0 and 0.0");
             }
 

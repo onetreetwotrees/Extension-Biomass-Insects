@@ -65,6 +65,12 @@
     <Reference Include="Landis.Library.AgeOnlyCohorts">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
+    <Reference Include="Landis.Library.BiomassCohorts">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.BiomassCohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Cohorts">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll</HintPath>
+    </Reference>
     <Reference Include="Landis.SpatialModeling">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.SpatialModeling.dll</HintPath>
     </Reference>
@@ -78,11 +84,9 @@
     <Compile Include="Insect.cs" />
     <Compile Include="InsectParser.cs" />
     <Compile Include="MapNames.cs" />
-    <Compile Include="Model.cs" />
     <Compile Include="Outbreak.cs" />
     <Compile Include="PartialDisturbance.cs" />
     <Compile Include="PlugIn.cs" />
-    <Compile Include="RandomNumberGenerator.cs" />
     <Compile Include="SiteVars.cs" />
     <Compile Include="SppParameters.cs" />
     <Compile Include="Susceptible.cs" />

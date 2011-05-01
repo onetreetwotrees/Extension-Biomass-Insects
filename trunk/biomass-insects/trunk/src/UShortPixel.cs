@@ -1,28 +1,17 @@
-//  Copyright 2006 University of Wisconsin
-//  Authors:  
-//      Jane Foster
-//      Robert M. Scheller
-//  Version 1.0
-//  License:  Available at  
-//  http://landis.forest.wisc.edu/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
-using Landis.RasterIO;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Insects
 {
-    public class UShortPixel
-        : SingleBandPixel<ushort>
+    public class UShortPixel : Pixel
     {
+        public Band<ushort> MapCode = "The numeric code for each raster cell";
+
         public UShortPixel()
-            : base()
         {
-        }
-
-        //---------------------------------------------------------------------
-
-        public UShortPixel(ushort band0)
-            : base(band0)
-        {
+            SetBands(MapCode);
         }
     }
 }
