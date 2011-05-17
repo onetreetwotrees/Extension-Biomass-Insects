@@ -1,9 +1,5 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using System.Collections.Generic;
 using Edu.Wisc.Forest.Flel.Util;
@@ -130,17 +126,5 @@ namespace Landis.Extension.Insects
         public InputParameters()
         {
         }
-        //---------------------------------------------------------------------
-/*        public Parameters(int                timestep,
-                          string             mapNameTemplate,
-                          string             logFileName,
-                          List<IInsect>   manyInsect
-                          )
-        {
-            this.timestep = timestep;
-            this.mapNamesTemplate = mapNameTemplate;
-            this.logFileName = logFileName;
-            this.manyInsect = manyInsect;
-        }*/
     }
 }

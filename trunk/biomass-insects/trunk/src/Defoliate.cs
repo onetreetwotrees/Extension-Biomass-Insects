@@ -33,7 +33,7 @@ namespace Landis.Extension.Insects
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
 
-        public static double DefoliateCohort(ICohort cohort, Site site, int siteBiomass)
+        public static double DefoliateCohort(ICohort cohort, ActiveSite site, int siteBiomass)
         {
 
             //PlugIn.ModelCore.Log.WriteLine("   Calculating insect defoliation...");

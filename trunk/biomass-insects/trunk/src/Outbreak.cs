@@ -132,7 +132,7 @@ namespace Landis.Extension.Insects
             {
 
                 //get a random site from the stand
-                double randomNum = Landis.Util.Random.GenerateUniform();
+                double randomNum = PlugIn.ModelCore.GenerateUniform();
                 
                 if(randomNum < SiteVars.InitialOutbreakProb[site] * insect.InitialAreaCalibrator)  
                 //Start spreading!
@@ -178,7 +178,7 @@ namespace Landis.Extension.Insects
                                 && !insect.Disturbed[neighbor]) 
                             {
                                 insect.Disturbed[currentSite] = true;
-                                randomNum = Landis.Util.Random.GenerateUniform();
+                                randomNum = PlugIn.ModelCore.GenerateUniform();
                                 //PlugIn.ModelCore.Log.WriteLine("That darn Queue!  randomnum={0}, prob={1}.", randomNum, SiteVars.InitialOutbreakProb[neighbor]);
                                 
                                 //check if it's a valid neighbor:

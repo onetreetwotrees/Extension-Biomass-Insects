@@ -6,17 +6,17 @@ using Landis.Core;
 
 namespace Landis.Extension.Insects
 {
-    public enum DistributionType {Gamma, Beta, Weibull};
-
+    //public enum DistributionType {Gamma, Beta, Weibull};
+    
     public interface ISusceptible
     {
 
         byte Number{get;set;}
-        DistributionType Distribution_80 {get;set;}
-        DistributionType Distribution_60 {get;set;}
-        DistributionType Distribution_40 {get;set;}
-        DistributionType Distribution_20 {get;set;}
-        DistributionType Distribution_0 {get;set;}
+        IDistribution Distribution_80 {get;set;}
+        IDistribution Distribution_60 {get;set;}
+        IDistribution Distribution_40 {get;set;}
+        IDistribution Distribution_20 {get;set;}
+        IDistribution Distribution_0 {get;set;}
     }
 
     /// <summary>
@@ -26,11 +26,11 @@ namespace Landis.Extension.Insects
         : ISusceptible
     {
         private byte number;
-        private DistributionType distribution_80;
-        private DistributionType distribution_60;
-        private DistributionType distribution_40;
-        private DistributionType distribution_20;
-        private DistributionType distribution_0;
+        private IDistribution distribution_80;
+        private IDistribution distribution_60;
+        private IDistribution distribution_40;
+        private IDistribution distribution_20;
+        private IDistribution distribution_0;
 
 
         //---------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace Landis.Extension.Insects
         }
 
         //---------------------------------------------------------------------
-        public DistributionType Distribution_80
+        public IDistribution Distribution_80
         {
             get {
                 return distribution_80;
@@ -61,7 +61,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public DistributionType Distribution_60
+        public IDistribution Distribution_60
         {
             get {
                 return distribution_60;
@@ -71,7 +71,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public DistributionType Distribution_40
+        public IDistribution Distribution_40
         {
             get {
                 return distribution_40;
@@ -81,7 +81,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public DistributionType Distribution_20
+        public IDistribution Distribution_20
         {
             get {
                 return distribution_20;
@@ -91,7 +91,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public DistributionType Distribution_0
+        public IDistribution Distribution_0
         {
             get {
                 return distribution_0;

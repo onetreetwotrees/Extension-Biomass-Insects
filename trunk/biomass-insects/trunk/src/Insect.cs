@@ -339,52 +339,5 @@ namespace Landis.Extension.Insects
                 hostDefoliationByYear[site] = new Dictionary<int, double[]>();
             }
         }
-        //---------------------------------------------------------------------
-/*        public Insect(
-                            string name,
-                            double meanDuration,
-                            int stdDevDuration,
-                            int meanTimeBetweenOutbreaks,
-                            int stdDevTimeBetweenOutbreaks,
-                            int neighborhoodDistance,
-                            double initialAreaCalibrator,
-                            DistributionType initialPatchDistr,
-                            double initialPatchValue1,
-                            double initialPatchValue2,
-                          ISppParameters[] sppTable,
-                          ISusceptible[] susceptible
-                          )
-        {
-            this.name = name;
-            this.meanDuration = meanDuration;
-            this.stdDevDuration = stdDevDuration;
-            this.meanTimeBetweenOutbreaks = meanTimeBetweenOutbreaks;
-            this.stdDevTimeBetweenOutbreaks = stdDevTimeBetweenOutbreaks;
-            this.neighborhoodDistance = neighborhoodDistance;
-            this.initialAreaCalibrator = initialAreaCalibrator;
-            this.initialPatchDistr  = initialPatchDistr;
-            this.initialPatchValue1 = initialPatchValue1;
-            this.initialPatchValue2 = initialPatchValue2;
-            this.sppTable = sppTable;
-            this.susceptible = susceptible;
-
-            this.hostDefoliationByYear = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, double[]>>();
-            //this.severity = PlugIn.ModelCore.Landscape.NewSiteVar<byte>();
-            this.disturbed = PlugIn.ModelCore.Landscape.NewSiteVar<bool>();
-            this.lastYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            this.thisYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-
-            this.outbreakStopYear = 0;  //default = beginning of simulation
-            this.outbreakStartYear = 0;  //default = beginning of simulation
-            this.mortalityYear = 0;  //default = beginning of simulation
-            this.activeOutbreak = false;
-
-            //Initialize outbreaks:
-            foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
-            {
-                this.hostDefoliationByYear[site] = new Dictionary<int, double[]>();
-            }
-
-        }*/
     }
 }

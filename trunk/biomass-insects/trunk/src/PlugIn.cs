@@ -1,12 +1,13 @@
 //  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
 
-using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
+using Edu.Wisc.Forest.Flel.Util;
 using System.IO;
+using System;
 
 
 namespace Landis.Extension.Insects
@@ -144,19 +145,26 @@ namespace Landis.Extension.Insects
 
                 insect.ActiveOutbreak = false;
 
-                NormalDistribution randVar = new NormalDistribution(RandomNumberGenerator.Singleton);
-                randVar.Mu = 0;      // mean
-                randVar.Sigma = 1;   // std dev
-                double randomNum = randVar.NextDouble();
+                PlugIn.ModelCore.NormalDistribution.Mu = 0.0;
+                PlugIn.ModelCore.NormalDistribution.Sigma = 1.0;
+                double randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
 
-                ExponentialDistribution randVarE = new ExponentialDistribution(RandomNumberGenerator.Singleton);
-                randVarE.Lambda = insect.MeanDuration;      // rate
-                double randomNumE = randVarE.NextDouble();
+                //NormalDistribution randVar = new NormalDistribution(RandomNumberGenerator.Singleton);
+                //randVar.Mu = 0;      // mean
+                //randVar.Sigma = 1;   // std dev
+                //double randomNum = randVar.NextDouble();
+
+                PlugIn.ModelCore.ExponentialDistribution.Lambda = insect.MeanDuration;      // rate
+                double randomNumE = PlugIn.ModelCore.ExponentialDistribution.NextDouble();
+
+                //ExponentialDistribution randVarE = new ExponentialDistribution(RandomNumberGenerator.Singleton);
+                //randVarE.Lambda = insect.MeanDuration;      // rate
+                //double randomNumE = randVarE.NextDouble();
 
                 // First, has enough time passed since the last outbreak?
                 double timeBetweenOutbreaks = insect.MeanTimeBetweenOutbreaks + (insect.StdDevTimeBetweenOutbreaks * randomNum);
                 //double duration = insect.MeanDuration + (insect.StdDevDuration * randomNum);
-                double duration = Math.Round(randomNumE + 1);
+                double duration = System.Math.Round(randomNumE + 1);
                 double timeAfterDuration = timeBetweenOutbreaks - duration;
 
                 //PlugIn.ModelCore.Log.WriteLine("Calculated time between = {0}.  inputMeanTime={1}, inputStdTime={2}.", timeBetweenOutbreaks, insect.MeanTimeBetweenOutbreaks, insect.StdDevTimeBetweenOutbreaks);

@@ -1,7 +1,5 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
 
 using Edu.Wisc.Forest.Flel.Util;
 //using Troschuetz.Random;
@@ -102,25 +100,37 @@ namespace Landis.Extension.Insects
             }*/
             if(dist == DistributionType.Weibull)
             {
-                WeibullDistribution randVar = new WeibullDistribution(RandomNumberGenerator.Singleton);
-                randVar.Alpha = parameter1;      // mean
-                randVar.Lambda = parameter2;   // std dev
-                randomNum = randVar.NextDouble();
+                PlugIn.ModelCore.WeibullDistribution.Alpha = parameter1;// mean
+                PlugIn.ModelCore.WeibullDistribution.Lambda = parameter2;// std dev
+                randomNum = PlugIn.ModelCore.WeibullDistribution.NextDouble();
+                
+                //WeibullDistribution randVar = new WeibullDistribution(RandomNumberGenerator.Singleton);
+                //randVar.Alpha = parameter1;      
+                //randVar.Lambda = parameter2;   
+                //randomNum = randVar.NextDouble();
             }
 
             if(dist == DistributionType.Gamma)
             {
-                GammaDistribution randVar = new GammaDistribution(RandomNumberGenerator.Singleton);
-                randVar.Alpha = parameter1;      // mean
-                randVar.Theta = parameter2;   // std dev
-                randomNum = randVar.NextDouble();
+                PlugIn.ModelCore.GammaDistribution.Alpha = parameter1;// mean
+                PlugIn.ModelCore.GammaDistribution.Theta = parameter2;// std dev
+                randomNum = PlugIn.ModelCore.GammaDistribution.NextDouble();
+
+                //GammaDistribution randVar = new GammaDistribution(RandomNumberGenerator.Singleton);
+                //randVar.Alpha = parameter1;      // mean
+                //randVar.Theta = parameter2;   // std dev
+                //randomNum = randVar.NextDouble();
             }
             if(dist == DistributionType.Beta)
             {
-                BetaDistribution randVar = new BetaDistribution(RandomNumberGenerator.Singleton);
-                randVar.Alpha = parameter1;      // mean
-                randVar.Beta = parameter2;   // std dev
-                randomNum = randVar.NextDouble();
+                PlugIn.ModelCore.BetaDistribution.Alpha = parameter1;// mean
+                PlugIn.ModelCore.BetaDistribution.Beta = parameter2;// std dev
+                randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
+
+                //BetaDistribution randVar = new BetaDistribution(RandomNumberGenerator.Singleton);
+                //randVar.Alpha = parameter1;      // mean
+                //randVar.Beta = parameter2;   // std dev
+                //randomNum = randVar.NextDouble();
             }
             return randomNum;
         }
