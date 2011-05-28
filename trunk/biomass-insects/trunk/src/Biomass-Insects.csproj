@@ -86,7 +86,7 @@
     <Compile Include="GrowthReduction.cs" />
     <Compile Include="InputParameterParser.cs" />
     <Compile Include="InputParameters.cs" />
-    <Compile Include="Insect.cs" />
+    <Compile Include="InsectParameters.cs" />
     <Compile Include="InsectParser.cs" />
     <Compile Include="MapNames.cs" />
     <Compile Include="Outbreak.cs" />
@@ -98,7 +98,6 @@
     <Compile Include="UShortPixel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

@@ -32,7 +32,7 @@ namespace Landis.Extension.Insects
             if (landisData.Value.Actual != "InsectDefoliator")
                 throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", "InsectDefoliator");
 
-            Insect parameters = new Insect(PlugIn.ModelCore.Species.Count);
+            InsectParameters parameters = new InsectParameters(PlugIn.ModelCore.Species.Count);
 
             InputVar<string> insectName = new InputVar<string>("InsectName");
             ReadVar(insectName);

@@ -38,6 +38,7 @@ namespace Landis.Extension.Insects
         ISiteVar<Dictionary<int,double[]>> HostDefoliationByYear{get;set;}
         ISiteVar<double> LastYearDefoliation{get;set;}
         ISiteVar<double> ThisYearDefoliation{get;set;}
+        ISiteVar<double> NeighborhoodDefoliation{ get; set; }
 
         bool ActiveOutbreak{get;set;}
 
@@ -50,7 +51,7 @@ namespace Landis.Extension.Insects
     /// <summary>
     /// Parameters for the plug-in.
     /// </summary>
-    public class Insect
+    public class InsectParameters
         : IInsect
     {
         private string name;
@@ -75,11 +76,12 @@ namespace Landis.Extension.Insects
         private List<ISusceptible> susceptibleTable;
         IEnumerable<RelativeLocation> neighbors;
 
-        //private ISiteVar<byte> severity;
         private ISiteVar<Dictionary<int, double[]>> hostDefoliationByYear;
         private ISiteVar<bool> disturbed;
         private ISiteVar<double> lastYearDefoliation;
         private ISiteVar<double> thisYearDefoliation;
+        private ISiteVar<double> neighborhoodDefoliation;
+
 
         //---------------------------------------------------------------------
 
@@ -315,9 +317,20 @@ namespace Landis.Extension.Insects
                 thisYearDefoliation = value;
             }
         }
+        //---------------------------------------------------------------------
+        public ISiteVar<double> NeighborhoodDefoliation
+        {
+            get {
+                return neighborhoodDefoliation;
+            }
+            set
+            {
+                neighborhoodDefoliation = value;
+            }
+        }
 
         //---------------------------------------------------------------------
-        public Insect(int sppCount)
+        public InsectParameters(int sppCount)
         {
             sppTable = new List<ISppParameters>(sppCount);
             susceptibleTable = new List<ISusceptible>();
@@ -327,6 +340,7 @@ namespace Landis.Extension.Insects
             disturbed = PlugIn.ModelCore.Landscape.NewSiteVar<bool>();
             lastYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             thisYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
 
             outbreakStopYear = 0;  //default = beginning of simulation
             outbreakStartYear = 0;  //default = beginning of simulation

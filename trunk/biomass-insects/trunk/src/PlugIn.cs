@@ -210,7 +210,7 @@ namespace Landis.Extension.Insects
                         // Initialize neighborhoodGrowthReduction with patches
                         Outbreak.InitializeDefoliationPatches(insect);
                     else
-                        SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0;
+                        insect.NeighborhoodDefoliation.ActiveSiteValues = 0;
 
                     double sumDefoliation = 0.0;
                     int numSites = 0;

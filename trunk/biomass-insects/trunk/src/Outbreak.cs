@@ -161,7 +161,7 @@ namespace Landis.Extension.Insects
                     
                         // Because this is the first year, neighborhood defoliaiton is given a value.
                         // The value is used in Defoliate.DefoliateCohort()
-                        SiteVars.NeighborhoodDefoliation[currentSite] = SiteVars.InitialOutbreakProb[currentSite];
+                        insect.NeighborhoodDefoliation[currentSite] = SiteVars.InitialOutbreakProb[currentSite];
                         areaSelected += PlugIn.ModelCore.CellArea;
 
                         //Next, add site's neighbors to the list of

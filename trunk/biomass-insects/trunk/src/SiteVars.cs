@@ -17,7 +17,7 @@ namespace Landis.Extension.Insects
         private static ISiteVar<Outbreak> outbreakVariables;
         private static ISiteVar<int> timeOfLastEvent;
         private static ISiteVar<int> biomassRemoved;
-        private static ISiteVar<double> neighborhoodDefoliation;
+        //private static ISiteVar<double> neighborhoodDefoliation;
         private static ISiteVar<double> initialOutbreakProb;
         private static ISiteVar<ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
@@ -30,12 +30,12 @@ namespace Landis.Extension.Insects
             outbreakVariables       = PlugIn.ModelCore.Landscape.NewSiteVar<Outbreak>();
             timeOfLastEvent         = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             biomassRemoved          = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            //neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             
-            SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
+            //SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
             
@@ -70,12 +70,12 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public static ISiteVar<double> NeighborhoodDefoliation
+        /*public static ISiteVar<double> NeighborhoodDefoliation
         {
             get {
                 return neighborhoodDefoliation;
             }
-        }
+        }*/
         
         //---------------------------------------------------------------------
         public static ISiteVar<double> InitialOutbreakProb

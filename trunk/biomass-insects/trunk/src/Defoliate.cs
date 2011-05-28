@@ -58,10 +58,10 @@ namespace Landis.Extension.Insects
                 // If it is the first year, the neighborhood growth reduction
                 // will have been initialized in Outbreak.InitializeDefoliationPatches
 
-                if(SiteVars.NeighborhoodDefoliation[site] > 0)
+                if(insect.NeighborhoodDefoliation[site] > 0)
                 {
                     //PlugIn.ModelCore.Log.WriteLine("   First Year of Defoliation:  Using initial patch defo={0:0.00}.", SiteVars.NeighborhoodDefoliation[site]);
-                    meanNeighborhoodDefoliation = SiteVars.NeighborhoodDefoliation[site];
+                    meanNeighborhoodDefoliation = insect.NeighborhoodDefoliation[site];
                 }
 
                 // If not the first year, calculate mean neighborhood defoliation based on the
