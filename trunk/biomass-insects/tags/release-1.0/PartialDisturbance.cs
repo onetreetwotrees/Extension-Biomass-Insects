@@ -121,6 +121,9 @@ namespace Landis.Insects
                 biomassMortality = cohort.Biomass;
 
             SiteVars.BiomassRemoved[currentSite] += biomassMortality;
+
+            SiteVars.WoodyDebris[currentSite] += biomassMortality;
+
             //UI.WriteLine("biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
 
             if(biomassMortality > cohort.Biomass || biomassMortality < 0)

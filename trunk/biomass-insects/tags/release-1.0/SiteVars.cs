@@ -1,9 +1,9 @@
 //  Copyright 2006 University of Wisconsin
-//  Authors:  
+//  Authors:
 //      Jane Foster
 //      Robert M. Scheller
 //  Version 1.0
-//  License:  Available at  
+//  License:  Available at
 //  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
 
 using Landis.Biomass;
@@ -23,9 +23,10 @@ namespace Landis.Insects
         private static ISiteVar<double> neighborhoodDefoliation;
         private static ISiteVar<double> initialOutbreakProb;
         //private static ISiteVar<double> summaryLastDefoliation;
-        
+
         //growthReduction by year:  year and (int) percentage (0-100) that can later be translated into a fraction
-        //private static ISiteVar<Dictionary<int,double>> defoliationByYear;  
+        //private static ISiteVar<Dictionary<int,double>> defoliationByYear;
+        private static ISiteVar<Pool> woodyDebris;
 
 
         //---------------------------------------------------------------------
@@ -37,26 +38,42 @@ namespace Landis.Insects
             biomassRemoved = Model.Core.Landscape.NewSiteVar<int>();
             neighborhoodDefoliation = Model.Core.Landscape.NewSiteVar<double>();
             initialOutbreakProb     = Model.Core.Landscape.NewSiteVar<double>();
-            //sumLastDefoliation      = Model.Core.Landscape.NewSiteVar<double>();
-            //defoliationByYear   = Model.Core.Landscape.NewSiteVar<Dictionary<int,double>>();
 
             //Model.Core.RegisterSiteVar(SiteVars.DefoliationByYear, "Insect.GrowthReduction");
-            
+            Model.Core.GetSiteVar(SiteVars.WoodyDebris, "Succession.WoodyDebris");
+
             SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
             //SiteVars.SumLastDefoliation.ActiveSiteValues = 0.0;
             //SiteVars.Disturbed.ActiveSiteValues = false;
-            
+
             //Initialize outbreaks:
-            foreach (ActiveSite site in Model.Core.Landscape) 
+            foreach (ActiveSite site in Model.Core.Landscape)
             {
                 SiteVars.OutbreakVars = null; //new Outbreak();
                 //SiteVars.DefoliationByYear[site] = new Dictionary<int, double>();
             }
 
-            
+
         }
+
+
+
+        //---------------------------------------------------------------------
+
+        public static ISiteVar<Pool> WoodyDebris
+        {
+            get {
+                return woodyDebris;
+            }
+            set {
+                woodyDebris = value;
+            }
+
+        }
+
+
         //---------------------------------------------------------------------
 
         public static ISiteVar<Outbreak> OutbreakVars
@@ -67,7 +84,7 @@ namespace Landis.Insects
             set {
                 outbreakVariables = value;
             }
-           
+
         }
 
         //---------------------------------------------------------------------
@@ -85,7 +102,7 @@ namespace Landis.Insects
                 return neighborhoodDefoliation;
             }
         }
-        
+
         //---------------------------------------------------------------------
         public static ISiteVar<double> InitialOutbreakProb
         {
