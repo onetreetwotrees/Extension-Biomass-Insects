@@ -2,7 +2,7 @@ LandisData "Biomass Insects"
 
 Timestep	1
 
-MapNames	Insects2/{insectName}-{timestep}.gis
+MapNames	Insects2/{insectName}-{timestep}.img
 
 LogFile		Insects2/Insect-log.csv
 

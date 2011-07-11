@@ -1,0 +1,215 @@
+LandisData  "Biomass Succession"
+
+Timestep  1
+
+SeedingAlgorithm  WardSeedDispersal
+
+InitialCommunities      "./InitialCommunity_all.txt"
+InitialCommunitiesMap   "./grsfinitcommsub.gis"
+
+CalibrateMode no <<optional parameter
+
+>>SpinupMortalityFraction 0.027 <<optional parameter
+>>SpinupMortalityFraction 0.001 <<optional parameter
+
+>> ********************************
+   MinRelativeBiomass
+
+>> Shade	Percent Max Biomass
+>> Class	by Ecoregions
+>> ----------	-------------------
+	        eco1 	eco2	eco4	eco8	eco12	eco13	eco17	eco19	 eco25	eco28	
+
+	1	15% 	15% 	15% 	15% 	15% 	15% 	15% 	15% 	 15% 	15% 	
+	2	25% 	25% 	25% 	25% 	25% 	25% 	25% 	25% 	 25% 	25% 	
+	3	50% 	50% 	50% 	50% 	50% 	50% 	50% 	50% 	 50% 	50% 	
+	4	80% 	80% 	80% 	80% 	80% 	80% 	80% 	80% 	 80% 	80% 	
+	5	95% 	95% 	95% 	95% 	95% 	95% 	95% 	95% 	 95% 	95% 	
+	
+
+
+>> ************************************************************
+   SufficientLight
+>> Spp Shade	Probability
+>> Class	by Actual Shade
+>> -----------  -----------------------------------------------
+>>		0	1	2	3	4	5
+   1 		1.0 	0.0 	0.0 	0.0 	0.0 	0.0
+   2 		1.0 	1.0 	0.0 	0.0 	0.0 	0.0
+   3 		1.0 	1.0 	1.0 	0.0 	0.0 	0.0
+   4 		1.0 	1.0 	1.0 	1.0 	0.0 	0.0
+   5 		0.0 	0.0 	0.5 	0.5 	0.25 	0.25
+
+>> ************************************************************
+   SpeciesParameters
+
+>> Species	Leaf		Woody Biomass	Mortality Curve	Growth	Leaf
+>>		Longevity	Decay Rate	Shape Parameter	Curve	Lignin%
+>> --------     ---------	-------------	---------------		-------
+ACERRUBR	1		  0.1		10		0.7	0.1
+ACERSACC	1		  0.1		10		0.7	0.1
+CARYGLAB	1		  0.1		10		0.7	0.1
+FRAXAMER	1		  0.1		10		0.7	0.1
+JUGLNIGR	1		  0.1		10		0.7	0.1
+LIRITULI	1		  0.1		10		0.7	0.1
+MAGNACUM	1		  0.1		10		0.7	0.1
+NYSSSYLV	1		  0.1		10		0.7	0.1
+PINUECHI	3		  0.1		10		0.7	0.3
+PINUPUNG	3		  0.1		10		0.7	0.3
+PINURIGI	3		  0.1		10		0.7	0.3
+PINUSTRO	3		  0.1		10		0.7	0.3
+PINUVIRG	3		  0.1		10		0.7	0.3
+POPUGRAN	1		  0.1		10		0.7	0.1
+POPUTREM	1		  0.1		10		0.7	0.1
+PRUNSERO	1		  0.1		10		0.7	0.1
+QUERALBA	1		  0.1		10		0.7	0.1
+QUERCOCC	1		  0.1		10		0.7	0.1
+QUERPRIN	1		  0.1		10		0.7	0.1
+QUERRUBR	1		  0.1		10		0.7	0.2
+QUERVELU	1		  0.1		10		0.7	0.1
+ROBIPSEU	1		  0.1		10		0.7	0.1
+SASSALBI	1		  0.1		10		0.7	0.1
+TILIAMER	1		  0.1		10		0.7	0.1
+TSUGCANA	3		  0.1		10		0.7	0.2
+ULMUAMER	1		  0.1		10		0.7	0.1
+
+>> *****************************
+   EcoregionParameters
+>>		AET
+>>		mm
+   eco1		537
+   eco2		537
+   eco4		537
+   eco8 	537
+   eco12	537
+   eco13	537
+   eco17	537
+   eco19	537
+   eco25	537
+   eco28	537
+
+
+DynamicInputFile	biomass-succession-dynamic-inputs.txt
+
+AgeOnlyDisturbances:BiomassParameters  biomass_age-only-disturbances.txt	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
