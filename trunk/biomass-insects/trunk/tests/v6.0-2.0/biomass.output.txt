@@ -3,15 +3,15 @@ LandisData  "Output Biomass"
 Timestep  10
 
 Species   QUERRUBR
-	  QUERALBA
-	  QUERPRIN
-	  QUERVELU
-	  ACERSACC
-	  PINUSTRO
- 	  ACERRUBR
-          TSUGCANA
-	  FRAXAMER
-	  TILIAMER
+	  >>QUERALBA
+	  >>QUERPRIN
+	  >>QUERVELU
+	  >>ACERSACC
+	  >>PINUSTRO
+ 	  >>ACERRUBR
+          >>TSUGCANA
+	  >>FRAXAMER
+	  >>TILIAMER
 
 MapNames  output/biomass/{species}-{timestep}.img
 

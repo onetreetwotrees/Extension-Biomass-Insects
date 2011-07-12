@@ -1,0 +1,292 @@
+//  Copyright 2008-2010 University of Wisconsin, Portland State University
+//  Authors:
+//      Jane Foster
+//      Robert M. Scheller
+//  License:  Available at
+//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+
+using Edu.Wisc.Forest.Flel.Util;
+using Landis.Species;
+using Landis.Util;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Landis.Insects
+{
+    /// <summary>
+    /// A parser that reads the extension parameters from text input.
+    /// </summary>
+    public class InsectParser
+        : Landis.TextParser<IInsect>
+    {
+        public static Species.IDataset SpeciesDataset = Model.Core.Species;
+
+        //---------------------------------------------------------------------
+        public override string LandisDataValue
+        {
+            get {
+                return "InsectDefoliator";
+            }
+        }
+
+        //---------------------------------------------------------------------
+        public InsectParser()
+        {
+            RegisterForInputValues();
+        }
+
+        //---------------------------------------------------------------------
+
+        protected override IInsect Parse()
+        {
+
+            ReadLandisDataVar();
+
+            Insect parameters = new Insect(Model.Core.Species.Count);
+
+            InputVar<string> insectName = new InputVar<string>("InsectName");
+            ReadVar(insectName);
+            parameters.Name = insectName.Value;
+
+            InputVar<double> mD = new InputVar<double>("MeanDuration");
+            ReadVar(mD);
+            parameters.MeanDuration = mD.Value;
+
+            InputVar<int> sdD = new InputVar<int>("StdDevDuration");
+            ReadVar(sdD);
+            parameters.StdDevDuration = sdD.Value;
+
+            InputVar<int> mTBO = new InputVar<int>("MeanTimeBetweenOutbreaks");
+            ReadVar(mTBO);
+            parameters.MeanTimeBetweenOutbreaks = mTBO.Value;
+
+            InputVar<int> sdTBO = new InputVar<int>("StdDevTimeBetweenOutbreaks");
+            ReadVar(sdTBO);
+            parameters.StdDevTimeBetweenOutbreaks = sdTBO.Value;
+
+            InputVar<int> nhs = new InputVar<int>("NeighborhoodSize");
+            ReadVar(nhs);
+            parameters.NeighborhoodDistance = nhs.Value;
+
+            InputVar<double> iac = new InputVar<double>("InitialAreaCalibrator");
+            ReadVar(iac);
+            parameters.InitialAreaCalibrator = iac.Value;
+
+            InputVar<DistributionType> ipdt = new InputVar<DistributionType>("InitialPatchDistribution");
+            ReadVar(ipdt);
+            parameters.InitialPatchDistr = ipdt.Value;
+
+            InputVar<double> ipv1 = new InputVar<double>("InitialPatchValue1");
+            ReadVar(ipv1);
+            parameters.InitialPatchValue1 = ipv1.Value;
+
+            InputVar<double> ipv2 = new InputVar<double>("InitialPatchValue2");
+            ReadVar(ipv2);
+            parameters.InitialPatchValue2 = ipv2.Value;
+
+            //--------- Read In Species Table ---------------------------------------
+            UI.WriteLine("Begin parsing SPECIES table.");
+
+            ReadName("SpeciesParameters");
+
+            InputVar<string> sppName = new InputVar<string>("Species");
+            InputVar<int> susc = new InputVar<int>("Species Susceptibility");
+            InputVar<double> grs = new InputVar<double>("Growth Reduction Slope");
+            InputVar<double> gri = new InputVar<double>("Growth Reduction Intercept");
+            InputVar<double> msl = new InputVar<double>("Mortality Slope");
+            InputVar<double> min = new InputVar<double>("Mortality Intercept");
+            Dictionary <string, int> lineNumbers = new Dictionary<string, int>();
+
+            const string Susceptiblities = "Susceptibilities";
+
+            while (! AtEndOfInput && CurrentName != Susceptiblities) {
+                StringReader currentLine = new StringReader(CurrentLine);
+
+
+                ReadValue(sppName, currentLine);
+                ISpecies species = SpeciesDataset[sppName.Value.Actual];
+
+                if (species == null)
+                    throw new InputValueException(sppName.Value.String,
+                                                  "{0} is not a species name.",
+                                                  sppName.Value.String);
+                int lineNumber;
+                if (lineNumbers.TryGetValue(species.Name, out lineNumber))
+                    throw new InputValueException(sppName.Value.String,
+                                                  "The species {0} was previously used on line {1}",
+                                                  sppName.Value.String, lineNumber);
+                else
+                    lineNumbers[species.Name] = LineNumber;
+
+                ISppParameters sppParms = new SppParameters();
+
+                //parameters.SppTable[species.Index] = sppParms;
+                parameters.SppTable.Add(sppParms);
+
+                ReadValue(susc, currentLine);
+                sppParms.Susceptibility = susc.Value;
+
+                ReadValue(grs, currentLine);
+                sppParms.GrowthReduceSlope = grs.Value;
+
+                ReadValue(gri, currentLine);
+                sppParms.GrowthReduceIntercept = gri.Value;
+
+                ReadValue(msl, currentLine);
+                sppParms.MortalitySlope = msl.Value;
+
+                ReadValue(min, currentLine);
+                sppParms.MortalityIntercept = min.Value;
+
+                CheckNoDataAfter("the " + min.Name + " column",
+                                 currentLine);
+
+                GetNextLine();
+            }
+
+            //  Read table of Susceptibilities.
+            //  Susceptibilities are in decreasing order.
+            ReadName(Susceptiblities);
+            const string MapNames  = "MapNames";
+
+            InputVar<byte> number = new InputVar<byte>("Susceptibility Number");
+            InputVar<DistributionType> dt = new InputVar<DistributionType>("Distribution");
+            InputVar<double> v1 = new InputVar<double>("Distribution Value 1");
+            InputVar<double> v2 = new InputVar<double>("Distribution Value 2");
+
+            byte previousNumber = 0;
+
+            while (! AtEndOfInput && CurrentName != MapNames)
+            {
+                StringReader currentLine = new StringReader(CurrentLine);
+
+                ISusceptible susceptible = new Susceptible();
+
+                parameters.SusceptibleTable.Add(susceptible);
+
+                ReadValue(number, currentLine);
+                susceptible.Number = number.Value;
+
+                //  Check that the current severity's number is 1 less than
+                //  the previous number (numbers are must be in decreasing
+                //  order).
+                if (number.Value.Actual != previousNumber + 1)
+                    throw new InputValueException(number.Value.String,
+                                                  "Expected the severity number {0}",
+                                                  previousNumber + 1);
+                previousNumber = number.Value.Actual;
+
+                IDistribution distribution = new Distribution();
+
+                ReadValue(dt, currentLine);
+                distribution.Name = dt.Value;
+
+                ReadValue(v1, currentLine);
+                distribution.Value1 = v1.Value;
+
+                ReadValue(v2, currentLine);
+                distribution.Value2 = v2.Value;
+
+                susceptible.Distribution_80 = distribution; //.GetComplete();
+
+                distribution = new Distribution();
+
+                ReadValue(dt, currentLine);
+                distribution.Name = dt.Value;
+
+                ReadValue(v1, currentLine);
+                distribution.Value1 = v1.Value;
+
+                ReadValue(v2, currentLine);
+                distribution.Value2 = v2.Value;
+
+                susceptible.Distribution_60 = distribution; //.GetComplete();
+
+                distribution = new Distribution();
+
+                ReadValue(dt, currentLine);
+                distribution.Name = dt.Value;
+
+                ReadValue(v1, currentLine);
+                distribution.Value1 = v1.Value;
+
+                ReadValue(v2, currentLine);
+                distribution.Value2 = v2.Value;
+
+                susceptible.Distribution_40 = distribution; //.GetComplete();
+
+                distribution = new Distribution();
+
+                ReadValue(dt, currentLine);
+                distribution.Name = dt.Value;
+
+                ReadValue(v1, currentLine);
+                distribution.Value1 = v1.Value;
+
+                ReadValue(v2, currentLine);
+                distribution.Value2 = v2.Value;
+
+                susceptible.Distribution_20 = distribution; //.GetComplete();
+
+                distribution = new Distribution();
+
+                ReadValue(dt, currentLine);
+                distribution.Name = dt.Value;
+
+                ReadValue(v1, currentLine);
+                distribution.Value1 = v1.Value;
+
+                ReadValue(v2, currentLine);
+                distribution.Value2 = v2.Value;
+
+                susceptible.Distribution_0 = distribution; //.GetComplete();
+
+                CheckNoDataAfter("the " + v2.Name + " column",
+                                 currentLine);
+                GetNextLine();
+            }
+            if (parameters.SusceptibleTable.Count == 0)
+                throw NewParseException("No susceptibilities defined.");
+
+            return parameters;//.GetComplete();
+
+        }
+        //---------------------------------------------------------------------
+
+        private void CheckForRepeatedName(string      name,
+                                          string      description,
+                                          Dictionary<string, int> lineNumbers)
+        {
+            int lineNumber;
+            if (lineNumbers.TryGetValue(name, out lineNumber))
+                throw new InputValueException(name,
+                                              "The {0} {1} was previously used on line {2}",
+                                              description, name, lineNumber);
+            lineNumbers[name] = LineNumber;
+        }
+
+        public static DistributionType DTParse(string word)
+        {
+            if (word == "Beta")
+                return DistributionType.Beta;
+            else if (word == "Weibull")
+                return DistributionType.Weibull;
+            else if (word == "Gamma")
+                return DistributionType.Gamma;
+            else
+                throw new System.FormatException("Valid Distribution Types: Gamma, Beta, Weibull.");
+        }
+
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Registers the appropriate method for reading input values.
+        /// </summary>
+        public static void RegisterForInputValues()
+        {
+            Type.SetDescription<DistributionType>("Distribution Type");
+            InputValues.Register<DistributionType>(DTParse);
+        }
+
+    }
+}

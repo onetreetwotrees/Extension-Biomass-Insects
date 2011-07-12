@@ -110,7 +110,7 @@ namespace Landis.Extension.Insects
 
                 if (percentMortality > 0.0)
                 {
-                    biomassMortality += (int)((double) cohort.Biomass * percentMortality);
+                    biomassMortality += (int) ((double) cohort.Biomass * percentMortality);
                     //PlugIn.ModelCore.Log.WriteLine("biomassMortality={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", biomassMortality, cohort.Biomass, percentMortality);
 
                 }

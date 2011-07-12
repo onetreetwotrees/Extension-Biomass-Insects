@@ -132,6 +132,7 @@ namespace Landis.Extension.Insects
 
             foreach(IInsect insect in manyInsect)
             {
+                SiteVars.BiomassRemoved.ActiveSiteValues = 0;
 
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
@@ -139,9 +140,7 @@ namespace Landis.Extension.Insects
                 // Copy the data from current to last
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                     insect.LastYearDefoliation[site] = insect.ThisYearDefoliation[site];
-
                 insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
-                SiteVars.BiomassRemoved.ActiveSiteValues = 0;
 
                 insect.ActiveOutbreak = false;
 
@@ -163,7 +162,6 @@ namespace Landis.Extension.Insects
 
                 // First, has enough time passed since the last outbreak?
                 double timeBetweenOutbreaks = insect.MeanTimeBetweenOutbreaks + (insect.StdDevTimeBetweenOutbreaks * randomNum);
-                //double duration = insect.MeanDuration + (insect.StdDevDuration * randomNum);
                 double duration = System.Math.Round(randomNumE + 1);
                 double timeAfterDuration = timeBetweenOutbreaks - duration;
 
@@ -240,24 +238,12 @@ namespace Landis.Extension.Insects
 
                 }
 
-
-                //Only write maps if an outbreak is active.
-                //if (!insect.ActiveOutbreak)
-                //if (insect.OutbreakStartYear <= PlugIn.ModelCore.CurrentTime
-                //    && insect.OutbreakStopYear + 1 >= PlugIn.ModelCore.CurrentTime)
-                //if (insect.OutbreakStartYear <= PlugIn.ModelCore.CurrentTime)
-                //    | insect.MortalityYear = PlugIn.ModelCore.CurrentTime)
-                //    continue;
-
                 //----- Write Insect GrowthReduction maps --------
                 string path = MapNames.ReplaceTemplateVars(mapNameTemplate, insect.Name, PlugIn.ModelCore.CurrentTime - 1);
                 using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path, modelCore.Landscape.Dimensions))
                 {
-                    //IOutputRaster<UShortPixel> map = CreateMap((PlugIn.ModelCore.CurrentTime - 1), insect.Name);
                     UShortPixel pixel = outputRaster.BufferPixel;
 
-                    //using (map) {
-                    //UShortPixel pixel = new UShortPixel();
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites) {
                         if (site.IsActive)
                             pixel.MapCode.Value = (ushort) (insect.LastYearDefoliation[site] * 100.0);
@@ -266,16 +252,13 @@ namespace Landis.Extension.Insects
                             pixel.MapCode.Value = 0;
 
                         outputRaster.WriteBufferPixel();
-                        //map.WritePixel(pixel);
                     }
                 }
 
                 //----- Write Initial Patch maps --------
-                string path2 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("InitialPatchMap" + insect.Name), PlugIn.ModelCore.CurrentTime - 1);
+                string path2 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("InitialPatchMap-" + insect.Name), PlugIn.ModelCore.CurrentTime - 1);
                 using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path2, modelCore.Landscape.Dimensions))
                 {
-                //IOutputRaster<UShortPixel> map2 = CreateMap(PlugIn.ModelCore.CurrentTime, ("InitialPatchMap" + insect.Name));
-                //using (map2) {
                     UShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites) {
                         if (site.IsActive)
@@ -295,7 +278,7 @@ namespace Landis.Extension.Insects
                 }
 
                 //----- Write Biomass Reduction maps --------
-                string path3 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("BiomassRemoved" + insect.Name), PlugIn.ModelCore.CurrentTime - 1);
+                string path3 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("BiomassRemoved-" + insect.Name), PlugIn.ModelCore.CurrentTime - 1);
                 using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path3, modelCore.Landscape.Dimensions))
                 {
                     UShortPixel pixel = outputRaster.BufferPixel;
@@ -303,9 +286,10 @@ namespace Landis.Extension.Insects
                     {
                         if (site.IsActive)
                         {
-                            if(SiteVars.BiomassRemoved[site] > 0)
-                                PlugIn.ModelCore.Log.WriteLine("  Biomass revoved at {0}/{1}: {2}.", site.Location.Row, site.Location.Column, SiteVars.BiomassRemoved[site]);
-                            pixel.MapCode.Value = (ushort) (SiteVars.BiomassRemoved[site] / 100);
+                            //if(SiteVars.BiomassRemoved[site] > 0)
+                            //    PlugIn.ModelCore.Log.WriteLine("  Biomass revoved at {0}/{1}: {2}.", site.Location.Row, site.Location.Column, SiteVars.BiomassRemoved[site]);
+
+                            pixel.MapCode.Value = (ushort) (SiteVars.BiomassRemoved[site] / 100);  // convert to Mg/ha
 
                         }
                         else
@@ -339,16 +323,6 @@ namespace Landis.Extension.Insects
             log.Write("{0}", currentTime);
             log.WriteLine("");
         }
-
-        //---------------------------------------------------------------------
-/*        private IOutputRaster<UShortPixel> CreateMap(int currentTime, string MapName)
-        {
-            string path = MapNames.ReplaceTemplateVars(mapNameTemplate, MapName, currentTime);
-            PlugIn.ModelCore.Log.WriteLine("   Writing BiomassInsect GrowthReduction map to {0} ...", path);
-            return PlugIn.ModelCore.CreateRaster<UShortPixel>(path,
-                                                          PlugIn.ModelCore.Landscape.Dimensions,
-                                                          PlugIn.ModelCore.LandscapeMapMetadata);
-        }*/
 
         //---------------------------------------------------------------------
         // Generate a Relative RelativeLocation array of neighbors.

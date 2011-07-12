@@ -1,13 +1,16 @@
-//  Copyright 2006-2011 University of Wisconsin, Portland State University
-//  Authors:  Jane Foster, Robert M. Scheller
+//  Copyright 2006 University of Wisconsin
+//  Authors:  
+//      Jane Foster
+//      Robert M. Scheller
+//  Version 1.0
+//  License:  Available at  
+//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
 
-using Landis.Extension.Succession.Biomass;
-using Landis.Core;
-using Landis.SpatialModeling;
-using Landis.Library.BiomassCohorts;
+using Landis.Biomass;
+using Landis.Landscape;
 using System.Collections.Generic;
 
-namespace Landis.Extension.Insects
+namespace Landis.Insects
 {
     ///<summary>
     /// Site Variables for a disturbance plug-in that simulates Biological Agents.
@@ -19,32 +22,38 @@ namespace Landis.Extension.Insects
         private static ISiteVar<int> biomassRemoved;
         //private static ISiteVar<double> neighborhoodDefoliation;
         private static ISiteVar<double> initialOutbreakProb;
-        private static ISiteVar<ISiteCohorts> cohorts;
-        private static ISiteVar<int> cohortsPartiallyDamaged;
+        //private static ISiteVar<double> summaryLastDefoliation;
+        
+        //growthReduction by year:  year and (int) percentage (0-100) that can later be translated into a fraction
+        //private static ISiteVar<Dictionary<int,double>> defoliationByYear;  
 
 
         //---------------------------------------------------------------------
 
         public static void Initialize()
         {
-            outbreakVariables       = PlugIn.ModelCore.Landscape.NewSiteVar<Outbreak>();
-            timeOfLastEvent         = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            biomassRemoved          = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            //neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
-            cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            outbreakVariables       = Model.Core.Landscape.NewSiteVar<Outbreak>();
+            timeOfLastEvent         = Model.Core.Landscape.NewSiteVar<int>();
+            biomassRemoved = Model.Core.Landscape.NewSiteVar<int>();
+            //neighborhoodDefoliation = Model.Core.Landscape.NewSiteVar<double>();
+            initialOutbreakProb     = Model.Core.Landscape.NewSiteVar<double>();
+            //sumLastDefoliation      = Model.Core.Landscape.NewSiteVar<double>();
+            //defoliationByYear   = Model.Core.Landscape.NewSiteVar<Dictionary<int,double>>();
+
+            //Model.Core.RegisterSiteVar(SiteVars.DefoliationByYear, "Insect.GrowthReduction");
             
             //SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
+            //SiteVars.SumLastDefoliation.ActiveSiteValues = 0.0;
+            //SiteVars.Disturbed.ActiveSiteValues = false;
             
             //Initialize outbreaks:
-            foreach (ActiveSite site in PlugIn.ModelCore.Landscape) 
+            foreach (ActiveSite site in Model.Core.Landscape) 
             {
                 SiteVars.OutbreakVars = null; //new Outbreak();
+                //SiteVars.DefoliationByYear[site] = new Dictionary<int, double>();
             }
-
 
             
         }
@@ -68,10 +77,6 @@ namespace Landis.Extension.Insects
             get {
                 return biomassRemoved;
             }
-            set
-            {
-                biomassRemoved = value;
-            }
         }
         //---------------------------------------------------------------------
         /*public static ISiteVar<double> NeighborhoodDefoliation
@@ -89,23 +94,24 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-
-        public static ISiteVar<int> CohortsPartiallyDamaged
+        /*public static ISiteVar<double> SumLastDefoliation
         {
-            get
-            {
-                return cohortsPartiallyDamaged;
+            get {
+                return sumLastDefoliation;
             }
         }
-
         //---------------------------------------------------------------------
-        public static ISiteVar<ISiteCohorts> Cohorts
+        public static ISiteVar<Dictionary<int,double>> DefoliationByYear
         {
             get
             {
-                return cohorts;
+                return defoliationByYear;
             }
-        }
+            set
+            {
+                defoliationByYear = value;
+            }
+        }*/
 
         //---------------------------------------------------------------------
         public static ISiteVar<int> TimeOfLastEvent
@@ -114,5 +120,13 @@ namespace Landis.Extension.Insects
                 return timeOfLastEvent;
             }
         }
+        //---------------------------------------------------------------------
+        /*
+        public static ISiteVar<bool> Disturbed
+        {
+            get {
+                return disturbed;
+            }
+        }*/
     }
 }
