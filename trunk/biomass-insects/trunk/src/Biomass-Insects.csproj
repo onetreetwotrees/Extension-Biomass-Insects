@@ -60,7 +60,8 @@
     <Reference Include="Landis.Core">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Extension.Succession.Biomass">
+    <Reference Include="Landis.Extension.Succession.Biomass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Extension.Succession.Biomass.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.AgeOnlyCohorts">
@@ -71,6 +72,10 @@
     </Reference>
     <Reference Include="Landis.Library.Cohorts">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Succession, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll</HintPath>
     </Reference>
     <Reference Include="Landis.SpatialModeling">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.SpatialModeling.dll</HintPath>
@@ -95,7 +100,7 @@
     <Compile Include="SiteVars.cs" />
     <Compile Include="SppParameters.cs" />
     <Compile Include="Susceptible.cs" />
-    <Compile Include="UShortPixel.cs" />
+    <Compile Include="ShortPixel.cs" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

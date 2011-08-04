@@ -84,6 +84,9 @@ namespace Landis.Extension.Insects
             Defoliate.Initialize(parameters);
             GrowthReduction.Initialize(parameters);
 
+            if (Landis.Extension.Succession.Biomass.PlugIn.SuccessionTimeStep != 1)
+                PlugIn.ModelCore.Log.WriteLine("  CAUTION!  If using Biomass Insects, Biomass Succession should be operating at an ANNUAL time step.");
+
             foreach(IInsect insect in manyInsect)
             {
 
@@ -140,7 +143,6 @@ namespace Landis.Extension.Insects
                 // Copy the data from current to last
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                     insect.LastYearDefoliation[site] = insect.ThisYearDefoliation[site];
-                insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
 
                 insect.ActiveOutbreak = false;
 
@@ -209,21 +211,28 @@ namespace Landis.Extension.Insects
                         Outbreak.InitializeDefoliationPatches(insect);
                     else
                         insect.NeighborhoodDefoliation.ActiveSiteValues = 0;
+                }
 
-                    double sumDefoliation = 0.0;
-                    int numSites = 0;
-                    foreach(ActiveSite site in PlugIn.ModelCore.Landscape)
-                    {
-                        sumDefoliation += insect.ThisYearDefoliation[site];
-                        if(insect.ThisYearDefoliation[site] > 0.0)
+                // Now report on the previous year's defoliation, that which has been processed
+                // through biomass succession.
+
+                double sumDefoliation = 0.0;
+                int numSites = 0;
+                foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
+                {
+                        sumDefoliation += insect.LastYearDefoliation[site];
+                        if(insect.LastYearDefoliation[site] > 0.0)
                             numSites++;
 
-                    }
-                    double meanDefoliation = sumDefoliation / (double) numSites;
+                }
 
+                double meanDefoliation = 0.0;
+                if (numSites > 0)
+                    meanDefoliation = sumDefoliation / (double)numSites;
+                //PlugIn.ModelCore.Log.WriteLine("   sumDefoliation={0}, numSites={1}.", sumDefoliation, numSites);
 
-                    log.Write("{0},{1},{2},{3},{4},{5}",
-                        PlugIn.ModelCore.CurrentTime,
+                log.Write("{0},{1},{2},{3},{4},{5}",
+                        PlugIn.ModelCore.CurrentTime-1,
                         insect.Name,
                         insect.OutbreakStartYear,
                         insect.OutbreakStopYear,
@@ -234,19 +243,17 @@ namespace Landis.Extension.Insects
                     //foreach (IEcoregion ecoregion in Ecoregions.Dataset)
                     //    log.Write(",{0}", 1);
 
-                    log.WriteLine("");
-
-                }
+                log.WriteLine("");
 
                 //----- Write Insect GrowthReduction maps --------
                 string path = MapNames.ReplaceTemplateVars(mapNameTemplate, insect.Name, PlugIn.ModelCore.CurrentTime - 1);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
 
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites) {
                         if (site.IsActive)
-                            pixel.MapCode.Value = (ushort) (insect.LastYearDefoliation[site] * 100.0);
+                            pixel.MapCode.Value = (short) (insect.LastYearDefoliation[site] * 100.0);
                         else
                             //  Inactive site
                             pixel.MapCode.Value = 0;
@@ -257,14 +264,14 @@ namespace Landis.Extension.Insects
 
                 //----- Write Initial Patch maps --------
                 string path2 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("InitialPatchMap-" + insect.Name), PlugIn.ModelCore.CurrentTime - 1);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path2, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites) {
                         if (site.IsActive)
                         {
                             if (insect.Disturbed[site])
-                                pixel.MapCode.Value = (ushort)(SiteVars.InitialOutbreakProb[site] * 100);
+                                pixel.MapCode.Value = (short)(SiteVars.InitialOutbreakProb[site] * 100);
                             else
                                 pixel.MapCode.Value = 0;
                         }
@@ -279,9 +286,9 @@ namespace Landis.Extension.Insects
 
                 //----- Write Biomass Reduction maps --------
                 string path3 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("BiomassRemoved-" + insect.Name), PlugIn.ModelCore.CurrentTime - 1);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path3, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path3, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
                         if (site.IsActive)
@@ -289,7 +296,7 @@ namespace Landis.Extension.Insects
                             //if(SiteVars.BiomassRemoved[site] > 0)
                             //    PlugIn.ModelCore.Log.WriteLine("  Biomass revoved at {0}/{1}: {2}.", site.Location.Row, site.Location.Column, SiteVars.BiomassRemoved[site]);
 
-                            pixel.MapCode.Value = (ushort) (SiteVars.BiomassRemoved[site] / 100);  // convert to Mg/ha
+                            pixel.MapCode.Value = (short) (SiteVars.BiomassRemoved[site] / 100);  // convert to Mg/ha
 
                         }
                         else
@@ -300,7 +307,10 @@ namespace Landis.Extension.Insects
                         outputRaster.WriteBufferPixel();
                     }
                 }
+                insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
+            
             }
+
 
         }
 

@@ -155,8 +155,6 @@ namespace Landis.Extension.Insects
 
                 // Alternatively, allow defoliation to vary even among cohorts and species with
                 // the same susceptibility.
-                //defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
-
                 if(defoliation > 1.0 || defoliation < 0)
                 {
                     PlugIn.ModelCore.Log.WriteLine("DEFOLIATION TOO BIG or SMALL:  {0}, {1}, {2}, {3}.", dist, value1, value2, defoliation);
@@ -166,7 +164,7 @@ namespace Landis.Extension.Insects
                 //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
 
                 double weightedDefoliation = (defoliation * ((double) cohort.Biomass / (double) siteBiomass));
-                //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex+1), cohortDefoliation);
+                //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
 
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
                 totalDefoliation += defoliation;
