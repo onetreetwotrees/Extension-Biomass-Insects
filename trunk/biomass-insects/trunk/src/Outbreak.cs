@@ -125,7 +125,7 @@ namespace Landis.Extension.Insects
                 //get a random site from the stand
                 double randomNum = PlugIn.ModelCore.GenerateUniform();
                 
-                if(randomNum < SiteVars.InitialOutbreakProb[site] * insect.InitialAreaCalibrator)  
+                if(randomNum < SiteVars.InitialOutbreakProb[site] * insect.InitialPatchNumberCalibrator)  
                 //Start spreading!
                 {
             
@@ -160,9 +160,9 @@ namespace Landis.Extension.Insects
                         //sites to consider.  
                         //loop through the site's neighbors enqueueing all the good ones.
 
-                        double maxNeighborProb = 0.0;
-                        Site maxNeighbor = currentSite;
-                        bool foundNewNeighbor = false;
+                        //double maxNeighborProb = 0.0;
+                        //Site maxNeighbor = currentSite;
+                        //bool foundNewNeighbor = false;
 
                         foreach (RelativeLocation loc in all_neighbor_locations) 
                         {
@@ -177,34 +177,31 @@ namespace Landis.Extension.Insects
                                 //insect.Disturbed[currentSite] = true;
                                 randomNum = PlugIn.ModelCore.GenerateUniform();
 
-                                if (SiteVars.InitialOutbreakProb[neighbor] > maxNeighborProb)
+                                /*if (SiteVars.InitialOutbreakProb[neighbor] > maxNeighborProb)
                                 {
                                     maxNeighbor = currentSite.GetNeighbor(loc);
                                     maxNeighborProb = SiteVars.InitialOutbreakProb[neighbor];
                                     foundNewNeighbor = true;
-                                }
+                                }*/
                                 
                                 //check if it's a valid neighbor:
-                                //if (SiteVars.InitialOutbreakProb[neighbor] > randomNum)
-                                //{
-                                //    sitesToConsider.Enqueue((ActiveSite) neighbor);
-                                //}
+                                if (SiteVars.InitialOutbreakProb[neighbor] * insect.InitialPatchShapeCalibrator > randomNum)
+                                {
+                                    sitesToConsider.Enqueue((ActiveSite) neighbor);
+                                }
                             }
                         }
 
-                        if(foundNewNeighbor)
-                            sitesToConsider.Enqueue((ActiveSite) maxNeighbor);
+                        //if(foundNewNeighbor)
+                        //    sitesToConsider.Enqueue((ActiveSite) maxNeighbor);
 
-                    } //endwhile
+                    } 
                     
                     //PlugIn.ModelCore.Log.WriteLine("   Initial Patch Area Selected={0:0.0}.", areaSelected);
-                } //endif
+                } 
 
-            } //endfor
-        
-        
-        } //endfunc
-        
+            } 
+        } 
     }
     
 }

@@ -58,9 +58,13 @@ namespace Landis.Extension.Insects
             ReadVar(nhs);
             parameters.NeighborhoodDistance = nhs.Value;
 
-            InputVar<double> iac = new InputVar<double>("InitialAreaCalibrator");
-            ReadVar(iac);
-            parameters.InitialAreaCalibrator = iac.Value;
+            InputVar<double> ipsc = new InputVar<double>("InitialPatchShapeCalibrator");
+            ReadVar(ipsc);
+            parameters.InitialPatchShapeCalibrator = ipsc.Value;
+
+            InputVar<double> ipnc = new InputVar<double>("InitialPatchNumberCalibrator");
+            ReadVar(ipnc);
+            parameters.InitialPatchNumberCalibrator = ipnc.Value;
 
             InputVar<DistributionType> ipdt = new InputVar<DistributionType>("InitialPatchDistribution");
             ReadVar(ipdt);

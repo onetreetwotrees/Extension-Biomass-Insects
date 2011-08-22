@@ -12,8 +12,8 @@ StdDevTimeBetweenOutbreaks	0
 
 NeighborhoodSize	250	<< meters
 
->> Lower this number to lower probabilities of patch generation, i.e. start fewer patches. 
-InitialAreaCalibrator	0.02 	<< must be > 0.0
+InitialPatchShapeCalibrator	1.0 	<< must be <= 1.0  Higher = Rounder; Lower = tracks host quality closer.
+InitialPatchNumberCalibrator	1.9 	<< must be >= 0.0  Higher = MORE patches
 
 InitialPatchDistribution	Weibull	<<Weibull, Beta, or Gamma
 >> Patch size distribution should be based on patch radius distribution? patch area distribution? Units?

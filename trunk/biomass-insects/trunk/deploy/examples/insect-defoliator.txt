@@ -12,7 +12,8 @@ StdDevTimeBetweenOutbreaks	5
 
 NeighborhoodSize	20	<< meters
 
-InitialAreaCalibrator	1.9 	<< must be > 0.0
+InitialPatchShapeCalibrator	1.0 	<< must be <= 1.0  Higher = Rounder; Lower = tracks host quality closer.
+InitialPatchNumberCalibrator	1.9 	<< must be >= 0.0  Higher = MORE patches
 
 InitialPatchDistribution	Weibull	<<Weibull, Beta, or Gamma
 InitialPatchValue1	0.5	<<depends on the distribution, must be > 0.0

@@ -150,17 +150,8 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.NormalDistribution.Sigma = 1.0;
                 double randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
 
-                //NormalDistribution randVar = new NormalDistribution(RandomNumberGenerator.Singleton);
-                //randVar.Mu = 0;      // mean
-                //randVar.Sigma = 1;   // std dev
-                //double randomNum = randVar.NextDouble();
-
                 PlugIn.ModelCore.ExponentialDistribution.Lambda = insect.MeanDuration;      // rate
                 double randomNumE = PlugIn.ModelCore.ExponentialDistribution.NextDouble();
-
-                //ExponentialDistribution randVarE = new ExponentialDistribution(RandomNumberGenerator.Singleton);
-                //randVarE.Lambda = insect.MeanDuration;      // rate
-                //double randomNumE = randVarE.NextDouble();
 
                 // First, has enough time passed since the last outbreak?
                 double timeBetweenOutbreaks = insect.MeanTimeBetweenOutbreaks + (insect.StdDevTimeBetweenOutbreaks * randomNum);
@@ -293,11 +284,7 @@ namespace Landis.Extension.Insects
                     {
                         if (site.IsActive)
                         {
-                            //if(SiteVars.BiomassRemoved[site] > 0)
-                            //    PlugIn.ModelCore.Log.WriteLine("  Biomass revoved at {0}/{1}: {2}.", site.Location.Row, site.Location.Column, SiteVars.BiomassRemoved[site]);
-
                             pixel.MapCode.Value = (short) (SiteVars.BiomassRemoved[site] / 100);  // convert to Mg/ha
-
                         }
                         else
                         {
