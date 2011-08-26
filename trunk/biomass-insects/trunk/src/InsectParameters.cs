@@ -21,7 +21,7 @@ namespace Landis.Extension.Insects
         int NeighborhoodDistance {get;set;}
 
         double InitialPatchShapeCalibrator {get;set;}
-        double InitialPatchNumberCalibrator { get; set; }
+        double InitialPatchOutbreakSensitivity { get; set; }
         DistributionType InitialPatchDistr { get; set; }
         double InitialPatchValue1 {get;set;}
         double InitialPatchValue2 {get;set;}
@@ -63,7 +63,7 @@ namespace Landis.Extension.Insects
         private int neighborhoodDistance;
 
         private double initialPatchShapeCalibrator;
-        private double initialPatchNumberCalibrator;
+        private double initialPatchOutbreakSensitivity;
         private DistributionType initialPatchDistr;
         private double initialPatchValue1;
         private double initialPatchValue2;
@@ -172,17 +172,17 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public double InitialPatchNumberCalibrator
+        public double InitialPatchOutbreakSensitivity
         {
             get
             {
-                return initialPatchNumberCalibrator;
+                return initialPatchOutbreakSensitivity;
             }
             set
             {
                 if (value <= 0)
                     throw new InputValueException(value.ToString(), "Value must be  > 0.");
-                initialPatchNumberCalibrator = value;
+                initialPatchOutbreakSensitivity = value;
             }
         }
         //---------------------------------------------------------------------

@@ -149,6 +149,9 @@ namespace Landis.Extension.Insects
                 {
                     insect.HostDefoliationByYear[site].Add(PlugIn.ModelCore.CurrentTime, new Double[3]{0.0, 0.0, 0.0});
                     defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
+                    //if (meanNeighborhoodDefoliation <= 0.0 && defoliation > 0.0)
+                    //    PlugIn.ModelCore.Log.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
+
                     insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                 }
 

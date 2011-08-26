@@ -62,9 +62,9 @@ namespace Landis.Extension.Insects
             ReadVar(ipsc);
             parameters.InitialPatchShapeCalibrator = ipsc.Value;
 
-            InputVar<double> ipnc = new InputVar<double>("InitialPatchNumberCalibrator");
+            InputVar<double> ipnc = new InputVar<double>("InitialPatchOutbreakSensitivity");
             ReadVar(ipnc);
-            parameters.InitialPatchNumberCalibrator = ipnc.Value;
+            parameters.InitialPatchOutbreakSensitivity = ipnc.Value;
 
             InputVar<DistributionType> ipdt = new InputVar<DistributionType>("InitialPatchDistribution");
             ReadVar(ipdt);

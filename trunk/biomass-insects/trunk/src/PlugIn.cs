@@ -116,7 +116,7 @@ namespace Landis.Extension.Insects
             }
 
             log.AutoFlush = true;
-            log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated");
+            log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated,NumOutbreakInitialSites");
             //foreach (IEcoregion ecoregion in Ecoregions.Dataset)
             //      log.Write(",{0}", ecoregion.MapCode);
             log.WriteLine("");
@@ -209,11 +209,15 @@ namespace Landis.Extension.Insects
 
                 double sumDefoliation = 0.0;
                 int numSites = 0;
+                int numInitialSites = 0;
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                 {
                         sumDefoliation += insect.LastYearDefoliation[site];
                         if(insect.LastYearDefoliation[site] > 0.0)
                             numSites++;
+                        if (insect.Disturbed[site] && SiteVars.InitialOutbreakProb[site] > 0)
+                            numInitialSites++;
+
 
                 }
 
@@ -222,13 +226,14 @@ namespace Landis.Extension.Insects
                     meanDefoliation = sumDefoliation / (double)numSites;
                 //PlugIn.ModelCore.Log.WriteLine("   sumDefoliation={0}, numSites={1}.", sumDefoliation, numSites);
 
-                log.Write("{0},{1},{2},{3},{4},{5}",
+                log.Write("{0},{1},{2},{3},{4},{5},{6}",
                         PlugIn.ModelCore.CurrentTime-1,
                         insect.Name,
                         insect.OutbreakStartYear,
                         insect.OutbreakStopYear,
                         meanDefoliation,
-                        numSites
+                        numSites,
+                        numInitialSites
                         );
 
                     //foreach (IEcoregion ecoregion in Ecoregions.Dataset)
@@ -294,7 +299,8 @@ namespace Landis.Extension.Insects
                         outputRaster.WriteBufferPixel();
                     }
                 }
-                insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
+                
+                insect.ThisYearDefoliation.ActiveSiteValues = 0.0;  //reset this year to 0 for all sites
             
             }
 
