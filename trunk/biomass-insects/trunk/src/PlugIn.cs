@@ -116,7 +116,7 @@ namespace Landis.Extension.Insects
             }
 
             log.AutoFlush = true;
-            log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated,NumOutbreakInitialSites");
+            log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated0_33,NumSitesDefoliated33_66,NumSitesDefoliated66_100,NumOutbreakInitialSites");
             //foreach (IEcoregion ecoregion in Ecoregions.Dataset)
             //      log.Write(",{0}", ecoregion.MapCode);
             log.WriteLine("");
@@ -208,32 +208,38 @@ namespace Landis.Extension.Insects
                 // through biomass succession.
 
                 double sumDefoliation = 0.0;
-                int numSites = 0;
+                int numSites0_33 = 0;
+                int numSites33_66 = 0;
+                int numSites66_100 = 0;
                 int numInitialSites = 0;
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                 {
                         sumDefoliation += insect.LastYearDefoliation[site];
-                        if(insect.LastYearDefoliation[site] > 0.0)
-                            numSites++;
+                        if (insect.LastYearDefoliation[site] > 0.0 && insect.LastYearDefoliation[site] <= 33.0)
+                            numSites0_33++;
+                        if (insect.LastYearDefoliation[site] > 33.0 && insect.LastYearDefoliation[site] <= 66.0)
+                            numSites33_66++;
+                        if (insect.LastYearDefoliation[site] > 66.0 && insect.LastYearDefoliation[site] <= 100.0)
+                            numSites66_100++;
                         if (insect.Disturbed[site] && SiteVars.InitialOutbreakProb[site] > 0)
                             numInitialSites++;
-
-
                 }
 
                 double meanDefoliation = 0.0;
-                if (numSites > 0)
-                    meanDefoliation = sumDefoliation / (double)numSites;
+                if (numSites0_33 + numSites33_66 + numSites66_100 > 0)
+                    meanDefoliation = sumDefoliation / (double) (numSites0_33 + numSites33_66 + numSites66_100);
                 //PlugIn.ModelCore.Log.WriteLine("   sumDefoliation={0}, numSites={1}.", sumDefoliation, numSites);
 
-                log.Write("{0},{1},{2},{3},{4},{5},{6}",
-                        PlugIn.ModelCore.CurrentTime-1,
-                        insect.Name,
-                        insect.OutbreakStartYear,
-                        insect.OutbreakStopYear,
-                        meanDefoliation,
-                        numSites,
-                        numInitialSites
+                log.Write("{0},{1},{2},{3},{4:0.00},{5},{6},{7},{8}",
+                        PlugIn.ModelCore.CurrentTime-1,  //0
+                        insect.Name,  //1
+                        insect.OutbreakStartYear,  //2
+                        insect.OutbreakStopYear,  //3
+                        meanDefoliation, //4
+                        numSites0_33, //5
+                        numSites33_66,  //6
+                        numSites66_100, //7
+                        numInitialSites //8
                         );
 
                     //foreach (IEcoregion ecoregion in Ecoregions.Dataset)

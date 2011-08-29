@@ -124,9 +124,14 @@ namespace Landis.Extension.Insects
 
                 //get a random site from the stand
                 double randomNum = PlugIn.ModelCore.GenerateUniform();
+                double randomNum2 = PlugIn.ModelCore.GenerateUniform();
                 
-                if(randomNum < SiteVars.InitialOutbreakProb[site] * insect.InitialPatchOutbreakSensitivity)  
+                //Create random variability in outbreak area within a simulation so outbreaks are more variable.
+                double initialAreaCalibratorRandomNum = (randomNum2 - 0.5) * insect.InitialPatchOutbreakSensitivity / 2;
+
                 //Start spreading!
+                if (randomNum < SiteVars.InitialOutbreakProb[site] * (insect.InitialPatchOutbreakSensitivity + initialAreaCalibratorRandomNum))  
+                //if(randomNum < SiteVars.InitialOutbreakProb[site] * insect.InitialPatchOutbreakSensitivity)  
                 {
             
                     //start with this site (if it's active)
