@@ -136,6 +136,7 @@ namespace Landis.Extension.Insects
             foreach(IInsect insect in manyInsect)
             {
                 SiteVars.BiomassRemoved.ActiveSiteValues = 0;
+                SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
 
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
@@ -202,6 +203,7 @@ namespace Landis.Extension.Insects
                         Outbreak.InitializeDefoliationPatches(insect);
                     else
                         insect.NeighborhoodDefoliation.ActiveSiteValues = 0;
+
                 }
 
                 // Now report on the previous year's defoliation, that which has been processed
