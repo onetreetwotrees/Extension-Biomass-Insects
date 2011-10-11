@@ -81,7 +81,7 @@ namespace Landis.Extension.Insects
                             // The previous year...
                             //if(SiteVars.DefoliationByYear[neighbor].ContainsKey(PlugIn.ModelCore.CurrentTime - 1))
                             //    sumNeighborhoodDefoliation += SiteVars.DefoliationByYear[neighbor][PlugIn.ModelCore.CurrentTime - 1];
-                            sumNeighborhoodDefoliation += insect.LastYearDefoliation[neighbor];
+                            sumNeighborhoodDefoliation = Math.Min(1.0, insect.LastYearDefoliation[neighbor]);
                         }
                     }
 
@@ -166,7 +166,7 @@ namespace Landis.Extension.Insects
 
                 //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
 
-                double weightedDefoliation = (defoliation * ((double) cohort.Biomass / (double) siteBiomass));
+                double weightedDefoliation = (defoliation * Math.Min(1.0, (double) cohort.Biomass / (double) siteBiomass));
                 //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
 
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
