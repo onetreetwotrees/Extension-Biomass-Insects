@@ -176,10 +176,10 @@ namespace Landis.Extension.Insects
             if(totalDefoliation > 1.0)  // Cannot exceed 100% defoliation
                 totalDefoliation = 1.0;
 
-            if(totalDefoliation > 1.0 || totalDefoliation < 0)
+            if(totalDefoliation > 1.1 || totalDefoliation < 0)
             {
                 PlugIn.ModelCore.Log.WriteLine("Cohort Total Defoliation = {0:0.00}.  Site R/C={1}/{2}.", totalDefoliation, site.Location.Row, site.Location.Column);
-                throw new ApplicationException("Error: Total Defoliation is not between 1.0 and 0.0");
+                throw new ApplicationException("Error: Total Defoliation is not between 1.1 and 0.0");
             }
 
 
