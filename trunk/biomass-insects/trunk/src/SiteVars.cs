@@ -34,19 +34,24 @@ namespace Landis.Extension.Insects
             initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            
+
             //SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
-            
+
             //Initialize outbreaks:
-            foreach (ActiveSite site in PlugIn.ModelCore.Landscape) 
+            foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 SiteVars.OutbreakVars = null; //new Outbreak();
             }
 
+            if (cohorts == null)
+            {
+                string mesg = string.Format("Cohorts are empty.  Please double-check that this extension is compatible with your chosen succession extension.");
+                throw new System.ApplicationException(mesg);
+            }
 
-            
+
         }
         //---------------------------------------------------------------------
 
@@ -58,7 +63,7 @@ namespace Landis.Extension.Insects
             set {
                 outbreakVariables = value;
             }
-           
+
         }
 
         //---------------------------------------------------------------------
@@ -80,7 +85,7 @@ namespace Landis.Extension.Insects
                 return neighborhoodDefoliation;
             }
         }*/
-        
+
         //---------------------------------------------------------------------
         public static ISiteVar<double> InitialOutbreakProb
         {
