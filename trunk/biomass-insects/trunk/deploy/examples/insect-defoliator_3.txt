@@ -1,0 +1,36 @@
+LandisData InsectDefoliatior
+
+InsectName	GypsyMoth
+
+MeanDuration	15
+
+StdDevDuration	3
+
+MeanTimeBetweenOutbreaks	10
+
+StdDevTimeBetweenOutbreaks	5
+
+NeighborhoodSize	20	<< meters
+
+InitialPatchShapeCalibrator	1.0 	<< must be <= 1.0  Higher = Rounder; Lower = tracks host quality closer.
+InitialPatchNumberCalibrator	1.9 	<< must be >= 0.0  Higher = MORE patches
+
+InitialPatchDistribution	Weibull	<<Weibull, Beta, or Gamma
+InitialPatchValue1	0.5	<<depends on the distribution, must be > 0.0
+InitialPatchValue2	1.2	<<depends on the distribution, must be > 0.0
+
+SpeciesParameters
+
+acerrubr	1
+pinubank	2
+pinuresi	1
+querelli	3
+
+Susceptibilities
+>> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
+1	Beta	0.84	0.33	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.76	1.68	Beta	0.77	5.63
+2	Beta	0.84	0.33	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.76	1.68	Beta	0.77	5.63
+3	Beta	0.84	0.33	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.76	1.68	Beta	0.77	5.63
+
+MapNames  insects/severity-{timestep}.gis
+LogFile   insects/log.csv

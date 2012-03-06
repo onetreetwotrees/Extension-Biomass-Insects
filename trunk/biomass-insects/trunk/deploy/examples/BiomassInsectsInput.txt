@@ -1,13 +1,10 @@
 LandisData "Biomass Insects"
 
-Timestep	10
+Timestep	1
 
->> SpeciesData
->> Name		PercentDefoliation
-   acersacc	10%
-   pinubank	90%
-
-MapNames	Insects/{outputname}-{timestep}.gis
+MapNames	Insects/{insectName}-{timestep}.img
 
 LogFile		Insects/Insect-log.csv
+
+InsectInputFiles	insect-defoliator.txt
 

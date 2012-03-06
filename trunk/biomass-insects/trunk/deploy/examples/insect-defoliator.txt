@@ -1,36 +1,63 @@
-LandisData InsectDefoliatior
+LandisData InsectDefoliator
 
-InsectName	GypsyMoth
+InsectName	Insect1
 
-MeanDuration	15
+MeanDuration	0.5 <<exp rate
 
-StdDevDuration	3
+StdDevDuration	1
 
-MeanTimeBetweenOutbreaks	10
+MeanTimeBetweenOutbreaks	7
 
-StdDevTimeBetweenOutbreaks	5
+StdDevTimeBetweenOutbreaks	2
 
-NeighborhoodSize	20	<< meters
+NeighborhoodSize	250	<< meters
 
 InitialPatchShapeCalibrator	1.0 	<< must be <= 1.0  Higher = Rounder; Lower = tracks host quality closer.
-InitialPatchNumberCalibrator	1.9 	<< must be >= 0.0  Higher = MORE patches
+
+>> Lower this number to lower probabilities of patch generation, i.e. start fewer patches. 
+InitialPatchOutbreakSensitivity	.0005 	<< must be > 0.0
 
 InitialPatchDistribution	Weibull	<<Weibull, Beta, or Gamma
-InitialPatchValue1	0.5	<<depends on the distribution, must be > 0.0
-InitialPatchValue2	1.2	<<depends on the distribution, must be > 0.0
+InitialPatchValue1	.5	<<depends on the distribution, must be > 0.0
+InitialPatchValue2	25	<<depends on the distribution, must be > 0.0
 
 SpeciesParameters
-
-acerrubr	1
-pinubank	2
-pinuresi	1
-querelli	3
-
+>> Susceptibility class by species (from ... reference here)
+>> Species	Susceptibility	 Growth Reduction Parameters  Mortality Parameters
+>>		Class		 Slope	Intercept	      Slope	Intercept
+>>--------------------------------------------------------------------------------
+ACERRUBR       2	-0.8	1	0.009	7
+ACERSACC       2	-0.8	1	0.009	7
+CARYGLAB       2	-0.16	1	0.006	5.5
+FRAXAMER       3	-0.16	1	0.006	5.5
+JUGLNIGR       2	-0.8	1	0.006	5.5
+LIRITULI       3	-0.8	1	0.009	7
+MAGNACUM       3	-0.8	1	0.006	5.5
+NYSSSYLV       3	-0.8	1	0.009	7
+PINUECHI       2	-1	1	0.016	4
+PINUPUNG       2	-1	1	0.016	4
+PINURIGI       3	-1	1	0.016	4
+PINUSTRO       2	-1	1	0.016	4
+PINUVIRG       2	-1	1	0.016	4
+POPUGRAN       1	-.5	1	0.009	7
+POPUTREM       1	-0.8	1	0.009	7
+PRUNSERO       2	-0.8	1	0.009	7
+QUERALBA       1	-0.16	1	0.006	5.5
+QUERCOCC       1	-0.16	1	0.006	5.5
+QUERPRIN       1	-0.16	1	0.006	5.5
+QUERRUBR       1	-0.16	1	0.006	5.5
+QUERVELU       1	-0.16	1	0.006	5.5
+ROBIPSEU       3	-0.16	1	0.006	5.5
+SASSALBI       2	-0.15	1	0.006	5.5
+TILIAMER       1	-0.16	1	0.009	7
+TSUGCANA       2	-1	1	0.016	4
+ULMUAMER       2	-0.15	1	0.009	7	      	
+   
 Susceptibilities
 >> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
-1	Beta	0.84	0.33	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.76	1.68	Beta	0.77	5.63
-2	Beta	0.84	0.33	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.76	1.68	Beta	0.77	5.63
-3	Beta	0.84	0.33	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.76	1.68	Beta	0.77	5.63
+1	Beta	0.84	0.20	Beta	0.84	0.33	Beta	1.14	1.18	Beta	0.50	2.00	Beta	0.5	6.0
+2	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.7	2.00	Beta	0.5	3.00	Beta	0.5	6.0
+3	Beta	1	1	Beta	0.8	1.68	Beta	0.7	2.00	Beta	0.5	6.00	Beta	0.2	6.0
 
 MapNames  insects/severity-{timestep}.gis
 LogFile   insects/log.csv

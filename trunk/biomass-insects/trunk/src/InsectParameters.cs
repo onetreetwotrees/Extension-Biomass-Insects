@@ -42,6 +42,11 @@ namespace Landis.Extension.Insects
         ISiteVar<double> NeighborhoodDefoliation{ get; set; }
 
         bool ActiveOutbreak{get;set;}
+        //BRM
+        int InitialSites { get; set; }
+        int LastStartYear { get; set; }
+        int LastStopYear { get; set; }
+        int LastBioRemoved { get; set; }
 
 
     }
@@ -71,6 +76,12 @@ namespace Landis.Extension.Insects
         private int outbreakStartYear;
         private int outbreakStopYear;
         private int mortalityYear;
+
+        // BRM
+        private int initialSites;
+        private int lastStartYear;
+        private int lastStopYear;
+        private int lastBioRemoved;
 
         private bool activeOutbreak;
 
@@ -346,6 +357,54 @@ namespace Landis.Extension.Insects
         }
 
         //---------------------------------------------------------------------
+        public int InitialSites
+        {
+            get
+            {
+                return initialSites;
+            }
+            set
+            {
+                initialSites = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public int LastStartYear
+        {
+            get
+            {
+                return lastStartYear;
+            }
+            set
+            {
+                lastStartYear = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public int LastStopYear
+        {
+            get
+            {
+                return lastStopYear;
+            }
+            set
+            {
+                lastStopYear = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public int LastBioRemoved
+        {
+            get
+            {
+                return lastBioRemoved;
+            }
+            set
+            {
+                lastBioRemoved = value;
+            }
+        }
+        //---------------------------------------------------------------------
         public InsectParameters(int sppCount)
         {
             sppTable = new List<ISppParameters>(sppCount);
@@ -362,6 +421,10 @@ namespace Landis.Extension.Insects
             outbreakStartYear = 0;  //default = beginning of simulation
             mortalityYear = 0;  //default = beginning of simulation
             activeOutbreak = false;
+            initialSites = 0;
+            lastStartYear = 0;
+            lastStopYear = 0;
+            lastBioRemoved = 0;
             
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
