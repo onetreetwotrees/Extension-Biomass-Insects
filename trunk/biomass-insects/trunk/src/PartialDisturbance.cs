@@ -78,7 +78,7 @@ namespace Landis.Extension.Insects
                     //PlugIn.ModelCore.Log.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}, annualDefoliation={3}.", (PlugIn.ModelCore.CurrentTime - yearBack), suscIndex + 1, cohort.Species.Name, annualDefoliation);
                 }
                 double cumulativeDefoliation = annualDefoliation;
-                double lastYearsCumulativeDefoliation = annualDefoliation;
+                double lastYearsCumulativeDefoliation = 0;
 
                 while (annualDefoliation > 0.0)
                 {
@@ -94,6 +94,7 @@ namespace Landis.Extension.Insects
                         }
 
                         cumulativeDefoliation += annualDefoliation;
+                        lastYearsCumulativeDefoliation += annualDefoliation;
                     }
                 }
 
