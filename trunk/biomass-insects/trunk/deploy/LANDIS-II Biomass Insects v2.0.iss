@@ -14,7 +14,7 @@
 ; Biomass Insects
 Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Extension.BiomassInsects.dll; DestDir: {app}\bin; Flags: replacesameversion
 
-Source: docs\LANDIS-II Insect Defoliation v2.0 User Guide.pdf; DestDir: {app}\doc
+Source: docs\LANDIS-II Insect Defoliation v2.0 User Guide.pdf; DestDir: {app}\docs
 Source: examples\*; DestDir: {app}\examples\biomass-insects; Flags: recursesubdirs
 
 

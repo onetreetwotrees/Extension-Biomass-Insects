@@ -6,5 +6,5 @@ MapNames	Insects/{insectName}-{timestep}.img
 
 LogFile		Insects/Insect-log.csv
 
-InsectInputFiles	gypsy-moth.txt
+InsectInputFiles	insect-defoliator_2_modified_mortality_parameters.txt
 

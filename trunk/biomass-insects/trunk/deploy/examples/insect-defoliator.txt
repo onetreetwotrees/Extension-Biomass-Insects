@@ -2,9 +2,9 @@ LandisData InsectDefoliator
 
 InsectName	Insect1
 
-MeanDuration	0.5 <<exp rate
+MeanDuration	4 
 
-StdDevDuration	1
+StdDevDuration	2
 
 MeanTimeBetweenOutbreaks	7
 
@@ -15,24 +15,25 @@ NeighborhoodSize	250	<< meters
 InitialPatchShapeCalibrator	1.0 	<< must be <= 1.0  Higher = Rounder; Lower = tracks host quality closer.
 
 >> Lower this number to lower probabilities of patch generation, i.e. start fewer patches. 
-InitialPatchOutbreakSensitivity	.0005 	<< must be > 0.0
+InitialPatchOutbreakSensitivity	.0008 	<< must be > 0.0
 
 InitialPatchDistribution	Weibull	<<Weibull, Beta, or Gamma
-InitialPatchValue1	.5	<<depends on the distribution, must be > 0.0
+>> Patch size distribution should be based on patch radius distribution? patch area distribution? Units?
+InitialPatchValue1	.7	<<depends on the distribution, must be > 0.0
 InitialPatchValue2	25	<<depends on the distribution, must be > 0.0
 
 SpeciesParameters
->> Susceptibility class by species (from ... reference here)
+>> Susceptibility class by species (from Liebhold et al... reference here)
 >> Species	Susceptibility	 Growth Reduction Parameters  Mortality Parameters
 >>		Class		 Slope	Intercept	      Slope	Intercept
 >>--------------------------------------------------------------------------------
 ACERRUBR       2	-0.8	1	0.009	7
 ACERSACC       2	-0.8	1	0.009	7
-CARYGLAB       2	-0.16	1	0.006	5.5
-FRAXAMER       3	-0.16	1	0.006	5.5
-JUGLNIGR       2	-0.8	1	0.006	5.5
+CARYGLAB       2	-0.1	1	0.006	5
+FRAXAMER       3	-0.1	1	0.006	5
+JUGLNIGR       2	-0.8	1	0.006	5
 LIRITULI       3	-0.8	1	0.009	7
-MAGNACUM       3	-0.8	1	0.006	5.5
+MAGNACUM       3	-0.8	1	0.006	5
 NYSSSYLV       3	-0.8	1	0.009	7
 PINUECHI       2	-1	1	0.016	4
 PINUPUNG       2	-1	1	0.016	4
@@ -42,16 +43,16 @@ PINUVIRG       2	-1	1	0.016	4
 POPUGRAN       1	-.5	1	0.009	7
 POPUTREM       1	-0.8	1	0.009	7
 PRUNSERO       2	-0.8	1	0.009	7
-QUERALBA       1	-0.16	1	0.006	5.5
-QUERCOCC       1	-0.16	1	0.006	5.5
-QUERPRIN       1	-0.16	1	0.006	5.5
-QUERRUBR       1	-0.16	1	0.006	5.5
-QUERVELU       1	-0.16	1	0.006	5.5
-ROBIPSEU       3	-0.16	1	0.006	5.5
-SASSALBI       2	-0.15	1	0.006	5.5
-TILIAMER       1	-0.16	1	0.009	7
+QUERALBA       1	-0.1	1	0.006	5
+QUERCOCC       1	-0.1	1	0.006	5
+QUERPRIN       1	-0.1	1	0.006	5
+QUERRUBR       1	-0.1	1	0.006	5
+QUERVELU       1	-0.1	1	0.006	5
+ROBIPSEU       3	-0.1	1	0.006	5
+SASSALBI       2	-0.15	1	0.006	5
+TILIAMER       1	-0.1	1	0.009	7
 TSUGCANA       2	-1	1	0.016	4
-ULMUAMER       2	-0.15	1	0.009	7	      	
+ULMUAMER       2	-0.15	1	0.009	7		      	
    
 Susceptibilities
 >> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
