@@ -1,49 +1,39 @@
-#define PackageName      "Biomass Insects"
-#define PackageNameLong  "Biomass Insects"
-#define Version          "2.0"
-#define ReleaseType      "official"
-#define ReleaseNumber    "2"
+#include GetEnv("LANDIS_SDK") + '\packaging\initialize.iss'
 
-#define CoreVersion      "6.0"
-#define CoreReleaseAbbr  ""
+#define ExtInfoFile "Biomass Insects.txt"
 
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section) v6.0.iss"
+#include LandisSDK + '\packaging\read-ext-info.iss'
+#include LandisSDK + '\packaging\Landis-vars.iss'
+
+[Setup]
+#include LandisSDK + '\packaging\Setup-directives.iss'
+LicenseFile={#LandisSDK}\licenses\LANDIS-II_Binary_license.rtf
 
 [Files]
+Source: {#LandisExtDir}\{#ExtensionAssembly}.dll; DestDir: {app}\bin\extensions
 
-; Biomass Insects
-Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Extension.BiomassInsects.dll; DestDir: {app}\bin; Flags: replacesameversion
+#define UserGuideSrc "LANDIS-II " + ExtensionName + " vX.Y User Guide.pdf"
+#define UserGuide    StringChange(UserGuideSrc, "X.Y", MajorMinor)
+Source: docs\{#UserGuideSrc}; DestDir: {app}\docs; DestName: {#UserGuide}
 
-Source: docs\LANDIS-II Insect Defoliation v2.0 User Guide.pdf; DestDir: {app}\docs
-Source: examples\*; DestDir: {app}\examples\biomass-insects; Flags: recursesubdirs
+Source: examples\*; DestDir: {app}\examples\{#ExtensionName}; Flags: recursesubdirs
 
-
-#define BioBugs "Biomass Insects 2.0.txt"
-Source: {#BioBugs}; DestDir: {#LandisPlugInDir}
+#define ExtensionInfo  ExtensionName + " " + MajorMinor + ".txt"
+Source: {#ExtInfoFile}; DestDir: {#LandisExtInfoDir}; DestName: {#ExtensionInfo}
 
 [Run]
-;; Run plug-in admin tool to add entries for each plug-in
-#define PlugInAdminTool  CoreBinDir + "\Landis.PlugIns.Admin.exe"
-
-Filename: {#PlugInAdminTool}; Parameters: "remove ""Biomass Insects"" "; WorkingDir: {#LandisPlugInDir}
-Filename: {#PlugInAdminTool}; Parameters: "add ""{#BioBugs}"" "; WorkingDir: {#LandisPlugInDir}
+Filename: {#ExtAdminTool}; Parameters: "remove ""{#ExtensionName}"" "; WorkingDir: {#LandisExtInfoDir}
+Filename: {#ExtAdminTool}; Parameters: "add ""{#ExtensionInfo}"" "; WorkingDir: {#LandisExtInfoDir}
 
 [UninstallRun]
-;; Run plug-in admin tool to remove entries for each plug-in
+Filename: {#ExtAdminTool}; Parameters: "remove ""{#ExtensionName}"" "; WorkingDir: {#LandisExtInfoDir}
 
 [Code]
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Code section) v3.iss"
-
-//-----------------------------------------------------------------------------
-
-function CurrentVersion_PostUninstall(currentVersion: TInstalledVersion): Integer;
-begin
-end;
+#include LandisSDK + '\packaging\Pascal-code.iss'
 
 //-----------------------------------------------------------------------------
 
 function InitializeSetup_FirstPhase(): Boolean;
 begin
-  CurrVers_PostUninstall := @CurrentVersion_PostUninstall
   Result := True
 end;

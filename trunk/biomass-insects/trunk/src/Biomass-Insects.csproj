@@ -57,6 +57,9 @@
     <Reference Include="Edu.Wisc.Forest.Flel.Util">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
     </Reference>
+    <Reference Include="Landis.Console-6.0">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\Landis.Console-6.0.exe</HintPath>
+    </Reference>
     <Reference Include="Landis.Core">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Core.dll</HintPath>
     </Reference>
@@ -135,6 +138,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\6.0\bin"</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\extensions"</PostBuildEvent>
   </PropertyGroup>
 </Project>

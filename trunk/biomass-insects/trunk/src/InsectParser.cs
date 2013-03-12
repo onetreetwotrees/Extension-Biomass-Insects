@@ -83,6 +83,10 @@ namespace Landis.Extension.Insects
 
             ReadName("SpeciesParameters");
 
+            InputVar<string> annMort = new InputVar<string>("MortalityEstimate");
+            ReadVar(annMort);
+            parameters.AnnMort = annMort.Value;
+
             InputVar<string> sppName = new InputVar<string>("Species");
             InputVar<int> susc = new InputVar<int>("Species Susceptibility");
             InputVar<double> grs = new InputVar<double>("Growth Reduction Slope");

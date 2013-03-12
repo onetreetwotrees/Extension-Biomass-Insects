@@ -45,7 +45,7 @@ namespace Landis.Extension.Insects
         public static void Mortality(IInsect insect)
         {
             
-            PlugIn.ModelCore.Log.WriteLine("   {0} mortality.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
+            //PlugIn.ModelCore.Log.WriteLine("   {0} mortality.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape) 
             {
