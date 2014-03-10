@@ -5,6 +5,7 @@ using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
 using System.Collections.Generic;
 using System.Text;
+ 
 
 namespace Landis.Extension.Insects
 {
@@ -24,6 +25,24 @@ namespace Landis.Extension.Insects
 
         //---------------------------------------------------------------------
 
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
+        private bool TrySet(string ReadLabel, string VariableLabel, InputValue<float> value, float mininput, float maxinput, ISpecies species, Landis.Library.Biomass.Species.AuxParm<float> SpcVar)
+        {
+            // VariableLabel has to occur in headers
+            //AssureVariableHeaderIsThere(VariableLabel);
+            if (System.String.Compare(ReadLabel, VariableLabel, System.StringComparison.OrdinalIgnoreCase) == 0)
+            {
+                SpcVar[species] = Landis.Library.Biomass.Util.CheckBiomassParm(value, mininput, maxinput);
+                return true;
+            }
+            return false;
+        }
         protected override IInsect Parse()
         {
 
@@ -32,60 +51,60 @@ namespace Landis.Extension.Insects
             if (landisData.Value.Actual != "InsectDefoliator")
                 throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", "InsectDefoliator");
 
-            InsectParameters parameters = new InsectParameters(PlugIn.ModelCore.Species.Count);
+            Insect insect = new Insect(PlugIn.ModelCore.Species.Count);
 
             InputVar<string> insectName = new InputVar<string>("InsectName");
             ReadVar(insectName);
-            parameters.Name = insectName.Value;
+            insect.Name = insectName.Value;
 
             InputVar<double> mD = new InputVar<double>("MeanDuration");
             ReadVar(mD);
-            parameters.MeanDuration = mD.Value;
+            insect.MeanDuration = mD.Value;
 
             InputVar<int> sdD = new InputVar<int>("StdDevDuration");
             ReadVar(sdD);
-            parameters.StdDevDuration = sdD.Value;
+            insect.StdDevDuration = sdD.Value;
 
             InputVar<int> mTBO = new InputVar<int>("MeanTimeBetweenOutbreaks");
             ReadVar(mTBO);
-            parameters.MeanTimeBetweenOutbreaks = mTBO.Value;
+            insect.MeanTimeBetweenOutbreaks = mTBO.Value;
 
             InputVar<int> sdTBO = new InputVar<int>("StdDevTimeBetweenOutbreaks");
             ReadVar(sdTBO);
-            parameters.StdDevTimeBetweenOutbreaks = sdTBO.Value;
+            insect.StdDevTimeBetweenOutbreaks = sdTBO.Value;
 
             InputVar<int> nhs = new InputVar<int>("NeighborhoodSize");
             ReadVar(nhs);
-            parameters.NeighborhoodDistance = nhs.Value;
+            insect.NeighborhoodDistance = nhs.Value;
 
             InputVar<double> ipsc = new InputVar<double>("InitialPatchShapeCalibrator");
             ReadVar(ipsc);
-            parameters.InitialPatchShapeCalibrator = ipsc.Value;
+            insect.InitialPatchShapeCalibrator = ipsc.Value;
 
             InputVar<double> ipnc = new InputVar<double>("InitialPatchOutbreakSensitivity");
             ReadVar(ipnc);
-            parameters.InitialPatchOutbreakSensitivity = ipnc.Value;
+            insect.InitialPatchOutbreakSensitivity = ipnc.Value;
 
             InputVar<DistributionType> ipdt = new InputVar<DistributionType>("InitialPatchDistribution");
             ReadVar(ipdt);
-            parameters.InitialPatchDistr = ipdt.Value;
+            insect.InitialPatchDistr = ipdt.Value;
 
             InputVar<double> ipv1 = new InputVar<double>("InitialPatchValue1");
             ReadVar(ipv1);
-            parameters.InitialPatchValue1 = ipv1.Value;
+            insect.InitialPatchValue1 = ipv1.Value;
 
             InputVar<double> ipv2 = new InputVar<double>("InitialPatchValue2");
             ReadVar(ipv2);
-            parameters.InitialPatchValue2 = ipv2.Value;
+            insect.InitialPatchValue2 = ipv2.Value;
 
             //--------- Read In Species Table ---------------------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin parsing SPECIES table.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin parsing SPECIES table.");
 
             ReadName("SpeciesParameters");
 
             InputVar<string> annMort = new InputVar<string>("MortalityEstimate");
             ReadVar(annMort);
-            parameters.AnnMort = annMort.Value;
+            insect.AnnMort = annMort.Value;
 
             InputVar<string> sppName = new InputVar<string>("Species");
             InputVar<int> susc = new InputVar<int>("Species Susceptibility");
@@ -96,6 +115,8 @@ namespace Landis.Extension.Insects
             Dictionary <string, int> lineNumbers = new Dictionary<string, int>();
 
             const string Susceptiblities = "Susceptibilities";
+
+            Landis.Library.Biomass.Species.AuxParm<bool> AccountedFor = new Library.Biomass.Species.AuxParm<bool>(PlugIn.ModelCore.Species);
 
             while (! AtEndOfInput && CurrentName != Susceptiblities) {
                 StringReader currentLine = new StringReader(CurrentLine);
@@ -111,35 +132,37 @@ namespace Landis.Extension.Insects
                 int lineNumber;
                 if (lineNumbers.TryGetValue(species.Name, out lineNumber))
                     throw new InputValueException(sppName.Value.String,
-                                                  "The species {0} was previously used on line {1}",
+                                                  "The species {0} was previously used on line {1} for insect "+ insect.Name,
                                                   sppName.Value.String, lineNumber);
                 else
                     lineNumbers[species.Name] = LineNumber;
 
-                ISppParameters sppParms = new SppParameters();
-
-                //parameters.SppTable[species.Index] = sppParms;
-                parameters.SppTable.Add(sppParms);
-
                 ReadValue(susc, currentLine);
-                sppParms.Susceptibility = susc.Value;
+                insect.Susceptibility[species] = Landis.Library.Biomass.Util.CheckBiomassParm(susc.Value, 1, 3);
 
                 ReadValue(grs, currentLine);
-                sppParms.GrowthReduceSlope = grs.Value;
-
+                insect.GrowthReduceSlope[species] = Landis.Library.Biomass.Util.CheckBiomassParm(grs.Value, double.MinValue, 0); 
+                
                 ReadValue(gri, currentLine);
-                sppParms.GrowthReduceIntercept = gri.Value;
-
+                insect.GrowthReduceIntercept[species] = Landis.Library.Biomass.Util.CheckBiomassParm(gri.Value, 0,double.MaxValue); 
+              
                 ReadValue(msl, currentLine);
-                sppParms.MortalitySlope = msl.Value;
+                insect.MortalitySlope[species] = Landis.Library.Biomass.Util.CheckBiomassParm(msl.Value, 0, double.MaxValue); 
 
                 ReadValue(min, currentLine);
-                sppParms.MortalityIntercept = min.Value;
+                insect.MortalityIntercept[species] = Landis.Library.Biomass.Util.CheckBiomassParm(msl.Value, 0, double.MaxValue);
+
+                AccountedFor[species] = true;
 
                 CheckNoDataAfter("the " + min.Name + " column",
                                  currentLine);
 
                 GetNextLine();
+            }
+            foreach (ISpecies species in PlugIn.ModelCore.Species)
+            {
+                if (AccountedFor[species] == false) throw new System.Exception(species.Name + " is not parameterized for " + insect.Name);
+            
             }
 
             //  Read table of Susceptibilities.
@@ -160,7 +183,7 @@ namespace Landis.Extension.Insects
 
                 ISusceptible susceptible = new Susceptible();
 
-                parameters.SusceptibleTable.Add(susceptible);
+                insect.SusceptibleTable.Add(susceptible);
 
                 ReadValue(number, currentLine);
                 susceptible.Number = number.Value;
@@ -243,10 +266,10 @@ namespace Landis.Extension.Insects
                                  currentLine);
                 GetNextLine();
             }
-            if (parameters.SusceptibleTable.Count == 0)
+            if (insect.SusceptibleTable.Count == 0)
                 throw NewParseException("No susceptibilities defined.");
 
-            return parameters;//.GetComplete();
+            return insect;//.GetComplete();
 
         }
         //---------------------------------------------------------------------

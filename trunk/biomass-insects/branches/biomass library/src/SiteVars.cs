@@ -21,16 +21,18 @@ namespace Landis.Extension.Insects
         private static ISiteVar<double> initialOutbreakProb;
         private static ISiteVar<ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
-
+        //private static ISiteVar<Landis.Library.Biomass.Species.AuxParm<double>> defoliation; // Defoliation per site per species
 
         //---------------------------------------------------------------------
 
         public static void Initialize()
         {
+            //defoliation = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.Biomass.Species.AuxParm<double>>();
+
             outbreakVariables       = PlugIn.ModelCore.Landscape.NewSiteVar<Outbreak>();
             timeOfLastEvent         = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             biomassRemoved          = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            //neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+             
             initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
@@ -42,7 +44,8 @@ namespace Landis.Extension.Insects
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
-                SiteVars.OutbreakVars = null; //new Outbreak();
+                SiteVars.OutbreakVars = null;
+                //defoliation[site] = new Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             }
 
             if (cohorts == null)
@@ -50,7 +53,7 @@ namespace Landis.Extension.Insects
                 string mesg = string.Format("Cohorts are empty.  Please double-check that this extension is compatible with your chosen succession extension.");
                 throw new System.ApplicationException(mesg);
             }
-
+            //PlugIn.ModelCore.RegisterSiteVar(defoliation, "Insect.Defoliation");
 
         }
         //---------------------------------------------------------------------
@@ -68,6 +71,7 @@ namespace Landis.Extension.Insects
 
         //---------------------------------------------------------------------
 
+       
         public static ISiteVar<int> BiomassRemoved
         {
             get {

@@ -70,6 +70,9 @@
     <Reference Include="Landis.Library.AgeOnlyCohorts">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
+    <Reference Include="Landis.Library.Biomass">
+      <HintPath>..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Biomass.dll</HintPath>
+    </Reference>
     <Reference Include="Landis.Library.BiomassCohorts">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.BiomassCohorts.dll</HintPath>
     </Reference>
@@ -89,19 +92,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDistribution.cs" />
+    <Compile Include="ISusceptible.cs" />
+    <Compile Include="IInsect.cs" />
     <Compile Include="Defoliate.cs" />
     <Compile Include="Distribution.cs" />
     <Compile Include="GrowthReduction.cs" />
     <Compile Include="InputParameterParser.cs" />
     <Compile Include="InputParameters.cs" />
-    <Compile Include="InsectParameters.cs" />
+    <Compile Include="Insect.cs" />
     <Compile Include="InsectParser.cs" />
     <Compile Include="MapNames.cs" />
     <Compile Include="Outbreak.cs" />
     <Compile Include="PartialDisturbance.cs" />
     <Compile Include="PlugIn.cs" />
     <Compile Include="SiteVars.cs" />
-    <Compile Include="SppParameters.cs" />
     <Compile Include="Susceptible.cs" />
     <Compile Include="ShortPixel.cs" />
   </ItemGroup>

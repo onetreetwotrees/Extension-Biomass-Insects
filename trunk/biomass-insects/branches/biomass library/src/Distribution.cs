@@ -8,14 +8,7 @@ namespace Landis.Extension.Insects
 {
     public enum DistributionType {Gamma, Beta, Weibull};
 
-    public interface IDistribution
-    {
-
-        DistributionType Name {get;set;}
-        double Value1 {get;set;}
-        double Value2 {get;set;}
-    }
-
+    
     /// <summary>
     /// Definition of a wind severity.
     /// </summary>
