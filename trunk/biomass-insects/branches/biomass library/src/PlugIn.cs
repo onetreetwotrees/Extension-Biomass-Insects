@@ -84,8 +84,8 @@ namespace Landis.Extension.Insects
             Defoliate.Initialize(parameters);
             GrowthReduction.Initialize(parameters);
 
-            if (Landis.Extension.Succession.Biomass.PlugIn.SuccessionTimeStep != 1)
-                PlugIn.ModelCore.UI.WriteLine("  CAUTION!  If using Biomass Insects, Biomass Succession should be operating at an ANNUAL time step.");
+            //if (Landis.Extension.Succession.Biomass.PlugIn.SuccessionTimeStep != 1)
+            //    PlugIn.ModelCore.UI.WriteLine("  CAUTION!  If using Biomass Insects, Biomass Succession should be operating at an ANNUAL time step.");
 
             foreach(IInsect insect in manyInsect)
             {

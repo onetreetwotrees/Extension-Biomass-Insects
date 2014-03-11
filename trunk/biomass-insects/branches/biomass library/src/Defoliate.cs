@@ -1,12 +1,13 @@
 //  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
 
-using Landis.Extension.Succession.Biomass;
+//using Landis.Extension.Succession.Biomass;
 using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.Biomass;
 using System.Collections.Generic;
 using System;
+using Landis.Library.BiomassCohorts;
 
 
 namespace Landis.Extension.Insects
@@ -23,7 +24,8 @@ namespace Landis.Extension.Insects
 
             // Assign the method below to the CohortDefoliation delegate in
             // biomass-cohorts/Biomass.CohortDefoliation.cs
-            CohortDefoliation.Compute = DefoliateCohort;
+            Landis.Library.Biomass.CohortDefoliation.Compute = DefoliateCohort;
+            Landis.Library.BiomassCohorts.CohortDefoliation.Compute = DefoliateCohort;
 
         }
 
@@ -33,7 +35,10 @@ namespace Landis.Extension.Insects
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
 
-        //public static double DefoliateCohort(ICohort cohort, ActiveSite site, int siteBiomass)
+        public static double DefoliateCohort(ICohort cohort, ActiveSite site, int siteBiomass)
+        {
+            return DefoliateCohort(site, cohort.Species);
+        }
 
         public static double DefoliateCohort(ActiveSite site, ISpecies species)
         {
