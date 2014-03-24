@@ -221,10 +221,12 @@ namespace Landis.Extension.Insects
                     sumDefoliation += insect.LastYearDefoliation[site];
                     if (insect.LastYearDefoliation[site] > 0.0 && insect.LastYearDefoliation[site] <= 0.33)
                         numSites0_33++;
-                    if (insect.LastYearDefoliation[site] > 0.33 && insect.LastYearDefoliation[site] <= 0.66)
+                    else if (insect.LastYearDefoliation[site] > 0.33 && insect.LastYearDefoliation[site] <= 0.66)
                         numSites33_66++;
-                    if (insect.LastYearDefoliation[site] > 0.66 && insect.LastYearDefoliation[site] <= 1.0)
+                    else if (insect.LastYearDefoliation[site] > 0.66 && insect.LastYearDefoliation[site] <= 1.0)
                         numSites66_100++;
+                    else if (insect.LastYearDefoliation[site] > 1.0)
+                        PlugIn.ModelCore.UI.WriteLine("Defoliation exceeds 1.0");
                     if (insect.Disturbed[site] && SiteVars.InitialOutbreakProb[site] > 0)
                         numInitialSites++;
                 }
