@@ -35,9 +35,13 @@ namespace Landis.Extension.Insects
              
             initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
+            if (cohorts == null)
+            {
+                cohorts = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.LeafBiomassCohorts");
+            
+            }
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-
-            //SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
+            
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
 
@@ -45,7 +49,6 @@ namespace Landis.Extension.Insects
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 SiteVars.OutbreakVars = null;
-                //defoliation[site] = new Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             }
 
             if (cohorts == null)
@@ -82,14 +85,6 @@ namespace Landis.Extension.Insects
                 biomassRemoved = value;
             }
         }
-        //---------------------------------------------------------------------
-        /*public static ISiteVar<double> NeighborhoodDefoliation
-        {
-            get {
-                return neighborhoodDefoliation;
-            }
-        }*/
-
         //---------------------------------------------------------------------
         public static ISiteVar<double> InitialOutbreakProb
         {

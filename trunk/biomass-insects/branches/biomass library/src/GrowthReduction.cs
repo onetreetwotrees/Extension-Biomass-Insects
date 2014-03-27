@@ -37,7 +37,7 @@ namespace Landis.Extension.Insects
         {
             //PlugIn.ModelCore.UI.WriteLine("   Calculating cohort growth reduction due to insect defoliation...");
 
-            double summaryGrowthReduction = 0.0;
+            double summaryGrowthReduction = 0.0;  // Total growth reduction across insects
 
             int siteBiomass = 0;
 
@@ -63,9 +63,10 @@ namespace Landis.Extension.Insects
                     //PlugIn.ModelCore.UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}.", (PlugIn.ModelCore.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name);
                     annualDefoliation += insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
                 }
+                // cumulativeDefoliation is for combination of insect, site, susc class
                 double cumulativeDefoliation = annualDefoliation;
 
-                while(annualDefoliation > 0)
+                while(annualDefoliation > 0) // Cumulative defoliation is broken when there is any gap in annual defoliation
                 {
                     yearBack++;
                     annualDefoliation = 0.0;
@@ -83,9 +84,10 @@ namespace Landis.Extension.Insects
 
                 double growthReduction = 1.0 - (cumulativeDefoliation * slope + intercept);
 
-                double weightedGD = (growthReduction * ((double) cohort.Biomass / (double) siteBiomass));
+                //double weightedGD = (growthReduction * ((double) cohort.Biomass / (double) siteBiomass));  // This would be used to calculate site-level growth reduction
                 //Below looks like it should be multiplied by weightedGD above, but it isn't?? CHECK!
-                summaryGrowthReduction += growthReduction;
+
+                summaryGrowthReduction += growthReduction;  // growth reduction summed across insects
                 //PlugIn.ModelCore.UI.WriteLine("Time={0}, Spp={1}, SummaryGrowthReduction={2:0.00}.", PlugIn.ModelCore.CurrentTime,cohort.Species.Name, summaryGrowthReduction);
 
             }
@@ -98,7 +100,7 @@ namespace Landis.Extension.Insects
                 throw new ApplicationException("Error: Total Growth Reduction is not between 1.0 and 0.0");
             }
 
-            return summaryGrowthReduction;
+            return summaryGrowthReduction; // cohort growth reduction summed across insects
         }
 
 

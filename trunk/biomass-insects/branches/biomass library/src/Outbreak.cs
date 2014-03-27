@@ -74,13 +74,20 @@ namespace Landis.Extension.Insects
             
                 double suscIndexSum = 0.0;
                 double sumBio = 0.0;
+                double protectBiomass = 0.0;
 
 
                 foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
                 {
                     foreach (ICohort cohort in speciesCohorts) 
                     {
-                        suscIndexSum += cohort.Biomass * (insect.Susceptibility[cohort.Species]);
+                        int sppSuscIndex = insect.Susceptibility[cohort.Species];
+                        if (sppSuscIndex == 4)
+                        {
+                            protectBiomass += cohort.Biomass;
+                            sppSuscIndex = 3;
+                        }
+                        suscIndexSum += cohort.Biomass * (sppSuscIndex);
                         sumBio += cohort.Biomass;
                     }
                 }
@@ -93,29 +100,43 @@ namespace Landis.Extension.Insects
                     continue;
                 }
                 
-                int suscIndex = (int) Math.Round(suscIndexSum /sumBio) - 1;
+                int siteSuscIndex = (int) Math.Round(suscIndexSum /sumBio) - 1;
+                double protectProp = protectBiomass / sumBio;
+                insect.ProtectProp[site] = protectProp;
                 
-                if (suscIndex > 2.0 || suscIndex < 0)
+                if (siteSuscIndex > 2.0 || siteSuscIndex < 0)
                 {
-                    PlugIn.ModelCore.UI.WriteLine("SuscIndex < 0 || > 2.  Site R/C={0}/{1},suscIndex={2},suscIndexSum={3},sumBio={4}.", site.Location.Row, site.Location.Column, suscIndex,suscIndexSum,sumBio);
+                    PlugIn.ModelCore.UI.WriteLine("SuscIndex < 0 || > 2.  Site R/C={0}/{1},suscIndex={2},suscIndexSum={3},sumBio={4}.", site.Location.Row, site.Location.Column, siteSuscIndex,suscIndexSum,sumBio);
                     throw new ApplicationException("Error: SuscIndex is not between 2.0 and 0.0");
                 }
                 // Assume that there are no neighbors whatsoever:
-                DistributionType dist = insect.SusceptibleTable[suscIndex].Distribution_80.Name;
+                DistributionType dist = insect.SusceptibleTable[siteSuscIndex].Distribution_80.Name;
 
 
                 //PlugIn.ModelCore.UI.WriteLine("suscIndex={0},suscIndexSum={1},cohortBiomass={2}.", suscIndex,suscIndexSum,sumBio);
-                double value1 = insect.SusceptibleTable[suscIndex].Distribution_80.Value1;
-                double value2 = insect.SusceptibleTable[suscIndex].Distribution_80.Value2;
+                double value1 = insect.SusceptibleTable[siteSuscIndex].Distribution_80.Value1;
+                double value2 = insect.SusceptibleTable[siteSuscIndex].Distribution_80.Value2;
 
                 double probability = Distribution.GenerateRandomNum(dist, value1, value2);
+                
+                // Account for protective effect of Susc Class 4
+                if (protectProp > 0)
+                {
+                    double slope = 1.0;
+                    double protectReduce = 1- (protectProp * slope);
+                    if (protectReduce > 1)
+                        protectReduce = 1;
+                    if (protectReduce < 0)
+                        protectReduce = 0;
+                    probability = probability * protectReduce;
+                }
                 if(probability > 1.0 || probability < 0)
                 {
                     PlugIn.ModelCore.UI.WriteLine("Initial Defoliation Probility < 0 || > 1.  Site R/C={0}/{1}.", site.Location.Row, site.Location.Column);
                     throw new ApplicationException("Error: Probability is not between 1.0 and 0.0");
                 }
                 
-                SiteVars.InitialOutbreakProb[site] = probability;
+                SiteVars.InitialOutbreakProb[site] = probability; // This probability reflects the protective effects
                 //PlugIn.ModelCore.UI.WriteLine("Susceptiblity index={0}.  Outbreak Probability={1:0.00}.  R/C={2}/{3}.", suscIndex, probability, site.Location.Row, site.Location.Column);
             }
 

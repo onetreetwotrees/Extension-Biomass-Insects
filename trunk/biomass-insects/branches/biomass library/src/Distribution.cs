@@ -118,7 +118,12 @@ namespace Landis.Extension.Insects
             {
                 PlugIn.ModelCore.BetaDistribution.Alpha = parameter1;// mean
                 PlugIn.ModelCore.BetaDistribution.Beta = parameter2;// std dev
-                randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
+                if (parameter1 == 0) // Alpha/Beta = 0 returns 0
+                    randomNum = 0;
+                else if (parameter2 == 0) // Beta/Alpha = 0 returns 1
+                    randomNum = 1;
+                else
+                    randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
 
                 //BetaDistribution randVar = new BetaDistribution(RandomNumberGenerator.Singleton);
                 //randVar.Alpha = parameter1;      // mean

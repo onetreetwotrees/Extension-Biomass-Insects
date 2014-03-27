@@ -138,7 +138,7 @@ namespace Landis.Extension.Insects
                     lineNumbers[species.Name] = LineNumber;
 
                 ReadValue(susc, currentLine);
-                insect.Susceptibility[species] = Landis.Library.Biomass.Util.CheckBiomassParm(susc.Value, 1, 3);
+                insect.Susceptibility[species] = Landis.Library.Biomass.Util.CheckBiomassParm(susc.Value, 1, 4);
 
                 ReadValue(grs, currentLine);
                 insect.GrowthReduceSlope[species] = Landis.Library.Biomass.Util.CheckBiomassParm(grs.Value, double.MinValue, 0); 

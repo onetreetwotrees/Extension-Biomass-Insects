@@ -54,6 +54,7 @@ namespace Landis.Extension.Insects
         private ISiteVar<double> lastYearDefoliation;
         private ISiteVar<double> thisYearDefoliation;
         private ISiteVar<double> neighborhoodDefoliation;
+        private ISiteVar<double> protectProp;
 
         private string annMort;
 
@@ -366,6 +367,19 @@ namespace Landis.Extension.Insects
         }
 
         //---------------------------------------------------------------------
+        public ISiteVar<double> ProtectProp
+        {
+            get
+            {
+                return protectProp;
+            }
+            set
+            {
+                protectProp = value;
+            }
+        }
+
+        //---------------------------------------------------------------------
         public int InitialSites
         {
             get
@@ -446,6 +460,7 @@ namespace Landis.Extension.Insects
             lastYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             thisYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            protectProp = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
 
             outbreakStopYear = 0;  //default = beginning of simulation
             outbreakStartYear = 0;  //default = beginning of simulation
