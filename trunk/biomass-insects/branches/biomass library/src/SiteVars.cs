@@ -19,7 +19,7 @@ namespace Landis.Extension.Insects
         private static ISiteVar<int> biomassRemoved;
         //private static ISiteVar<double> neighborhoodDefoliation;
         private static ISiteVar<double> initialOutbreakProb;
-        private static ISiteVar<ISiteCohorts> cohorts;
+        private static ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
         //private static ISiteVar<Landis.Library.Biomass.Species.AuxParm<double>> defoliation; // Defoliation per site per species
 

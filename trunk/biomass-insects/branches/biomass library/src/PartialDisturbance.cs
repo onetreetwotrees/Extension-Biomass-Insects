@@ -67,6 +67,8 @@ namespace Landis.Extension.Insects
                     continue;
 
                 int suscIndex = insect.Susceptibility[cohort.Species] - 1;
+                if (suscIndex < 0) suscIndex = 0;
+                if (suscIndex > 2) suscIndex = 2;
 
                 int yearBack = 1;
                 double annualDefoliation = 0.0;
