@@ -102,7 +102,6 @@ namespace Landis.Extension.Insects
                 
                 int siteSuscIndex = (int) Math.Round(suscIndexSum /sumBio) - 1;
                 double protectProp = protectBiomass / sumBio;
-                insect.ProtectProp[site] = protectProp;
                 
                 if (siteSuscIndex > 2.0 || siteSuscIndex < 0)
                 {

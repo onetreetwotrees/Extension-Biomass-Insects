@@ -61,10 +61,6 @@ namespace Landis.Extension.Insects
             ReadVar(mD);
             insect.MeanDuration = mD.Value;
 
-            InputVar<int> sdD = new InputVar<int>("StdDevDuration");
-            ReadVar(sdD);
-            insect.StdDevDuration = sdD.Value;
-
             InputVar<int> mTBO = new InputVar<int>("MeanTimeBetweenOutbreaks");
             ReadVar(mTBO);
             insect.MeanTimeBetweenOutbreaks = mTBO.Value;

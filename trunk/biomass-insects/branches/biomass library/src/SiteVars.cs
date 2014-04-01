@@ -17,7 +17,6 @@ namespace Landis.Extension.Insects
         private static ISiteVar<Outbreak> outbreakVariables;
         private static ISiteVar<int> timeOfLastEvent;
         private static ISiteVar<int> biomassRemoved;
-        //private static ISiteVar<double> neighborhoodDefoliation;
         private static ISiteVar<double> initialOutbreakProb;
         private static ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
@@ -40,6 +39,7 @@ namespace Landis.Extension.Insects
                 cohorts = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.LeafBiomassCohorts");
             
             }
+            
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
@@ -93,7 +93,6 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-
         public static ISiteVar<int> CohortsPartiallyDamaged
         {
             get
@@ -101,7 +100,6 @@ namespace Landis.Extension.Insects
                 return cohortsPartiallyDamaged;
             }
         }
-
         //---------------------------------------------------------------------
         public static ISiteVar<ISiteCohorts> Cohorts
         {

@@ -152,7 +152,7 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.NormalDistribution.Sigma = 1.0;
                 double randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
 
-                PlugIn.ModelCore.ExponentialDistribution.Lambda = insect.MeanDuration;      // rate
+                PlugIn.ModelCore.ExponentialDistribution.Lambda = 1 / (insect.MeanDuration);      // Mean = 1/lambda
                 double randomNumE = PlugIn.ModelCore.ExponentialDistribution.NextDouble();
 
                 // First, has enough time passed since the last outbreak?

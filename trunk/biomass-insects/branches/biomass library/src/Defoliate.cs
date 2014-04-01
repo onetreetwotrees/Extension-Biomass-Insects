@@ -25,7 +25,7 @@ namespace Landis.Extension.Insects
             // Assign the method below to the CohortDefoliation delegate in
             // biomass-cohorts/Biomass.CohortDefoliation.cs
             Landis.Library.Biomass.CohortDefoliation.Compute = DefoliateCohort;
-            Landis.Library.BiomassCohorts.CohortDefoliation.Compute = DefoliateCohort;
+            //Landis.Library.BiomassCohorts.CohortDefoliation.Compute = DefoliateCohort;
 
         }
 
@@ -38,23 +38,22 @@ namespace Landis.Extension.Insects
         public static double DefoliateCohort(ICohort cohort, ActiveSite site, int siteBiomass)
         {
             // This maintains backwards compatibility with succession versions that don't use Biomass Library
-            return DefoliateCohort(site, cohort.Species, cohort.Biomass);
+            // but the functions must be sure to provide siteBiomass not cohortBiomass
+            return DefoliateCohort(site, cohort.Species, cohort.Biomass, siteBiomass);
            
         }
+        
 
         //---------------------------------------------------------------------
         // This method replaces the delegate method.  It is called every year when
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
 
-        public static double DefoliateCohort(ActiveSite site, ISpecies species, int cohortBiomass)
+        public static double DefoliateCohort(ActiveSite site, ISpecies species, int cohortBiomass, int siteBiomass)
         {
-            //return DefoliateCohort(site, cohort.Species);
-
             //PlugIn.ModelCore.UI.WriteLine("   Calculating insect defoliation...");
 
-            // Cohort total defoliation:
-            double totalDefoliation = 0.0;
+            double totalDefoliation = 0.0;  // Cohort total defoliation
 
             foreach (IInsect insect in manyInsect)
             {
@@ -62,7 +61,7 @@ namespace Landis.Extension.Insects
                     continue;
                 double defoliation = 0.0;
 
-                double totalBiomass = 0;
+                // Calculate biomass proportion of "protective" species
                 double protectBiomass = 0;
                 foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
                 {
@@ -70,11 +69,9 @@ namespace Landis.Extension.Insects
                     {
                         if (insect.Susceptibility[spp_cohort.Species] == 4)
                             protectBiomass += spp_cohort.Biomass;
-                        totalBiomass += spp_cohort.Biomass;
                     }
                 }
-                double protectProp = protectBiomass / totalBiomass;
-                insect.ProtectProp[site] = protectProp;
+                double protectProp = protectBiomass / (double)siteBiomass;
 
                 int suscIndex = insect.Susceptibility[species] - 1;
 
@@ -230,7 +227,7 @@ namespace Landis.Extension.Insects
                 //insect.ThisYearDefoliation[site] += defoliation;
 
                 // BUG FIX - Weight site-level defoliation by cohort biomass
-                double weightedDefoliation = (defoliation * Math.Min(1.0, (double)cohortBiomass / (double)totalBiomass));
+                double weightedDefoliation = (defoliation * Math.Min(1.0, (double)cohortBiomass/(double) siteBiomass));
                 //PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
 

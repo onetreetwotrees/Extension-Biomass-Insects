@@ -33,19 +33,11 @@ namespace Landis.Extension.Insects
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
 
-        public static double ReduceCohortGrowth(ICohort cohort, ActiveSite site)//, int siteBiomass)
+        public static double ReduceCohortGrowth(ICohort cohort, ActiveSite site)
         {
             //PlugIn.ModelCore.UI.WriteLine("   Calculating cohort growth reduction due to insect defoliation...");
 
             double summaryGrowthReduction = 0.0;  // Total growth reduction across insects
-
-            int siteBiomass = 0;
-
-            foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
-                foreach (ICohort spp_cohort in spp)
-                    siteBiomass += spp_cohort.Biomass;
-
-           
 
             foreach(IInsect insect in PlugIn.ManyInsect)
             {

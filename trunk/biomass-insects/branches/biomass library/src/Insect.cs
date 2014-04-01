@@ -54,7 +54,6 @@ namespace Landis.Extension.Insects
         private ISiteVar<double> lastYearDefoliation;
         private ISiteVar<double> thisYearDefoliation;
         private ISiteVar<double> neighborhoodDefoliation;
-        private ISiteVar<double> protectProp;
 
         private string annMort;
 
@@ -95,6 +94,7 @@ namespace Landis.Extension.Insects
                  stdDevDuration = value;
             }
         }
+        //---------------------------------------------------------------------
         public Landis.Library.Biomass.Species.AuxParm<int> Susceptibility
         {
             get
@@ -106,6 +106,7 @@ namespace Landis.Extension.Insects
                 susceptibility = value;
             }
         }
+        //---------------------------------------------------------------------
         public Landis.Library.Biomass.Species.AuxParm<double> GrowthReduceSlope
         {
             get
@@ -117,6 +118,7 @@ namespace Landis.Extension.Insects
                 growthreduceslope = value;
             }
         }
+        //---------------------------------------------------------------------
         public Landis.Library.Biomass.Species.AuxParm<double> GrowthReduceIntercept
         {
             get
@@ -128,6 +130,7 @@ namespace Landis.Extension.Insects
                 growthreduceintercept = value;
             }
         }
+        //---------------------------------------------------------------------
         public Landis.Library.Biomass.Species.AuxParm<double> MortalitySlope
         {
             get
@@ -139,6 +142,7 @@ namespace Landis.Extension.Insects
                 mortalityslope = value;
             }
         }
+        //---------------------------------------------------------------------
         public Landis.Library.Biomass.Species.AuxParm<double> MortalityIntercept
         {
             get
@@ -150,8 +154,6 @@ namespace Landis.Extension.Insects
                 mortalityintercept = value;
             }
         }
-        
-
         //---------------------------------------------------------------------
         public int MeanTimeBetweenOutbreaks
         {
@@ -176,7 +178,6 @@ namespace Landis.Extension.Insects
                  stdDevTimeBetweenOutbreaks = value;
             }
         }
-
         //---------------------------------------------------------------------
         public int NeighborhoodDistance
         {
@@ -291,7 +292,6 @@ namespace Landis.Extension.Insects
                 activeOutbreak = value;
             }
         }
-        
         //---------------------------------------------------------------------
         public List<ISusceptible> SusceptibleTable
         {
@@ -302,7 +302,6 @@ namespace Landis.Extension.Insects
                 susceptibleTable = value;
             }
         }
-
         //---------------------------------------------------------------------
         public IEnumerable<RelativeLocation> Neighbors
         {
@@ -365,20 +364,6 @@ namespace Landis.Extension.Insects
                 neighborhoodDefoliation = value;
             }
         }
-
-        //---------------------------------------------------------------------
-        public ISiteVar<double> ProtectProp
-        {
-            get
-            {
-                return protectProp;
-            }
-            set
-            {
-                protectProp = value;
-            }
-        }
-
         //---------------------------------------------------------------------
         public int InitialSites
         {
@@ -460,7 +445,6 @@ namespace Landis.Extension.Insects
             lastYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             thisYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            protectProp = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
 
             outbreakStopYear = 0;  //default = beginning of simulation
             outbreakStartYear = 0;  //default = beginning of simulation

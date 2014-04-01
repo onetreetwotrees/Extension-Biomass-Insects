@@ -45,7 +45,6 @@ namespace Landis.Extension.Insects
         ISiteVar<double> LastYearDefoliation{get;set;}
         ISiteVar<double> ThisYearDefoliation{get;set;}
         ISiteVar<double> NeighborhoodDefoliation{ get; set; }
-        ISiteVar<double> ProtectProp { get; set; }
 
         bool ActiveOutbreak{get;set;}
         //BRM
