@@ -136,8 +136,10 @@ namespace Landis.Extension.Insects
 
             foreach(IInsect insect in manyInsect)
             {
-                SiteVars.BiomassRemoved.ActiveSiteValues = 0;
-                SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
+                //SiteVars.BiomassRemoved.ActiveSiteValues = 0;
+                //SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
+                insect.BiomassRemoved.ActiveSiteValues = 0;
+                //insect.InitialOutbreakProb.ActiveSiteValues = 0.0;
 
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
@@ -227,7 +229,7 @@ namespace Landis.Extension.Insects
                         numSites66_100++;
                     else if (insect.LastYearDefoliation[site] > 1.0)
                         PlugIn.ModelCore.UI.WriteLine("Defoliation exceeds 1.0");
-                    if (insect.Disturbed[site] && SiteVars.InitialOutbreakProb[site] > 0)
+                    if (insect.Disturbed[site] && insect.InitialOutbreakProb[site] > 0)
                         numInitialSites++;
                 }
                 if (insect.OutbreakStartYear == PlugIn.ModelCore.CurrentTime)
@@ -241,7 +243,8 @@ namespace Landis.Extension.Insects
                 int totalBioRemoved = 0;
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                 {
-                    totalBioRemoved += SiteVars.BiomassRemoved[site];
+                    //totalBioRemoved += SiteVars.BiomassRemoved[site];
+                    totalBioRemoved += insect.BiomassRemoved[site];
                 }
 
                 //PlugIn.ModelCore.UI.WriteLine("   totalBioRemoved={0}.", totalBioRemoved);
@@ -315,7 +318,7 @@ namespace Landis.Extension.Insects
                             if (site.IsActive)
                             {
                                 if (insect.Disturbed[site])
-                                    pixel.MapCode.Value = (short)(SiteVars.InitialOutbreakProb[site] * 100);
+                                    pixel.MapCode.Value = (short)(insect.InitialOutbreakProb[site] * 100);
                                 else
                                     pixel.MapCode.Value = 0;
                             }
@@ -337,7 +340,7 @@ namespace Landis.Extension.Insects
                         {
                             if (site.IsActive)
                             {
-                                pixel.MapCode.Value = (short)(SiteVars.BiomassRemoved[site] / 100);  // convert to Mg/ha
+                                pixel.MapCode.Value = (short)(insect.BiomassRemoved[site] / 100);  // convert to Mg/ha
                             }
                             else
                             {
@@ -377,8 +380,8 @@ namespace Landis.Extension.Insects
             // plug-in killed the cohort.
             if (! running)
                 return;
-
-            SiteVars.BiomassRemoved[eventArgs.Site] += eventArgs.Cohort.Biomass;
+         
+            //insect.BiomassRemoved[eventArgs.Site] += eventArgs.Cohort.Biomass;
         }
         //---------------------------------------------------------------------
         private void LogEvent(int   currentTime)

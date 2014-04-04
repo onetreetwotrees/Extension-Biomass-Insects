@@ -51,7 +51,7 @@ namespace Landis.Extension.Insects
             {
                 PartialDisturbance.ReduceCohortBiomass(site);
                     
-                if (SiteVars.BiomassRemoved[site] > 0) 
+                if (insect.BiomassRemoved[site] > 0) 
                 {
                     //PlugIn.ModelCore.UI.WriteLine("  Biomass removed at {0}/{1}: {2}.", site.Location.Row, site.Location.Column, SiteVars.BiomassRemoved[site]);
                     SiteVars.TimeOfLastEvent[site] = PlugIn.ModelCore.CurrentTime;
@@ -66,7 +66,7 @@ namespace Landis.Extension.Insects
         {
 
             PlugIn.ModelCore.UI.WriteLine("   Initializing Defoliation Patches... ");   
-            SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
+            insect.InitialOutbreakProb.ActiveSiteValues = 0.0;
             insect.Disturbed.ActiveSiteValues = false;
             
             foreach(ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -96,7 +96,7 @@ namespace Landis.Extension.Insects
                 // If no biomass, no chance of defoliation, go to the next site.
                 if(suscIndexSum <= 0 || sumBio <=0)
                 {
-                    SiteVars.InitialOutbreakProb[site] = 0.0;
+                    insect.InitialOutbreakProb[site] = 0.0;
                     continue;
                 }
                 
@@ -135,7 +135,7 @@ namespace Landis.Extension.Insects
                     throw new ApplicationException("Error: Probability is not between 1.0 and 0.0");
                 }
                 
-                SiteVars.InitialOutbreakProb[site] = probability; // This probability reflects the protective effects
+                insect.InitialOutbreakProb[site] = probability; // This probability reflects the protective effects
                 //PlugIn.ModelCore.UI.WriteLine("Susceptiblity index={0}.  Outbreak Probability={1:0.00}.  R/C={2}/{3}.", suscIndex, probability, site.Location.Row, site.Location.Column);
             }
 
@@ -150,7 +150,7 @@ namespace Landis.Extension.Insects
                 double initialAreaCalibratorRandomNum = (randomNum2 - 0.5) * insect.InitialPatchOutbreakSensitivity / 2;
 
                 //Start spreading!
-                if (randomNum < SiteVars.InitialOutbreakProb[site] * (insect.InitialPatchOutbreakSensitivity + initialAreaCalibratorRandomNum))  
+                if (randomNum < insect.InitialOutbreakProb[site] * (insect.InitialPatchOutbreakSensitivity + initialAreaCalibratorRandomNum))  
                 //if(randomNum < SiteVars.InitialOutbreakProb[site] * insect.InitialPatchOutbreakSensitivity)  
                 {
             
@@ -177,7 +177,7 @@ namespace Landis.Extension.Insects
                     
                         // Because this is the first year, neighborhood defoliaiton is given a value.
                         // The value is used in Defoliate.DefoliateCohort()
-                        insect.NeighborhoodDefoliation[currentSite] = SiteVars.InitialOutbreakProb[currentSite];
+                        insect.NeighborhoodDefoliation[currentSite] = insect.InitialOutbreakProb[currentSite];
                         areaSelected += PlugIn.ModelCore.CellArea;
                         insect.Disturbed[currentSite] = true;
 
@@ -210,7 +210,7 @@ namespace Landis.Extension.Insects
                                 }*/
                                 
                                 //check if it's a valid neighbor:
-                                if (SiteVars.InitialOutbreakProb[neighbor] * insect.InitialPatchShapeCalibrator > randomNum)
+                                if (insect.InitialOutbreakProb[neighbor] * insect.InitialPatchShapeCalibrator > randomNum)
                                 {
                                     sitesToConsider.Enqueue((ActiveSite) neighbor);
                                 }

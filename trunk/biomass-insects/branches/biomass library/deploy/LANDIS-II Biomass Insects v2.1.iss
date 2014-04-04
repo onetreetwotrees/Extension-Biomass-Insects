@@ -15,7 +15,7 @@ Source: {#LandisExtDir}\Landis.Library.Biomass.dll; DestDir: {app}\bin\extension
 
 #define UserGuideSrc "LANDIS-II " + ExtensionName + " vX.Y User Guide.pdf"
 #define UserGuide    StringChange(UserGuideSrc, "X.Y", MajorMinor)
-Source: docs\{#UserGuideSrc}; DestDir: {app}\docs; DestName: {#UserGuide}
+Source: docs\{#UserGuide}; DestDir: {app}\docs; DestName: {#UserGuide}
 
 Source: examples\*; DestDir: {app}\examples\{#ExtensionName}; Flags: recursesubdirs
 

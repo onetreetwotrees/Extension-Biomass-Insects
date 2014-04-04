@@ -16,8 +16,8 @@ namespace Landis.Extension.Insects
     {
         private static ISiteVar<Outbreak> outbreakVariables;
         private static ISiteVar<int> timeOfLastEvent;
-        private static ISiteVar<int> biomassRemoved;
-        private static ISiteVar<double> initialOutbreakProb;
+        //private static ISiteVar<int> biomassRemoved;
+        //private static ISiteVar<double> initialOutbreakProb;
         private static ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
         //private static ISiteVar<Landis.Library.Biomass.Species.AuxParm<double>> defoliation; // Defoliation per site per species
@@ -30,9 +30,9 @@ namespace Landis.Extension.Insects
 
             outbreakVariables       = PlugIn.ModelCore.Landscape.NewSiteVar<Outbreak>();
             timeOfLastEvent         = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            biomassRemoved          = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            //biomassRemoved          = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
              
-            initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            //initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
             if (cohorts == null)
             {
@@ -43,7 +43,7 @@ namespace Landis.Extension.Insects
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
-            SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
+            //SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
 
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -74,7 +74,7 @@ namespace Landis.Extension.Insects
 
         //---------------------------------------------------------------------
 
-       
+       /*
         public static ISiteVar<int> BiomassRemoved
         {
             get {
@@ -92,6 +92,7 @@ namespace Landis.Extension.Insects
                 return initialOutbreakProb;
             }
         }
+        * */
         //---------------------------------------------------------------------
         public static ISiteVar<int> CohortsPartiallyDamaged
         {

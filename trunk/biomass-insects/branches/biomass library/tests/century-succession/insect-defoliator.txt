@@ -3,7 +3,6 @@ LandisData InsectDefoliator
 InsectName	Insect1
 
 MeanDuration	4 
-StdDevDuration  1
 
 MeanTimeBetweenOutbreaks	7
 

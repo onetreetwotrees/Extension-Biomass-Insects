@@ -54,6 +54,8 @@ namespace Landis.Extension.Insects
         private ISiteVar<double> lastYearDefoliation;
         private ISiteVar<double> thisYearDefoliation;
         private ISiteVar<double> neighborhoodDefoliation;
+        private ISiteVar<int> biomassRemoved;
+        private ISiteVar<double> initialOutbreakProb;
 
         private string annMort;
 
@@ -365,6 +367,30 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
+        public ISiteVar<int> BiomassRemoved
+        {
+            get
+            {
+                return biomassRemoved;
+            }
+            set
+            {
+                biomassRemoved = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public ISiteVar<double> InitialOutbreakProb
+        {
+            get
+            {
+                return initialOutbreakProb;
+            }
+            set
+            {
+                initialOutbreakProb = value;
+            }
+        }
+        //---------------------------------------------------------------------
         public int InitialSites
         {
             get
@@ -445,6 +471,8 @@ namespace Landis.Extension.Insects
             lastYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             thisYearDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             neighborhoodDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            biomassRemoved = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            initialOutbreakProb = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
 
             outbreakStopYear = 0;  //default = beginning of simulation
             outbreakStartYear = 0;  //default = beginning of simulation

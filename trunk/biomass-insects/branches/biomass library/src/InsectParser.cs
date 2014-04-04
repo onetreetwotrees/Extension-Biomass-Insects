@@ -146,7 +146,7 @@ namespace Landis.Extension.Insects
                 insect.MortalitySlope[species] = Landis.Library.Biomass.Util.CheckBiomassParm(msl.Value, 0, double.MaxValue); 
 
                 ReadValue(min, currentLine);
-                insect.MortalityIntercept[species] = Landis.Library.Biomass.Util.CheckBiomassParm(msl.Value, 0, double.MaxValue);
+                insect.MortalityIntercept[species] = Landis.Library.Biomass.Util.CheckBiomassParm(min.Value, 0, double.MaxValue);
 
                 AccountedFor[species] = true;
 

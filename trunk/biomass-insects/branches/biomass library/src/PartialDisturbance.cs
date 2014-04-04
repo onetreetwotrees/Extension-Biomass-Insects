@@ -160,14 +160,14 @@ namespace Landis.Extension.Insects
 
                 }
 
+                if (biomassMortality > cohort.Biomass)
+                    biomassMortality = cohort.Biomass;
+
+                insect.BiomassRemoved[currentSite] += biomassMortality;
+                //PlugIn.ModelCore.UI.WriteLine("biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
 
             }  // end insect loop
 
-            if (biomassMortality > cohort.Biomass)
-                biomassMortality = cohort.Biomass;
-
-            SiteVars.BiomassRemoved[currentSite] += biomassMortality;
-            //PlugIn.ModelCore.UI.WriteLine("biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
 
             if(biomassMortality > cohort.Biomass || biomassMortality < 0)
             {

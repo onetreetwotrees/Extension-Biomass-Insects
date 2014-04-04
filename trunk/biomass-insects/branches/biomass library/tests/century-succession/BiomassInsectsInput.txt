@@ -7,5 +7,4 @@ MapNames	Insects/{insectName}-{timestep}.img
 LogFile		Insects/Insect-log.csv
 
 InsectInputFiles	insect-defoliator.txt
-			<<insect-defoliator_2.txt
 
