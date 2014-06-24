@@ -36,7 +36,7 @@ namespace Landis.Extension.Insects
         public static double DefoliateCohort(ICohort cohort, ActiveSite site, int siteBiomass)
         {
 
-            //PlugIn.ModelCore.Log.WriteLine("   Calculating insect defoliation...");
+            // PlugIn.ModelCore.UI.WriteLine("   Calculating insect defoliation...");
 
             int sppIndex = cohort.Species.Index;
             double totalDefoliation = 0.0;
@@ -60,7 +60,7 @@ namespace Landis.Extension.Insects
 
                 if(insect.NeighborhoodDefoliation[site] > 0)
                 {
-                    //PlugIn.ModelCore.Log.WriteLine("   First Year of Defoliation:  Using initial patch defo={0:0.00}.", SiteVars.NeighborhoodDefoliation[site]);
+                    // PlugIn.ModelCore.UI.WriteLine("   First Year of Defoliation:  Using initial patch defo={0:0.00}.", SiteVars.NeighborhoodDefoliation[site]);
                     meanNeighborhoodDefoliation = insect.NeighborhoodDefoliation[site];
                 }
 
@@ -70,7 +70,7 @@ namespace Landis.Extension.Insects
                 {
                     double sumNeighborhoodDefoliation = 0.0;
 
-                    //PlugIn.ModelCore.Log.WriteLine("Look at the Neighbors... ");
+                    // PlugIn.ModelCore.UI.WriteLine("Look at the Neighbors... ");
                     foreach (RelativeLocation relativeLoc in insect.Neighbors)
                     {
                         Site neighbor = site.GetNeighbor(relativeLoc);
@@ -92,7 +92,7 @@ namespace Landis.Extension.Insects
 
                 if(meanNeighborhoodDefoliation > 1.0 || meanNeighborhoodDefoliation < 0)
                 {
-                    PlugIn.ModelCore.Log.WriteLine("MeanNeighborhoodDefoliation={0}; NeighborCnt={1}.", meanNeighborhoodDefoliation, neighborCnt);
+                     PlugIn.ModelCore.UI.WriteLine("MeanNeighborhoodDefoliation={0}; NeighborCnt={1}.", meanNeighborhoodDefoliation, neighborCnt);
                     throw new ApplicationException("Error: Mean Neighborhood GrowthReduction is not between 1.0 and 0.0");
                 }
 
@@ -150,7 +150,7 @@ namespace Landis.Extension.Insects
                     insect.HostDefoliationByYear[site].Add(PlugIn.ModelCore.CurrentTime, new Double[3]{0.0, 0.0, 0.0});
                     defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
                     //if (meanNeighborhoodDefoliation <= 0.0 && defoliation > 0.0)
-                    //    PlugIn.ModelCore.Log.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
+                    //     PlugIn.ModelCore.UI.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
 
                     insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                 }
@@ -160,14 +160,14 @@ namespace Landis.Extension.Insects
                 // the same susceptibility.
                 if(defoliation > 1.0 || defoliation < 0)
                 {
-                    PlugIn.ModelCore.Log.WriteLine("DEFOLIATION TOO BIG or SMALL:  {0}, {1}, {2}, {3}.", dist, value1, value2, defoliation);
+                     PlugIn.ModelCore.UI.WriteLine("DEFOLIATION TOO BIG or SMALL:  {0}, {1}, {2}, {3}.", dist, value1, value2, defoliation);
                     throw new ApplicationException("Error: New defoliation is not between 1.0 and 0.0");
                 }
 
-                //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
+                // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
 
                 double weightedDefoliation = (defoliation * Math.Min(1.0, (double) cohort.Biomass / (double) siteBiomass));
-                //PlugIn.ModelCore.Log.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
+                // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
 
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
                 totalDefoliation += defoliation;
@@ -178,7 +178,7 @@ namespace Landis.Extension.Insects
 
             if(totalDefoliation > 1.1 || totalDefoliation < 0)
             {
-                PlugIn.ModelCore.Log.WriteLine("Cohort Total Defoliation = {0:0.00}.  Site R/C={1}/{2}.", totalDefoliation, site.Location.Row, site.Location.Column);
+                 PlugIn.ModelCore.UI.WriteLine("Cohort Total Defoliation = {0:0.00}.  Site R/C={1}/{2}.", totalDefoliation, site.Location.Row, site.Location.Column);
                 throw new ApplicationException("Error: Total Defoliation is not between 1.1 and 0.0");
             }
 

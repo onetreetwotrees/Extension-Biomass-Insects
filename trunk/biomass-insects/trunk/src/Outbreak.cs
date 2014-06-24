@@ -45,7 +45,7 @@ namespace Landis.Extension.Insects
         public static void Mortality(IInsect insect)
         {
             
-            //PlugIn.ModelCore.Log.WriteLine("   {0} mortality.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
+            // PlugIn.ModelCore.UI.WriteLine("   {0} mortality.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape) 
             {
@@ -53,7 +53,7 @@ namespace Landis.Extension.Insects
                     
                 if (SiteVars.BiomassRemoved[site] > 0) 
                 {
-                    //PlugIn.ModelCore.Log.WriteLine("  Biomass removed at {0}/{1}: {2}.", site.Location.Row, site.Location.Column, SiteVars.BiomassRemoved[site]);
+                    // PlugIn.ModelCore.UI.WriteLine("  Biomass removed at {0}/{1}: {2}.", site.Location.Row, site.Location.Column, SiteVars.BiomassRemoved[site]);
                     SiteVars.TimeOfLastEvent[site] = PlugIn.ModelCore.CurrentTime;
                 } 
             }
@@ -65,7 +65,7 @@ namespace Landis.Extension.Insects
         public static void InitializeDefoliationPatches(IInsect insect)
         {
 
-            PlugIn.ModelCore.Log.WriteLine("   Initializing Defoliation Patches... ");   
+            PlugIn.ModelCore.UI.WriteLine("   Initializing Defoliation Patches... ");   
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
             insect.Disturbed.ActiveSiteValues = false;
             
@@ -97,26 +97,26 @@ namespace Landis.Extension.Insects
                 
                 if (suscIndex > 2.0 || suscIndex < 0)
                 {
-                    PlugIn.ModelCore.Log.WriteLine("SuscIndex < 0 || > 2.  Site R/C={0}/{1},suscIndex={2},suscIndexSum={3},sumBio={4}.", site.Location.Row, site.Location.Column, suscIndex,suscIndexSum,sumBio);
+                     PlugIn.ModelCore.UI.WriteLine("SuscIndex < 0 || > 2.  Site R/C={0}/{1},suscIndex={2},suscIndexSum={3},sumBio={4}.", site.Location.Row, site.Location.Column, suscIndex,suscIndexSum,sumBio);
                     throw new ApplicationException("Error: SuscIndex is not between 2.0 and 0.0");
                 }
                 // Assume that there are no neighbors whatsoever:
                 DistributionType dist = insect.SusceptibleTable[suscIndex].Distribution_80.Name;
 
 
-                //PlugIn.ModelCore.Log.WriteLine("suscIndex={0},suscIndexSum={1},cohortBiomass={2}.", suscIndex,suscIndexSum,sumBio);
+                // PlugIn.ModelCore.UI.WriteLine("suscIndex={0},suscIndexSum={1},cohortBiomass={2}.", suscIndex,suscIndexSum,sumBio);
                 double value1 = insect.SusceptibleTable[suscIndex].Distribution_80.Value1;
                 double value2 = insect.SusceptibleTable[suscIndex].Distribution_80.Value2;
 
                 double probability = Distribution.GenerateRandomNum(dist, value1, value2);
                 if(probability > 1.0 || probability < 0)
                 {
-                    PlugIn.ModelCore.Log.WriteLine("Initial Defoliation Probility < 0 || > 1.  Site R/C={0}/{1}.", site.Location.Row, site.Location.Column);
+                     PlugIn.ModelCore.UI.WriteLine("Initial Defoliation Probility < 0 || > 1.  Site R/C={0}/{1}.", site.Location.Row, site.Location.Column);
                     throw new ApplicationException("Error: Probability is not between 1.0 and 0.0");
                 }
                 
                 SiteVars.InitialOutbreakProb[site] = probability;
-                //PlugIn.ModelCore.Log.WriteLine("Susceptiblity index={0}.  Outbreak Probability={1:0.00}.  R/C={2}/{3}.", suscIndex, probability, site.Location.Row, site.Location.Column);
+                // PlugIn.ModelCore.UI.WriteLine("Susceptiblity index={0}.  Outbreak Probability={1:0.00}.  R/C={2}/{3}.", suscIndex, probability, site.Location.Row, site.Location.Column);
             }
 
             foreach(ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -146,7 +146,7 @@ namespace Landis.Extension.Insects
                     DistributionType dist = insect.InitialPatchDistr;
                     double targetArea = Distribution.GenerateRandomNum(dist, insect.InitialPatchValue1, insect.InitialPatchValue2);
                     
-                    //PlugIn.ModelCore.Log.WriteLine("  Target Patch Area={0:0.0}.", targetArea);
+                    // PlugIn.ModelCore.UI.WriteLine("  Target Patch Area={0:0.0}.", targetArea);
                     double areaSelected = 0.0;
             
                     //loop through stand, defoliating patches of size target area
@@ -202,7 +202,7 @@ namespace Landis.Extension.Insects
 
                     } 
                     
-                    //PlugIn.ModelCore.Log.WriteLine("   Initial Patch Area Selected={0:0.0}.", areaSelected);
+                    // PlugIn.ModelCore.UI.WriteLine("   Initial Patch Area Selected={0:0.0}.", areaSelected);
                 } 
 
             } 

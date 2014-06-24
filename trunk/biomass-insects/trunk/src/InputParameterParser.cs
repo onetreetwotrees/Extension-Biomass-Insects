@@ -64,7 +64,7 @@ namespace Landis.Extension.Insects
             List<IInsect> insectParameterList = new List<IInsect>();
             InsectParser insectParser = new InsectParser();
 
-            IInsect insectParameters = PlugIn.ModelCore.Load<IInsect>(insectFileName.Value,insectParser);
+            IInsect insectParameters = Landis.Data.Load<IInsect>(insectFileName.Value,insectParser);
             insectParameterList.Add(insectParameters);
 
             while (!AtEndOfInput) {
@@ -72,7 +72,7 @@ namespace Landis.Extension.Insects
 
                 ReadValue(insectFileName, currentLine);
 
-                insectParameters = PlugIn.ModelCore.Load<IInsect>(insectFileName.Value,insectParser);
+                insectParameters = Landis.Data.Load<IInsect>(insectFileName.Value, insectParser);
 
                 insectParameterList.Add(insectParameters);
 
@@ -83,9 +83,9 @@ namespace Landis.Extension.Insects
             foreach(IInsect activeInsect in insectParameterList)
             {
                 if(insectParameters == null)
-                    PlugIn.ModelCore.Log.WriteLine("   Biomass Insect:  Insect Parameters NOT loading correctly.");
+                     PlugIn.ModelCore.UI.WriteLine("   Biomass Insect:  Insect Parameters NOT loading correctly.");
                 else
-                    PlugIn.ModelCore.Log.WriteLine("Name of Insect = {0}", insectParameters.Name);
+                     PlugIn.ModelCore.UI.WriteLine("Name of Insect = {0}", insectParameters.Name);
 
             }
             parameters.ManyInsect = insectParameterList;

@@ -87,7 +87,7 @@ namespace Landis.Extension.Insects
             parameters.InitialPatchValue2 = ipv2.Value;
 
             //--------- Read In Species Table ---------------------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin parsing SPECIES table.");
+             PlugIn.ModelCore.UI.WriteLine("   Begin parsing SPECIES table.");
 
             ReadName("SpeciesParameters");
 
