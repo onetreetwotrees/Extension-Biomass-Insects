@@ -24,6 +24,14 @@ namespace Landis.Extension.Insects
 
         //---------------------------------------------------------------------
 
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
+
         protected override IInsect Parse()
         {
 
