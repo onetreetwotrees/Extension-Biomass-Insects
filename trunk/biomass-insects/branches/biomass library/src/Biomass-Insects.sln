@@ -3,17 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biomass-Insects", "Biomass-Insects.csproj", "{5E46A962-1CD4-48A2-B20C-199C18D0EECE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biomass Library", "..\..\..\..\Biomass Library\trunk\src\Biomass Library.csproj", "{7D4D8E9B-5FE0-499A-8242-3E72D8DBC2D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LANDIS-II Debug Console", "..\..\..\..\Debug_Console_rc3\LANDIS-II Debug Console.csproj", "{742214C0-CBC9-4E06-8205-297A3EAE61B8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "biomass-cohort", "..\..\..\..\biomass-cohort-library\branches\Biomass Library\src\biomass-cohort.csproj", "{33808160-94BB-488A-B323-67F091EF4840}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "biomass-succession", "..\..\..\..\biomass-succession\branches\Biomass Library\src\biomass-succession.csproj", "{17896667-BAB5-4F18-9DDF-8761E06C55E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "output-biomass", "..\..\..\..\output-biomass\trunk\src\output-biomass.csproj", "{35088EC2-C1CD-4813-B8EE-F0B02B7679DB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "biomass-by-age", "..\..\..\..\output-biomass-by-age\trunk\src\biomass-by-age.csproj", "{EAED092A-A693-43F8-8A9A-2D0955CF6275}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biomass Library", "..\..\..\..\Biomass Library\trunk\src\Biomass Library.csproj", "{7D4D8E9B-5FE0-499A-8242-3E72D8DBC2D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,22 +27,14 @@ Global
 		{742214C0-CBC9-4E06-8205-297A3EAE61B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{742214C0-CBC9-4E06-8205-297A3EAE61B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{742214C0-CBC9-4E06-8205-297A3EAE61B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33808160-94BB-488A-B323-67F091EF4840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33808160-94BB-488A-B323-67F091EF4840}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33808160-94BB-488A-B323-67F091EF4840}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33808160-94BB-488A-B323-67F091EF4840}.Release|Any CPU.Build.0 = Release|Any CPU
 		{17896667-BAB5-4F18-9DDF-8761E06C55E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{17896667-BAB5-4F18-9DDF-8761E06C55E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17896667-BAB5-4F18-9DDF-8761E06C55E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17896667-BAB5-4F18-9DDF-8761E06C55E0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35088EC2-C1CD-4813-B8EE-F0B02B7679DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35088EC2-C1CD-4813-B8EE-F0B02B7679DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35088EC2-C1CD-4813-B8EE-F0B02B7679DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35088EC2-C1CD-4813-B8EE-F0B02B7679DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAED092A-A693-43F8-8A9A-2D0955CF6275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAED092A-A693-43F8-8A9A-2D0955CF6275}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAED092A-A693-43F8-8A9A-2D0955CF6275}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAED092A-A693-43F8-8A9A-2D0955CF6275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D4D8E9B-5FE0-499A-8242-3E72D8DBC2D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D4D8E9B-5FE0-499A-8242-3E72D8DBC2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D4D8E9B-5FE0-499A-8242-3E72D8DBC2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D4D8E9B-5FE0-499A-8242-3E72D8DBC2D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
