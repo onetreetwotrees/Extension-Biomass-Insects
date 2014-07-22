@@ -38,7 +38,7 @@ namespace Landis.Extension.Insects
             //AssureVariableHeaderIsThere(VariableLabel);
             if (System.String.Compare(ReadLabel, VariableLabel, System.StringComparison.OrdinalIgnoreCase) == 0)
             {
-                SpcVar[species] = Landis.Library.Biomass.Util.CheckBiomassParm(value, mininput, maxinput);
+                SpcVar[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(value, mininput, maxinput);
                 return true;
             }
             return false;
@@ -134,19 +134,19 @@ namespace Landis.Extension.Insects
                     lineNumbers[species.Name] = LineNumber;
 
                 ReadValue(susc, currentLine);
-                insect.Susceptibility[species] = Landis.Library.Biomass.Util.CheckBiomassParm(susc.Value, 1, 4);
+                insect.Susceptibility[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(susc.Value, 1, 4);
 
                 ReadValue(grs, currentLine);
-                insect.GrowthReduceSlope[species] = Landis.Library.Biomass.Util.CheckBiomassParm(grs.Value, double.MinValue, 0); 
+                insect.GrowthReduceSlope[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(grs.Value, double.MinValue, 0); 
                 
                 ReadValue(gri, currentLine);
-                insect.GrowthReduceIntercept[species] = Landis.Library.Biomass.Util.CheckBiomassParm(gri.Value, 0,double.MaxValue); 
+                insect.GrowthReduceIntercept[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(gri.Value, 0, double.MaxValue); 
               
                 ReadValue(msl, currentLine);
-                insect.MortalitySlope[species] = Landis.Library.Biomass.Util.CheckBiomassParm(msl.Value, 0, double.MaxValue); 
+                insect.MortalitySlope[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(msl.Value, 0, double.MaxValue); 
 
                 ReadValue(min, currentLine);
-                insect.MortalityIntercept[species] = Landis.Library.Biomass.Util.CheckBiomassParm(min.Value, 0, double.MaxValue);
+                insect.MortalityIntercept[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(min.Value, 0, double.MaxValue);
 
                 AccountedFor[species] = true;
 
