@@ -19,7 +19,7 @@ namespace Landis.Extension.Insects
     public class PlugIn
         : ExtensionMain
     {
-        public static readonly ExtensionType Type = new ExtensionType("disturbance:insects");
+        public static readonly new ExtensionType Type = new ExtensionType("disturbance:insects");
         public static readonly string ExtensionName = "Biomass Insects";
 
         private string mapNameTemplate;
