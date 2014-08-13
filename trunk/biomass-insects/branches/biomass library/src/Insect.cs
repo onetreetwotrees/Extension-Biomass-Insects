@@ -39,11 +39,11 @@ namespace Landis.Extension.Insects
 
         private bool activeOutbreak;
 
-        private Landis.Library.Biomass.Species.AuxParm<int> susceptibility;
-        private Landis.Library.Biomass.Species.AuxParm<double> growthreduceslope;
-        private Landis.Library.Biomass.Species.AuxParm<double> growthreduceintercept;
-        private Landis.Library.Biomass.Species.AuxParm<double> mortalityslope;
-        private Landis.Library.Biomass.Species.AuxParm<double> mortalityintercept;
+        private Landis.Library.Parameters.Species.AuxParm<int> susceptibility;
+        private Landis.Library.Parameters.Species.AuxParm<double> growthreduceslope;
+        private Landis.Library.Parameters.Species.AuxParm<double> growthreduceintercept;
+        private Landis.Library.Parameters.Species.AuxParm<double> mortalityslope;
+        private Landis.Library.Parameters.Species.AuxParm<double> mortalityintercept;
         
 
         private List<ISusceptible> susceptibleTable;
@@ -97,7 +97,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public Landis.Library.Biomass.Species.AuxParm<int> Susceptibility
+        public Landis.Library.Parameters.Species.AuxParm<int> Susceptibility
         {
             get
             {
@@ -109,7 +109,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public Landis.Library.Biomass.Species.AuxParm<double> GrowthReduceSlope
+        public Landis.Library.Parameters.Species.AuxParm<double> GrowthReduceSlope
         {
             get
             {
@@ -121,7 +121,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public Landis.Library.Biomass.Species.AuxParm<double> GrowthReduceIntercept
+        public Landis.Library.Parameters.Species.AuxParm<double> GrowthReduceIntercept
         {
             get
             {
@@ -133,7 +133,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public Landis.Library.Biomass.Species.AuxParm<double> MortalitySlope
+        public Landis.Library.Parameters.Species.AuxParm<double> MortalitySlope
         {
             get
             {
@@ -145,7 +145,7 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-        public Landis.Library.Biomass.Species.AuxParm<double> MortalityIntercept
+        public Landis.Library.Parameters.Species.AuxParm<double> MortalityIntercept
         {
             get
             {
@@ -457,11 +457,11 @@ namespace Landis.Extension.Insects
         public Insect(int sppCount)
         {
             
-            susceptibility = new Library.Biomass.Species.AuxParm<int>(PlugIn.ModelCore.Species);
-            growthreduceslope = new Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            growthreduceintercept = new Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            mortalityslope = new Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            mortalityintercept = new Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            susceptibility = new Library.Parameters.Species.AuxParm<int>(PlugIn.ModelCore.Species);
+            growthreduceslope = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            growthreduceintercept = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            mortalityslope = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            mortalityintercept = new Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             
             susceptibleTable = new List<ISusceptible>();
             neighbors = new List<RelativeLocation>();

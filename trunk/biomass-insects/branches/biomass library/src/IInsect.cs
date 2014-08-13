@@ -31,11 +31,12 @@ namespace Landis.Extension.Insects
         int MortalityYear {get; set;}
         
         // ARJAN
-        Landis.Library.Biomass.Species.AuxParm<int> Susceptibility { get; set; }
-        Landis.Library.Biomass.Species.AuxParm<double> GrowthReduceSlope { get; set; }
-        Landis.Library.Biomass.Species.AuxParm<double> GrowthReduceIntercept { get; set; }
-        Landis.Library.Biomass.Species.AuxParm<double> MortalitySlope { get; set; }
-        Landis.Library.Biomass.Species.AuxParm<double> MortalityIntercept { get; set; }
+        
+        Landis.Library.Parameters.Species.AuxParm<int> Susceptibility { get; set; }
+        Landis.Library.Parameters.Species.AuxParm<double> GrowthReduceSlope { get; set; }
+        Landis.Library.Parameters.Species.AuxParm<double> GrowthReduceIntercept { get; set; }
+        Landis.Library.Parameters.Species.AuxParm<double> MortalitySlope { get; set; }
+        Landis.Library.Parameters.Species.AuxParm<double> MortalityIntercept { get; set; }
         
         List<ISusceptible> SusceptibleTable{get;set;}
         IEnumerable<RelativeLocation> Neighbors{get;set;}
