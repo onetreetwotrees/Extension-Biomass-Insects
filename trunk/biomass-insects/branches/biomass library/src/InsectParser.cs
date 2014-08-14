@@ -93,11 +93,11 @@ namespace Landis.Extension.Insects
             insect.AnnMort = annMort.Value;
 
             InputVar<string> sppName = new InputVar<string>("Species");
-            InputVar<System.IComparable> susc = new InputVar<System.IComparable>("Species Susceptibility");
-            InputVar<System.IComparable> grs = new InputVar<System.IComparable>("Growth Reduction Slope");
-            InputVar<System.IComparable> gri = new InputVar<System.IComparable>("Growth Reduction Intercept");
-            InputVar<System.IComparable> msl = new InputVar<System.IComparable>("Mortality Slope");
-            InputVar<System.IComparable> min = new InputVar<System.IComparable>("Mortality Intercept");
+            InputVar<int> susc = new InputVar<int>("Species Susceptibility");
+            InputVar<double> grs = new InputVar<double>("Growth Reduction Slope");
+            InputVar<double> gri = new InputVar<double>("Growth Reduction Intercept");
+            InputVar<double> msl = new InputVar<double>("Mortality Slope");
+            InputVar<double> min = new InputVar<double>("Mortality Intercept");
             Dictionary <string, int> lineNumbers = new Dictionary<string, int>();
 
             const string Susceptiblities = "Susceptibilities";

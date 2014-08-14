@@ -28,6 +28,7 @@ namespace Landis.Extension.Insects
                 return PlugIn.ExtensionName;
             }
         }
+
         protected override IInputParameters Parse()
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
