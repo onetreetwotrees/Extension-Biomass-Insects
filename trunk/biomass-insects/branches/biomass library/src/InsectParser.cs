@@ -5,6 +5,7 @@ using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
 using System.Collections.Generic;
 using System.Text;
+using Landis.Library.Parameters;
  
 
 namespace Landis.Extension.Insects
@@ -124,19 +125,19 @@ namespace Landis.Extension.Insects
                     lineNumbers[species.Name] = LineNumber;
 
                 ReadValue(susc, currentLine);
-                insect.Susceptibility[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<int>(susc.Value, 1, 4);
+                insect.Susceptibility[species] = susc.Value.CheckInRange(1, 4,susc.Name);
 
                 ReadValue(grs, currentLine);
-                insect.GrowthReduceSlope[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(grs.Value, double.MinValue, 0); 
+                insect.GrowthReduceSlope[species] = grs.Value.CheckLessThanOrEqual(0, grs.Name); 
                 
                 ReadValue(gri, currentLine);
-                insect.GrowthReduceIntercept[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(gri.Value, 0, double.MaxValue); 
+                insect.GrowthReduceIntercept[species] = gri.Value.CheckGreaterThanOrEqual(0, gri.Name); 
               
                 ReadValue(msl, currentLine);
-                insect.MortalitySlope[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(msl.Value, 0, double.MaxValue); 
+                insect.MortalitySlope[species] = msl.Value.CheckGreaterThanOrEqual(0, msl.Name); 
 
                 ReadValue(min, currentLine);
-                insect.MortalityIntercept[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(min.Value, 0, double.MaxValue);
+                insect.MortalityIntercept[species] = min.Value.CheckGreaterThanOrEqual(0, min.Name);
 
                 AccountedFor[species] = true;
 

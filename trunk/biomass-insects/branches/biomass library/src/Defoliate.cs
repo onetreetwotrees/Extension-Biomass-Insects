@@ -1,12 +1,11 @@
 //  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
 
-//using Landis.Extension.Succession.Biomass;
-using Landis.Core;
-using Landis.SpatialModeling;
-using Landis.Library.Biomass;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using Landis.Core;
+using Landis.Library.Biomass;
+using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
 
 
@@ -24,9 +23,7 @@ namespace Landis.Extension.Insects
 
             // Assign the method below to the CohortDefoliation delegate in
             // biomass-cohorts/Biomass.CohortDefoliation.cs
-            Landis.Library.Biomass.CohortDefoliation.Compute = DefoliateCohort;
-            //Landis.Library.BiomassCohorts.CohortDefoliation.Compute = DefoliateCohort;
-
+            Landis.Library.Biomass.CohortDefoliation.Compute = Defoliate.DefoliateCohort;
         }
 
 
@@ -39,7 +36,8 @@ namespace Landis.Extension.Insects
         {
             // This maintains backwards compatibility with succession versions that don't use Biomass Library
             // but the functions must be sure to provide siteBiomass not cohortBiomass
-            return DefoliateCohort(site, cohort.Species, cohort.Biomass, siteBiomass);
+            double defoliation = Landis.Extension.Insects.Defoliate.DefoliateCohort(site, cohort.Species, cohort.Biomass, siteBiomass);
+            return defoliation;
            
         }
         
@@ -63,9 +61,9 @@ namespace Landis.Extension.Insects
 
                 // Calculate biomass proportion of "protective" species
                 double protectBiomass = 0;
-                foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
+                foreach (Landis.Library.BiomassCohorts.ISpeciesCohorts spp in SiteVars.Cohorts[site])
                 {
-                    foreach (ICohort spp_cohort in spp)
+                    foreach (Landis.Library.BiomassCohorts.ICohort spp_cohort in spp)
                     {
                         if (insect.Susceptibility[spp_cohort.Species] == 4)
                             protectBiomass += spp_cohort.Biomass;

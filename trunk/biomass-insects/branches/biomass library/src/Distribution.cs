@@ -2,7 +2,6 @@
 //  Authors:  Jane Foster, Robert M. Scheller
 
 using Edu.Wisc.Forest.Flel.Util;
-//using Troschuetz.Random;
 
 namespace Landis.Extension.Insects
 {
@@ -62,16 +61,6 @@ namespace Landis.Extension.Insects
         {
         }
 
-/*        public Distribution(
-                        DistributionType name,
-                        double value1,
-                        double value2
-                        )
-        {
-            this.name = name;
-            this.value1 = value1;
-            this.value2 = value2;
-        }*/
         //---------------------------------------------------------------------
 
         public static double GenerateRandomNum(DistributionType dist, double parameter1, double parameter2)
@@ -97,10 +86,6 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.WeibullDistribution.Lambda = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.WeibullDistribution.NextDouble();
                 
-                //WeibullDistribution randVar = new WeibullDistribution(RandomNumberGenerator.Singleton);
-                //randVar.Alpha = parameter1;      
-                //randVar.Lambda = parameter2;   
-                //randomNum = randVar.NextDouble();
             }
 
             if(dist == DistributionType.Gamma)
@@ -109,10 +94,6 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.GammaDistribution.Theta = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.GammaDistribution.NextDouble();
 
-                //GammaDistribution randVar = new GammaDistribution(RandomNumberGenerator.Singleton);
-                //randVar.Alpha = parameter1;      // mean
-                //randVar.Theta = parameter2;   // std dev
-                //randomNum = randVar.NextDouble();
             }
             if(dist == DistributionType.Beta)
             {
@@ -125,10 +106,6 @@ namespace Landis.Extension.Insects
                 else
                     randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
 
-                //BetaDistribution randVar = new BetaDistribution(RandomNumberGenerator.Singleton);
-                //randVar.Alpha = parameter1;      // mean
-                //randVar.Beta = parameter2;   // std dev
-                //randomNum = randVar.NextDouble();
             }
             return randomNum;
         }

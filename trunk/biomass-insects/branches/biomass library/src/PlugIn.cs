@@ -1,13 +1,13 @@
 //  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
 
-using Landis.Core;
-using Landis.SpatialModeling;
-using Landis.Library.BiomassCohorts;
-using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Util;
-using System.IO;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using Edu.Wisc.Forest.Flel.Util;
+using Landis.Core;
+using Landis.Library.BiomassCohorts;
+using Landis.SpatialModeling;
 
 
 namespace Landis.Extension.Insects
@@ -58,7 +58,6 @@ namespace Landis.Extension.Insects
         public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
-            //SiteVars.Initialize();
             InputParameterParser parser = new InputParameterParser();
             parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
 
@@ -74,6 +73,7 @@ namespace Landis.Extension.Insects
         /// </summary>
         public override void Initialize()
         {
+
             Timestep = parameters.Timestep;
 
             Timestep = 1; //parameters.Timestep;
@@ -136,10 +136,7 @@ namespace Landis.Extension.Insects
 
             foreach(IInsect insect in manyInsect)
             {
-                //SiteVars.BiomassRemoved.ActiveSiteValues = 0;
-                //SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
                 insect.BiomassRemoved.ActiveSiteValues = 0;
-                //insect.InitialOutbreakProb.ActiveSiteValues = 0.0;
 
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
@@ -192,8 +189,6 @@ namespace Landis.Extension.Insects
                     //PlugIn.ModelCore.UI.WriteLine("   {0} is active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
 
                     insect.MortalityYear = PlugIn.ModelCore.CurrentTime + 1;
-                    //insect.OutbreakStartYear = PlugIn.ModelCore.CurrentTime + (int) timeBetweenOutbreaks;
-                    //insect.OutbreakStopYear = insect.OutbreakStartYear + (int) duration;
                 }
                 //PlugIn.ModelCore.UI.WriteLine("  Insect Start Time = {0}, Stop Time = {1}.", insect.OutbreakStartYear, insect.OutbreakStopYear);
 
@@ -243,7 +238,6 @@ namespace Landis.Extension.Insects
                 int totalBioRemoved = 0;
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                 {
-                    //totalBioRemoved += SiteVars.BiomassRemoved[site];
                     totalBioRemoved += insect.BiomassRemoved[site];
                 }
 
@@ -381,7 +375,6 @@ namespace Landis.Extension.Insects
             if (! running)
                 return;
          
-            //insect.BiomassRemoved[eventArgs.Site] += eventArgs.Cohort.Biomass;
         }
         //---------------------------------------------------------------------
         private void LogEvent(int   currentTime)

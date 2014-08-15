@@ -76,8 +76,9 @@ namespace Landis.Extension.Insects
                 double sumBio = 0.0;
                 double protectBiomass = 0.0;
 
+                Landis.Library.BiomassCohorts.ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
 
-                foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+                foreach (ISpeciesCohorts speciesCohorts in siteCohorts)
                 {
                     foreach (ICohort cohort in speciesCohorts) 
                     {
