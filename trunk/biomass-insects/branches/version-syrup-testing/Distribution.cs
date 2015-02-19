@@ -1,0 +1,128 @@
+//  Copyright 2008-2010 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
+//  License:  Available at
+//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+
+using Edu.Wisc.Forest.Flel.Util;
+using Troschuetz.Random;
+
+namespace Landis.Insects
+{
+    public enum DistributionType {Beta, Gamma, Weibull};
+
+    public interface IDistribution
+    {
+
+        DistributionType Name {get;set;}
+        double Value1 {get;set;}
+        double Value2 {get;set;}
+    }
+
+    /// <summary>
+    /// Definition of a wind severity.
+    /// </summary>
+    public class Distribution
+        : IDistribution
+    {
+        private DistributionType name;
+        private double value1;
+        private double value2;
+
+
+        //---------------------------------------------------------------------
+        public DistributionType Name
+        {
+            get {
+                return name;
+            }
+
+            set {
+                name = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public double Value1
+        {
+            get {
+                return value1;
+            }
+            set {
+                if (value < 0 || value > 100)
+                        throw new InputValueException(value.ToString(), "Value must be between 0 and 100");
+                value1 = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public double Value2
+        {
+            get {
+                return value2;
+            }
+            set {
+                if (value < 0.0 || value > 10.0)
+                        throw new InputValueException(value.ToString(), "Value must be between 0.0 and 10.0");
+                value2 = value;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public Distribution()
+        {
+        }
+
+/*        public Distribution(
+                        DistributionType name,
+                        double value1,
+                        double value2
+                        )
+        {
+            this.name = name;
+            this.value1 = value1;
+            this.value2 = value2;
+        }*/
+        //---------------------------------------------------------------------
+
+        public static double GenerateRandomNum(DistributionType dist, double parameter1, double parameter2)
+        {
+            double randomNum = 0.0;
+            /*if(dist == DistributionType.Normal)
+            {
+                NormalDistribution randVar = new NormalDistribution(RandomNumberGenerator.Singleton);
+                randVar.Mu = parameter1;      // mean
+                randVar.Sigma = parameter2;   // std dev
+                randomNum = randVar.NextDouble();
+            }
+            if(dist == DistributionType.Lognormal)
+            {
+                LognormalDistribution randVar = new LognormalDistribution(RandomNumberGenerator.Singleton);
+                randVar.Mu = parameter1;      // mean
+                randVar.Sigma = parameter2;   // std dev
+                randomNum = randVar.NextDouble();
+            }*/
+            if(dist == DistributionType.Weibull)
+            {
+                WeibullDistribution randVar = new WeibullDistribution(RandomNumberGenerator.Singleton);
+                randVar.Alpha = parameter1;      // mean
+                randVar.Lambda = parameter2;   // std dev
+                randomNum = randVar.NextDouble();
+            }
+
+            if(dist == DistributionType.Gamma)
+            {
+                GammaDistribution randVar = new GammaDistribution(RandomNumberGenerator.Singleton);
+                randVar.Alpha = parameter1;      // mean
+                randVar.Theta = parameter2;   // std dev
+                randomNum = randVar.NextDouble();
+            }
+            if(dist == DistributionType.Beta)
+            {
+                BetaDistribution randVar = new BetaDistribution(RandomNumberGenerator.Singleton);
+                randVar.Alpha = parameter1;      // mean
+                randVar.Beta = parameter2;   // std dev
+                randomNum = randVar.NextDouble();
+            }
+            return randomNum;
+        }
+    }
+}
