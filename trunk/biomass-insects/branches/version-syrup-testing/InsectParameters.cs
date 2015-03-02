@@ -29,6 +29,7 @@ namespace Landis.Extension.Insects
         int OutbreakStartYear {get;set;}
         int OutbreakStopYear {get;set;}
         int MortalityYear {get; set;}
+        bool SingleOutbreakYear { get; set; }     
 
         List<ISppParameters> SppTable{get;set;}
         List<ISusceptible> SusceptibleTable{get;set;}
@@ -77,6 +78,7 @@ namespace Landis.Extension.Insects
         private int outbreakStartYear;
         private int outbreakStopYear;
         private int mortalityYear;
+        private bool singleOutbreakYear;
 
         // BRM
         private int initialSites;
@@ -265,6 +267,18 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
+        public bool SingleOutbreakYear
+        {
+            get
+            {
+                return singleOutbreakYear;
+            }
+            set
+            {
+                singleOutbreakYear = value;
+            }
+        }
+        //---------------------------------------------------------------------    
         public bool ActiveOutbreak
         {
             get {

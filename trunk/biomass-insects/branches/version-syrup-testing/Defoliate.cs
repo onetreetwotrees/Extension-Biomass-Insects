@@ -47,6 +47,7 @@ namespace Landis.Extension.Insects
                     continue;
 
                 double defoliation = 0.0;
+                double weightedDefoliation = 0.0;
                 int suscIndex = insect.SppTable[sppIndex].Susceptibility - 1;
 
                 if (suscIndex < 0) suscIndex = 0;
@@ -81,7 +82,7 @@ namespace Landis.Extension.Insects
                             // The previous year...
                             //if(SiteVars.DefoliationByYear[neighbor].ContainsKey(PlugIn.ModelCore.CurrentTime - 1))
                             //    sumNeighborhoodDefoliation += SiteVars.DefoliationByYear[neighbor][PlugIn.ModelCore.CurrentTime - 1];
-                            sumNeighborhoodDefoliation = Math.Min(1.0, insect.LastYearDefoliation[neighbor]);
+                            sumNeighborhoodDefoliation += insect.LastYearDefoliation[neighbor];
                         }
                     }
 
@@ -165,8 +166,12 @@ namespace Landis.Extension.Insects
                 }
 
                 // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
+                // For first insect in a given year, actual defoliation equals the potential defoliation drawn from insect distributions.
+                // For second insect in a given year, actual defoliation can only be as high as the amount of canopy foliage left by first insect.
+                // This change makes sure next year's neighborhoodDefoliation will reflect actual defoliation, rather than "potential" defoliation.
+                // It should also ensure that the sum of defoliation maps for all insects adds up to 1 for a given year.
 
-                double weightedDefoliation = (defoliation * Math.Min(1.0, (double) cohort.Biomass / (double) siteBiomass));
+                weightedDefoliation = (Math.Min((1 - totalDefoliation), defoliation) * ((double)cohort.Biomass / (double)siteBiomass));
                 // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
 
                 insect.ThisYearDefoliation[site] += weightedDefoliation;

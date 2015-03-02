@@ -49,6 +49,10 @@ namespace Landis.Extension.Insects
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape) 
             {
+                //Try zeroing out biomass removed here @ start of each defoliation mortality year. Remove if doesn't work.
+                if (SiteVars.BiomassRemoved[site] > 0)
+                    SiteVars.BiomassRemoved[site] = 0;
+
                 PartialDisturbance.ReduceCohortBiomass(site);
                     
                 if (SiteVars.BiomassRemoved[site] > 0) 
@@ -68,6 +72,7 @@ namespace Landis.Extension.Insects
             PlugIn.ModelCore.UI.WriteLine("   Initializing Defoliation Patches... ");   
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
             insect.Disturbed.ActiveSiteValues = false;
+            insect.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             
             foreach(ActiveSite site in PlugIn.ModelCore.Landscape)
             {
@@ -131,7 +136,7 @@ namespace Landis.Extension.Insects
 
                 //Start spreading!
                 if (randomNum < SiteVars.InitialOutbreakProb[site] * (insect.InitialPatchOutbreakSensitivity + initialAreaCalibratorRandomNum))  
-                //if(randomNum < SiteVars.InitialOutbreakProb[site] * insect.InitialPatchOutbreakSensitivity)  
+
                 {
             
                     //start with this site (if it's active)
@@ -146,7 +151,7 @@ namespace Landis.Extension.Insects
                     DistributionType dist = insect.InitialPatchDistr;
                     double targetArea = Distribution.GenerateRandomNum(dist, insect.InitialPatchValue1, insect.InitialPatchValue2);
                     
-                    // PlugIn.ModelCore.UI.WriteLine("  Target Patch Area={0:0.0}.", targetArea);
+                     PlugIn.ModelCore.UI.WriteLine("  Target Patch Area={0:0.0}.", targetArea);
                     double areaSelected = 0.0;
             
                     //loop through stand, defoliating patches of size target area
@@ -155,11 +160,11 @@ namespace Landis.Extension.Insects
 
                         currentSite = sitesToConsider.Dequeue();
                     
-                        // Because this is the first year, neighborhood defoliaiton is given a value.
+                        // Because this is the first year, neighborhood defoliation is given a value.
                         // The value is used in Defoliate.DefoliateCohort()
                         insect.NeighborhoodDefoliation[currentSite] = SiteVars.InitialOutbreakProb[currentSite];
                         areaSelected += PlugIn.ModelCore.CellArea;
-                        insect.Disturbed[currentSite] = true;
+                        //insect.Disturbed[currentSite] = true;
 
                         //Next, add site's neighbors to the list of
                         //sites to consider.  
@@ -179,7 +184,7 @@ namespace Landis.Extension.Insects
                                 && !sitesToConsider.Contains((ActiveSite) neighbor)
                                 && !insect.Disturbed[neighbor]) 
                             {
-                                //insect.Disturbed[currentSite] = true;
+                                insect.Disturbed[currentSite] = true;
                                 randomNum = PlugIn.ModelCore.GenerateUniform();
 
                                 /*if (SiteVars.InitialOutbreakProb[neighbor] > maxNeighborProb)
