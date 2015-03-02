@@ -1,16 +1,13 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using Edu.Wisc.Forest.Flel.Util;
+using Landis.Core;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
-    //public enum DistributionType {Gamma};
-
+    //public enum DistributionType {Gamma, Beta, Weibull};
+    
     public interface ISusceptible
     {
 
@@ -109,24 +106,5 @@ namespace Landis.Insects
         {
         }
 
-/*        public Susceptible(byte   number,
-                        IDistribution distribution_80,
-                        //double value1_80,
-                        //double value2_80,
-                        IDistribution distribution_60,
-                        IDistribution distribution_40,
-                        IDistribution distribution_20,
-                        IDistribution distribution_0
-                        )
-        {
-            this.number = number;
-            this.distribution_80 = distribution_80;
-            //this.value1 = value1;
-            //this.value2 = value2;
-            this.distribution_60 = distribution_60;
-            this.distribution_40 = distribution_40;
-            this.distribution_20 = distribution_20;
-            this.distribution_0 = distribution_0;
-        }*/
     }
 }

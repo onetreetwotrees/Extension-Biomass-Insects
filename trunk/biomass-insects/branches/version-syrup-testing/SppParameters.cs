@@ -1,14 +1,10 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using Edu.Wisc.Forest.Flel.Util;
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// Extra Spp Paramaters
@@ -26,7 +22,7 @@ namespace Landis.Insects
 }
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     public class SppParameters
         : ISppParameters
