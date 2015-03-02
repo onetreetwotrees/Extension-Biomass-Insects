@@ -1,20 +1,15 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
-
-using Landis.Biomass;
-using Landis.Landscape;
-using Troschuetz.Random;
+using Landis.Extension.Succession.Biomass;
+using Landis.Core;
+using Landis.SpatialModeling;
+using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Grids;
 using System;
 
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     public class GrowthReduction
     {
@@ -38,11 +33,17 @@ namespace Landis.Insects
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
 
-        public static double ReduceCohortGrowth(Biomass.ICohort cohort, Site site, int siteBiomass)
+        public static double ReduceCohortGrowth(ICohort cohort, ActiveSite site)//, int siteBiomass)
         {
-            //UI.WriteLine("   Calculating cohort growth reduction due to insect defoliation...");
+            // PlugIn.ModelCore.UI.WriteLine("   Calculating cohort growth reduction due to insect defoliation...");
 
             double summaryGrowthReduction = 0.0;
+
+            int siteBiomass = 0;
+
+            foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
+                foreach (ICohort spp_cohort in spp)
+                    siteBiomass += spp_cohort.Biomass;
 
             int sppIndex = cohort.Species.Index;
 
@@ -57,10 +58,10 @@ namespace Landis.Insects
                 int yearBack = 0;
                 double annualDefoliation = 0.0;
 
-                if(insect.HostDefoliationByYear[site].ContainsKey(Model.Core.CurrentTime - yearBack))
+                if(insect.HostDefoliationByYear[site].ContainsKey(PlugIn.ModelCore.CurrentTime - yearBack))
                 {
-                    //UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}.", (Model.Core.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name);
-                    annualDefoliation += insect.HostDefoliationByYear[site][Model.Core.CurrentTime - yearBack][suscIndex];
+                    // PlugIn.ModelCore.UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}.", (PlugIn.ModelCore.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name);
+                    annualDefoliation += insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
                 }
                 double cumulativeDefoliation = annualDefoliation;
 
@@ -68,19 +69,14 @@ namespace Landis.Insects
                 {
                     yearBack++;
                     annualDefoliation = 0.0;
-                    if(insect.HostDefoliationByYear[site].ContainsKey(Model.Core.CurrentTime - yearBack))
+                    if(insect.HostDefoliationByYear[site].ContainsKey(PlugIn.ModelCore.CurrentTime - yearBack))
                     {
-                        //UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}.", (Model.Core.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name);
-                        annualDefoliation = insect.HostDefoliationByYear[site][Model.Core.CurrentTime - yearBack][suscIndex];
+                        // PlugIn.ModelCore.UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}.", (PlugIn.ModelCore.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name);
+                        annualDefoliation = insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
                         cumulativeDefoliation += annualDefoliation;
                     }
                 }
 
-                //if (cumulativeDefoliation > 1.0)
-                //{
-                //    UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}, cumDefo={3}.", (Model.Core.CurrentTime - yearBack), suscIndex+1, cohort.Species.Name, cumulativeDefoliation);
-
-                //}
                 double slope = insect.SppTable[sppIndex].GrowthReduceSlope;
                 double intercept = insect.SppTable[sppIndex].GrowthReduceIntercept;
 
@@ -90,7 +86,7 @@ namespace Landis.Insects
                 double weightedGD = (growthReduction * ((double) cohort.Biomass / (double) siteBiomass));
                 //Below looks like it should be multiplied by weightedGD above, but it isn't?? CHECK!
                 summaryGrowthReduction += growthReduction;
-                //UI.WriteLine("Time={0}, Spp={1}, SummaryGrowthReduction={2:0.00}.", Model.Core.CurrentTime,cohort.Species.Name, summaryGrowthReduction);
+                // PlugIn.ModelCore.UI.WriteLine("Time={0}, Spp={1}, SummaryGrowthReduction={2:0.00}.", PlugIn.ModelCore.CurrentTime,cohort.Species.Name, summaryGrowthReduction);
 
             }
             if (summaryGrowthReduction > 1.0)  // Cannot exceed 100%
@@ -98,7 +94,7 @@ namespace Landis.Insects
 
             if(summaryGrowthReduction > 1.0 || summaryGrowthReduction < 0)
             {
-                UI.WriteLine("Cohort Total Growth Reduction = {0:0.00}.  Site R/C={1}/{2}.", summaryGrowthReduction, site.Location.Row, site.Location.Column);
+                 PlugIn.ModelCore.UI.WriteLine("Cohort Total Growth Reduction = {0:0.00}.  Site R/C={1}/{2}.", summaryGrowthReduction, site.Location.Row, site.Location.Column);
                 throw new ApplicationException("Error: Total Growth Reduction is not between 1.0 and 0.0");
             }
 

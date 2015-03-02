@@ -1,33 +1,19 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using Edu.Wisc.Forest.Flel.Util;
-using Landis.Ecoregions;
-using Landis.Util;
+using Landis.Core;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// A parser that reads the extension parameters from text input.
     /// </summary>
     public class InputParameterParser
-        : Landis.TextParser<IInputParameters>
+        : TextParser<IInputParameters>
     {
-        public static IDataset EcoregionsDataset = null;
-
-        //---------------------------------------------------------------------
-        public override string LandisDataValue
-        {
-            get {
-                return "Biomass Insects";
-            }
-        }
 
         //---------------------------------------------------------------------
         public InputParameterParser()
@@ -36,9 +22,20 @@ namespace Landis.Insects
 
         //---------------------------------------------------------------------
 
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
+
         protected override IInputParameters Parse()
         {
-            ReadLandisDataVar();
+            InputVar<string> landisData = new InputVar<string>("LandisData");
+            ReadVar(landisData);
+            if (landisData.Value.Actual != PlugIn.ExtensionName)
+                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
 
             InputParameters parameters = new InputParameters();
 
@@ -67,7 +64,7 @@ namespace Landis.Insects
             List<IInsect> insectParameterList = new List<IInsect>();
             InsectParser insectParser = new InsectParser();
 
-            IInsect insectParameters = Data.Load<IInsect>(insectFileName.Value,insectParser);
+            IInsect insectParameters = Landis.Data.Load<IInsect>(insectFileName.Value,insectParser);
             insectParameterList.Add(insectParameters);
 
             while (!AtEndOfInput) {
@@ -75,7 +72,7 @@ namespace Landis.Insects
 
                 ReadValue(insectFileName, currentLine);
 
-                insectParameters = Data.Load<IInsect>(insectFileName.Value,insectParser);
+                insectParameters = Landis.Data.Load<IInsect>(insectFileName.Value, insectParser);
 
                 insectParameterList.Add(insectParameters);
 
@@ -86,14 +83,14 @@ namespace Landis.Insects
             foreach(IInsect activeInsect in insectParameterList)
             {
                 if(insectParameters == null)
-                    UI.WriteLine("PARSE:  Insect Parameters NOT loading correctly.");
+                     PlugIn.ModelCore.UI.WriteLine("   Biomass Insect:  Insect Parameters NOT loading correctly.");
                 else
-                    UI.WriteLine("Name of Insect = {0}", insectParameters.Name);
+                     PlugIn.ModelCore.UI.WriteLine("Name of Insect = {0}", insectParameters.Name);
 
             }
             parameters.ManyInsect = insectParameterList;
 
-            return parameters; //.GetComplete();
+            return parameters; 
 
         }
     }
