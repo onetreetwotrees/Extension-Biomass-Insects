@@ -1,33 +1,20 @@
-//  Copyright 2008-2010 University of Wisconsin, Portland State University
-//  Authors:
-//      Jane Foster
-//      Robert M. Scheller
-//  License:  Available at
-//  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
+//  Copyright 2006-2011 University of Wisconsin, Portland State University
+//  Authors:  Jane Foster, Robert M. Scheller
 
 using Edu.Wisc.Forest.Flel.Util;
-using Landis.Species;
-using Landis.Util;
+using Landis.Core;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Landis.Insects
+namespace Landis.Extension.Insects
 {
     /// <summary>
     /// A parser that reads the extension parameters from text input.
     /// </summary>
     public class InsectParser
-        : Landis.TextParser<IInsect>
+        : TextParser<IInsect>
     {
-        public static Species.IDataset SpeciesDataset = Model.Core.Species;
-
-        //---------------------------------------------------------------------
-        public override string LandisDataValue
-        {
-            get {
-                return "InsectDefoliator";
-            }
-        }
+        //public static Species.IDataset SpeciesDataset = PlugIn.ModelCore.Species;
 
         //---------------------------------------------------------------------
         public InsectParser()
@@ -37,12 +24,23 @@ namespace Landis.Insects
 
         //---------------------------------------------------------------------
 
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
+
         protected override IInsect Parse()
         {
 
-            ReadLandisDataVar();
+            InputVar<string> landisData = new InputVar<string>("LandisData");
+            ReadVar(landisData);
+            if (landisData.Value.Actual != "InsectDefoliator")
+                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", "InsectDefoliator");
 
-            Insect parameters = new Insect(Model.Core.Species.Count);
+            InsectParameters parameters = new InsectParameters(PlugIn.ModelCore.Species.Count);
 
             InputVar<string> insectName = new InputVar<string>("InsectName");
             ReadVar(insectName);
@@ -68,9 +66,13 @@ namespace Landis.Insects
             ReadVar(nhs);
             parameters.NeighborhoodDistance = nhs.Value;
 
-            InputVar<double> iac = new InputVar<double>("InitialAreaCalibrator");
-            ReadVar(iac);
-            parameters.InitialAreaCalibrator = iac.Value;
+            InputVar<double> ipsc = new InputVar<double>("InitialPatchShapeCalibrator");
+            ReadVar(ipsc);
+            parameters.InitialPatchShapeCalibrator = ipsc.Value;
+
+            InputVar<double> ipnc = new InputVar<double>("InitialPatchOutbreakSensitivity");
+            ReadVar(ipnc);
+            parameters.InitialPatchOutbreakSensitivity = ipnc.Value;
 
             InputVar<DistributionType> ipdt = new InputVar<DistributionType>("InitialPatchDistribution");
             ReadVar(ipdt);
@@ -85,9 +87,13 @@ namespace Landis.Insects
             parameters.InitialPatchValue2 = ipv2.Value;
 
             //--------- Read In Species Table ---------------------------------------
-            UI.WriteLine("Begin parsing SPECIES table.");
+             PlugIn.ModelCore.UI.WriteLine("   Begin parsing SPECIES table.");
 
             ReadName("SpeciesParameters");
+
+            InputVar<string> annMort = new InputVar<string>("MortalityEstimate");
+            ReadVar(annMort);
+            parameters.AnnMort = annMort.Value;
 
             InputVar<string> sppName = new InputVar<string>("Species");
             InputVar<int> susc = new InputVar<int>("Species Susceptibility");
@@ -104,7 +110,7 @@ namespace Landis.Insects
 
 
                 ReadValue(sppName, currentLine);
-                ISpecies species = SpeciesDataset[sppName.Value.Actual];
+                ISpecies species = PlugIn.ModelCore.Species[sppName.Value.Actual];
 
                 if (species == null)
                     throw new InputValueException(sppName.Value.String,
@@ -267,12 +273,12 @@ namespace Landis.Insects
 
         public static DistributionType DTParse(string word)
         {
-            if (word == "Beta")
+            if (word == "Gamma")
+                return DistributionType.Gamma;
+            else if (word == "Beta")
                 return DistributionType.Beta;
             else if (word == "Weibull")
                 return DistributionType.Weibull;
-            else if (word == "Gamma")
-                return DistributionType.Gamma;
             else
                 throw new System.FormatException("Valid Distribution Types: Gamma, Beta, Weibull.");
         }
