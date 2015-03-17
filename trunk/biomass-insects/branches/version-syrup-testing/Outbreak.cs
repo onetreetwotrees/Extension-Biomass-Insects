@@ -2,7 +2,7 @@
 //  Authors:  Jane Foster, Robert M. Scheller
 
 using Landis.SpatialModeling;
-using Landis.Extension.Succession.Biomass;
+
 using Landis.Core;
 using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
@@ -151,7 +151,8 @@ namespace Landis.Extension.Insects
                     DistributionType dist = insect.InitialPatchDistr;
                     double targetArea = Distribution.GenerateRandomNum(dist, insect.InitialPatchValue1, insect.InitialPatchValue2);
                     
-                     PlugIn.ModelCore.UI.WriteLine("  Target Patch Area={0:0.0}.", targetArea);
+                    // ARJAN
+                    //PlugIn.ModelCore.UI.WriteLine("  Target Patch Area={0:0.0}.", targetArea);
                     double areaSelected = 0.0;
             
                     //loop through stand, defoliating patches of size target area
