@@ -11,7 +11,7 @@ min(initialOutbreakProb*InitialPatchOutbreakSensitivity + initialAreaCalibratorR
 hist(rweibull(1000,InitialPatchValue1,InitialPatchValue2),nclass=50,col=1,xlab="Area (ha?)")
 mean(rweibull(1000,InitialPatchValue1,InitialPatchValue2))
 
-ilog <- read.csv("F:\\LANDIS\\examples\\Biomass Insects\\Insects\\Insect-log.csv")
+ilog <- read.csv("C:\\BRM\\LANDIS_II\\Code\\landis-extensions\\trunk\\biomass-insects\\branches\\version-syrup-testing\\tests\\Insects\\Insect-log.csv")
 
 i1 <- ilog[ilog$InsectName=="Insect1",]
 i2 <- ilog[ilog$InsectName=="Insect2",]
