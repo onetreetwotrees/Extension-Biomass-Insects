@@ -31,13 +31,23 @@ namespace Landis.Extension.Insects
         // This method replaces the delegate method.  It is called every year when
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
+        //static int LastYearDefoliationCohortWasCalled = int.MinValue; // Add this for error capture. Ensure timestep for succession is annual. Previous method doesn't work with new biomass library.
+        //static bool TimeStepChecked = false;
 
         public static double DefoliateCohort(ActiveSite site,
                                          ISpecies species,
                                          int cohortBiomass,
                                          int siteBiomass)
         {
-
+        //    if (TimeStepChecked == false)
+        //    {
+        //       if (LastYearDefoliationCohortWasCalled > 0 && PlugIn.ModelCore.CurrentTime - LastYearDefoliationCohortWasCalled > 1)
+	    //            {
+        //                throw new System.Exception("  CAUTION! If using Biomass Insects, Succession Extension should be operating at an ANNUAL time step.");
+	    //            }
+	    //        LastYearDefoliationCohortWasCalled = PlugIn.ModelCore.CurrentTime;
+	   //         TimeStepChecked = true;
+       //    }
             // PlugIn.ModelCore.UI.WriteLine("   Calculating insect defoliation...");
 
             int sppIndex = species.Index;
@@ -80,10 +90,6 @@ namespace Landis.Extension.Insects
                         if (neighbor != null && neighbor.IsActive)
                         {
                             neighborCnt++;
-
-                            // The previous year...
-                            //if(SiteVars.DefoliationByYear[neighbor].ContainsKey(PlugIn.ModelCore.CurrentTime - 1))
-                            //    sumNeighborhoodDefoliation += SiteVars.DefoliationByYear[neighbor][PlugIn.ModelCore.CurrentTime - 1];
                             sumNeighborhoodDefoliation += insect.LastYearDefoliation[neighbor];
                         }
                     }

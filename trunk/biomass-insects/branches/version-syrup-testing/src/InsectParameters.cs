@@ -14,13 +14,13 @@ namespace Landis.Extension.Insects
     public interface IInsect
     {
         string Name {get;set;}
-        double MeanDuration {get;set;}
-        int StdDevDuration {get;set;}
+        DistributionType DurationDistribution { get; set; }
+        double DurationParameter1 {get;set;}
+        double DurationParameter2 { get; set; }
         int MeanTimeBetweenOutbreaks {get;set;}
         int StdDevTimeBetweenOutbreaks {get;set;}
         int NeighborhoodDistance {get;set;}
 
-        double InitialPatchShapeCalibrator {get;set;}
         double InitialPatchOutbreakSensitivity { get; set; }
         DistributionType InitialPatchDistr { get; set; }
         double InitialPatchValue1 {get;set;}
@@ -63,13 +63,13 @@ namespace Landis.Extension.Insects
         : IInsect
     {
         private string name;
-        private double meanDuration;
-        private int stdDevDuration;
+        private DistributionType durationDistribution;
+        private double durationParameter1;
+        private double durationParameter2;
         private int meanTimeBetweenOutbreaks;
         private int stdDevTimeBetweenOutbreaks;
         private int neighborhoodDistance;
 
-        private double initialPatchShapeCalibrator;
         private double initialPatchOutbreakSensitivity;
         private DistributionType initialPatchDistr;
         private double initialPatchValue1;
@@ -113,28 +113,40 @@ namespace Landis.Extension.Insects
         }
 
         //---------------------------------------------------------------------
-        public double MeanDuration
+        public DistributionType DurationDistribution
+        {
+            get
+            {
+                return durationDistribution;
+            }
+            set
+            {
+                durationDistribution = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public double DurationParameter1
         {
             get {
-                return meanDuration;
+                return durationParameter1;
             }
             set {
                 if (value <= 0)
                     throw new InputValueException(value.ToString(), "Value must be  > 0.");
-                meanDuration = value;
+                durationParameter1 = value;
             }
         }
         //---------------------------------------------------------------------
-        public int StdDevDuration
+        public double DurationParameter2
         {
             get {
-                return stdDevDuration;
+                return durationParameter2;
             }
             set {
                 if (value < 0)
                         throw new InputValueException(value.ToString(),
                                                       "Value must be  > 0.");
-                 stdDevDuration = value;
+                durationParameter2 = value;
             }
         }
         //---------------------------------------------------------------------
@@ -174,18 +186,7 @@ namespace Landis.Extension.Insects
                  neighborhoodDistance = value;
             }
         }
-        //---------------------------------------------------------------------
-        public double InitialPatchShapeCalibrator
-        {
-            get {
-                return initialPatchShapeCalibrator;
-            }
-            set {
-                 if (value > 1.0 || value < 0.0)
-                        throw new InputValueException(value.ToString(), "Value must be  < 1.0 and > 0.0.");
-                 initialPatchShapeCalibrator = value;
-            }
-        }
+
         //---------------------------------------------------------------------
         public double InitialPatchOutbreakSensitivity
         {

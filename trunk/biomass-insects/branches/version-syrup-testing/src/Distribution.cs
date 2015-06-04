@@ -6,7 +6,7 @@ using Edu.Wisc.Forest.Flel.Util;
 
 namespace Landis.Extension.Insects
 {
-    public enum DistributionType {Gamma, Beta, Weibull};
+    public enum DistributionType {Gamma, Beta, Weibull, Normal, Exponential};
 
     public interface IDistribution
     {
@@ -69,45 +69,29 @@ namespace Landis.Extension.Insects
         {
         }
 
-/*        public Distribution(
-                        DistributionType name,
-                        double value1,
-                        double value2
-                        )
-        {
-            this.name = name;
-            this.value1 = value1;
-            this.value2 = value2;
-        }*/
         //---------------------------------------------------------------------
 
         public static double GenerateRandomNum(DistributionType dist, double parameter1, double parameter2)
         {
             double randomNum = 0.0;
-            /*if(dist == DistributionType.Normal)
+            if(dist == DistributionType.Normal)
             {
-                NormalDistribution randVar = new NormalDistribution(RandomNumberGenerator.Singleton);
-                randVar.Mu = parameter1;      // mean
-                randVar.Sigma = parameter2;   // std dev
-                randomNum = randVar.NextDouble();
+                PlugIn.ModelCore.NormalDistribution.Mu = parameter1; //mean
+                PlugIn.ModelCore.NormalDistribution.Sigma = parameter2; // std dev
+                randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
+
             }
-            if(dist == DistributionType.Lognormal)
+            if (dist == DistributionType.Exponential)
             {
-                LognormalDistribution randVar = new LognormalDistribution(RandomNumberGenerator.Singleton);
-                randVar.Mu = parameter1;      // mean
-                randVar.Sigma = parameter2;   // std dev
-                randomNum = randVar.NextDouble();
-            }*/
+                PlugIn.ModelCore.ExponentialDistribution.Lambda = parameter1;
+                randomNum = PlugIn.ModelCore.ExponentialDistribution.NextDouble();
+            }
             if(dist == DistributionType.Weibull)
             {
                 PlugIn.ModelCore.WeibullDistribution.Alpha = parameter1;// mean
                 PlugIn.ModelCore.WeibullDistribution.Lambda = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.WeibullDistribution.NextDouble();
                 
-                //WeibullDistribution randVar = new WeibullDistribution(RandomNumberGenerator.Singleton);
-                //randVar.Alpha = parameter1;      
-                //randVar.Lambda = parameter2;   
-                //randomNum = randVar.NextDouble();
             }
 
             if(dist == DistributionType.Gamma)
@@ -116,10 +100,6 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.GammaDistribution.Theta = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.GammaDistribution.NextDouble();
 
-                //GammaDistribution randVar = new GammaDistribution(RandomNumberGenerator.Singleton);
-                //randVar.Alpha = parameter1;      // mean
-                //randVar.Theta = parameter2;   // std dev
-                //randomNum = randVar.NextDouble();
             }
             if(dist == DistributionType.Beta)
             {
@@ -127,10 +107,6 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.BetaDistribution.Beta = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
 
-                //BetaDistribution randVar = new BetaDistribution(RandomNumberGenerator.Singleton);
-                //randVar.Alpha = parameter1;      // mean
-                //randVar.Beta = parameter2;   // std dev
-                //randomNum = randVar.NextDouble();
             }
             return randomNum;
         }

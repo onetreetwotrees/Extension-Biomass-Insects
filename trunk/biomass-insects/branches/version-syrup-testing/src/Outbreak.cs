@@ -20,14 +20,18 @@ namespace Landis.Extension.Insects
         //collect all 8 relative neighbor locations in array
         private static RelativeLocation[] all_neighbor_locations = new RelativeLocation[]
         {
-                new RelativeLocation(-1,0),
-                new RelativeLocation(1,0),
-                new RelativeLocation(0,-1),
-                new RelativeLocation(0,1),
-                //new RelativeLocation(-1,-1),
-                //new RelativeLocation(-1,1),
-                //new RelativeLocation(1,-1),
-                //new RelativeLocation(1,1)
+                new RelativeLocation(-1,0),  //north
+                new RelativeLocation(1,0),   //south
+                new RelativeLocation(0,-1),  //west
+                new RelativeLocation(0,1),   //east
+                new RelativeLocation(-1,-1), //northwest
+                new RelativeLocation(-1,1),  //northeast
+                new RelativeLocation(1,-1),  //southwest
+                new RelativeLocation(1,1),    //southeast
+                new RelativeLocation(-2,0),  //north2cells
+                new RelativeLocation(2,0),  //south2cells
+                new RelativeLocation(0,-2), //west2cells
+                new RelativeLocation(0,2)  //east2cells
         };
 
         //---------------------------------------------------------------------
@@ -196,7 +200,7 @@ namespace Landis.Extension.Insects
                                 }*/
                                 
                                 //check if it's a valid neighbor:
-                                if (SiteVars.InitialOutbreakProb[neighbor] * insect.InitialPatchShapeCalibrator > randomNum)
+                                if (SiteVars.InitialOutbreakProb[neighbor] > randomNum)
                                 {
                                     sitesToConsider.Enqueue((ActiveSite) neighbor);
                                 }

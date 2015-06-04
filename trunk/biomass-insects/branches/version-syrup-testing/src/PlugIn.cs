@@ -96,10 +96,10 @@ namespace Landis.Extension.Insects
 
                 insect.Neighbors = GetNeighborhood(insect.NeighborhoodDistance);
 
-                int i=0;
+                //int i=0;
 
-                foreach(RelativeLocation location in insect.Neighbors)
-                    i++;
+                //foreach(RelativeLocation location in insect.Neighbors)
+                //    i++;
 
                 //if(insect.Neighbors != null)
                     // PlugIn.ModelCore.UI.WriteLine("   Biomass Insects:  Dispersal Neighborhood = {0} neighbors.", i);
@@ -119,8 +119,6 @@ namespace Landis.Extension.Insects
 
             log.AutoFlush = true;
             log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated0_33,NumSitesDefoliated33_66,NumSitesDefoliated66_100,NumOutbreakInitialSites,MortalityBiomassKg");
-            //foreach (IEcoregion ecoregion in Ecoregions.Dataset)
-            //      log.Write(",{0}", ecoregion.MapCode);
             log.WriteLine("");
 
         }
@@ -143,6 +141,9 @@ namespace Landis.Extension.Insects
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
 
+                if (insect.MortalityYear != PlugIn.ModelCore.CurrentTime)
+                    insect.LastBioRemoved = 0;
+
                 // Copy the data from current to last
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                     insect.LastYearDefoliation[site] = insect.ThisYearDefoliation[site];
@@ -156,32 +157,26 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.NormalDistribution.Sigma = 1.0;
                 double randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
 
-                PlugIn.ModelCore.ExponentialDistribution.Lambda = insect.MeanDuration;      // rate
-                double randomNumE = PlugIn.ModelCore.ExponentialDistribution.NextDouble();
+                DistributionType distDuration = insect.DurationDistribution;
+
+                double randomNumE = Distribution.GenerateRandomNum(distDuration, insect.DurationParameter1, insect.DurationParameter2);
 
                 // First, has enough time passed since the last outbreak? This is calculated each year, 
                 // but only used in last year of an outbreak to generate next outbreak characteristics.
                 double timeBetweenOutbreaks = insect.MeanTimeBetweenOutbreaks + (insect.StdDevTimeBetweenOutbreaks * randomNum);
-                double duration = System.Math.Round(randomNumE + 1);
+                double duration = System.Math.Max(System.Math.Round(randomNumE) + 1,1); // Duration cannot be less than 1. Added to allow Normal distribution parameters.
                 double timeAfterDuration = timeBetweenOutbreaks - duration;
-
-                //if (timeAfterDuration <= 1.0)
-                //{
-                //    PlugIn.ModelCore.UI.WriteLine("Time Between Outbreaks TOO SMALL:  {0}, {1}, {2}.", timeBetweenOutbreaks, duration, timeAfterDuration);
-                //    throw new ApplicationException("Error: New timeAfterDuration is <= 1, Adjust timing parameters");
-                //}
 
                 // Users can parameterize model to have overlapping outbreaks, but then patches will not initialize correctly. 
                 // Do below to prevent overlapping outbreaks of same insect. This will affect the realized distribution of time between outbreaks somewhat. 
                 while (timeAfterDuration <= 1.0)
                 {
+                    PlugIn.ModelCore.UI.WriteLine("CAUTION: Time Between Outbreaks TOO SMALL (< 1), you may need to adjust timing parameters:  {0}.", timeAfterDuration);
                     timeBetweenOutbreaks = timeBetweenOutbreaks + 1;
                     timeAfterDuration = timeBetweenOutbreaks - duration;
                 }
 
-                PlugIn.ModelCore.UI.WriteLine("Calculated time between = {0}.  inputMeanTime={1}, inputStdTime={2}., timeAftDur={3}.", timeBetweenOutbreaks, insect.MeanTimeBetweenOutbreaks, insect.StdDevTimeBetweenOutbreaks,timeAfterDuration);
-                //PlugIn.ModelCore.UI.WriteLine("Calculated duration     = {0}.  inputMeanDura={1}, inputStdDura={2}.", duration, insect.MeanDuration, insect.StdDevDuration);
-                //PlugIn.ModelCore.UI.WriteLine("Insect Start Time = {0}, Stop Time = {1}.", insect.OutbreakStartYear, insect.OutbreakStopYear);
+                //PlugIn.ModelCore.UI.WriteLine("Calculated time between = {0:0.00}.  inputMeanTime={1:0.00}, inputStdTime={2:0.00}., timeAftDur={3:0.00}.", timeBetweenOutbreaks, insect.MeanTimeBetweenOutbreaks, insect.StdDevTimeBetweenOutbreaks, timeAfterDuration);
 
                 // The logic below determines whether an outbreak is active. And sets a new outbreak duration and timeBetweenOutbreaks
                 // for the next outbreak if is the last year of an outbreak.
@@ -201,7 +196,7 @@ namespace Landis.Extension.Insects
                 {
                     // PlugIn.ModelCore.UI.WriteLine("   An outbreak starts or continues.  Start and stop time do not change.");
                     insect.ActiveOutbreak = true;
-                    // PlugIn.ModelCore.UI.WriteLine("   {0} is active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
+                     PlugIn.ModelCore.UI.WriteLine("   {0} is active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
 
                     insect.MortalityYear = PlugIn.ModelCore.CurrentTime + 1;
                     insect.LastStartYear = insect.OutbreakStartYear; // Added here for Brian's log file.
@@ -228,7 +223,7 @@ namespace Landis.Extension.Insects
                 {
                     // PlugIn.ModelCore.UI.WriteLine("   In between outbreaks, reset start and stop times.");
                     insect.ActiveOutbreak = true;
-                    // PlugIn.ModelCore.UI.WriteLine("   {0} is active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
+                     PlugIn.ModelCore.UI.WriteLine("   {0} is active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
 
                     insect.MortalityYear = PlugIn.ModelCore.CurrentTime + 1;
                     insect.LastStartYear = insect.OutbreakStartYear; // Added here for Brian's log file.
@@ -263,7 +258,7 @@ namespace Landis.Extension.Insects
                 int numSitesActive = 0; // Just get a sum of all active sites to calculate mean defoliation accurately for log file.
 
                 // ONly calculate for log file when outbreak or mortality is active <- Modified, JRF, add to log file each year.
-                if (insect.ActiveOutbreak || (insect.LastStopYear + 1 >= PlugIn.ModelCore.CurrentTime)  || (insect.LastBioRemoved > 0))
+                if (insect.ActiveOutbreak || insect.SingleOutbreakYear || (insect.LastStopYear + 1 >= PlugIn.ModelCore.CurrentTime) || (insect.LastBioRemoved > 0))
                 {
                     foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                     {
@@ -301,7 +296,7 @@ namespace Landis.Extension.Insects
                     if (meanDefoliation > 0)
                     {
 
-                            log.Write("{0},{1},{2},{3},{4:0.00},{5},{6},{7},{8},{9}",
+                            log.Write("{0},{1},{2},{3},{4:0.0000},{5},{6},{7},{8},{9}",
                                     PlugIn.ModelCore.CurrentTime-1,  //0
                                     insect.Name,  //1
                                     insect.LastStartYear,  //2
@@ -314,10 +309,11 @@ namespace Landis.Extension.Insects
                                     insect.LastBioRemoved //9
                                     );
                     }
+
                     else
                     {
-                        log.Write("{0},{1},{2},{3},{4:0.00},{5},{6},{7},{8},{9}",
-                                PlugIn.ModelCore.CurrentTime-1,  //0
+                        log.Write("{0},{1},{2},{3},{4:0.0000},{5},{6},{7},{8},{9}",
+                                PlugIn.ModelCore.CurrentTime - 1,  //0
                                 insect.Name,  //1
                                 0,  //2
                                 0,  //3
@@ -325,10 +321,11 @@ namespace Landis.Extension.Insects
                                 numSites0_33, //5
                                 numSites33_66,  //6
                                 numSites66_100, //7
-                                insect.InitialSites, //8
+                                0, //8
                                 insect.LastBioRemoved //9
                                 );
                     }
+
 
                     //foreach (IEcoregion ecoregion in Ecoregions.Dataset)
                     //    log.Write(",{0}", 1);
@@ -407,16 +404,7 @@ namespace Landis.Extension.Insects
 
                 //insect.ThisYearDefoliation.ActiveSiteValues = 0.0;  //reset this year to 0 for all sites, this was already done at the top of loop to initialize defoliation patchs, Outbreak.cs
                 insect.LastBioRemoved = totalBioRemoved; //Assign variables for the logfile
-                //if (insect.OutbreakStopYear <= PlugIn.ModelCore.CurrentTime
-                //        && timeAfterDuration > PlugIn.ModelCore.CurrentTime - insect.OutbreakStopYear)
-                //{
-                    //insect.LastStartYear = insect.OutbreakStartYear;
-                    //insect.LastStopYear = insect.OutbreakStopYear;
-                    //insect.OutbreakStartYear = PlugIn.ModelCore.CurrentTime + (int)timeBetweenOutbreaks;
-                    //insect.OutbreakStopYear = insect.OutbreakStartYear + (int)duration;
-                    // PlugIn.ModelCore.UI.WriteLine("  Insect Start Time = {0}, Stop Time = {1}.", insect.OutbreakStartYear, insect.OutbreakStopYear);
 
-                //}
             }
 
 
