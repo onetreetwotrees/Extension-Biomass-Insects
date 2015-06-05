@@ -21,6 +21,7 @@ namespace Landis.Extension.Insects
         private static ISiteVar<double> initialOutbreakProb;
         private static ISiteVar<ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
+        private static ISiteVar<string> insectName;
 
 
         //---------------------------------------------------------------------
@@ -34,10 +35,12 @@ namespace Landis.Extension.Insects
             initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            insectName = PlugIn.ModelCore.Landscape.NewSiteVar<string>();
 
             //SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
+            SiteVars.InsectName.ActiveSiteValues = "";
 
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -51,6 +54,8 @@ namespace Landis.Extension.Insects
                 throw new System.ApplicationException(mesg);
             }
 
+            PlugIn.ModelCore.RegisterSiteVar(SiteVars.TimeOfLastEvent, "BiomassInsects.TimeOfLastEvent");
+            PlugIn.ModelCore.RegisterSiteVar(SiteVars.InsectName, "BiomassInsects.InsectName");
 
         }
         //---------------------------------------------------------------------
@@ -119,5 +124,14 @@ namespace Landis.Extension.Insects
                 return timeOfLastEvent;
             }
         }
+        //---------------------------------------------------------------------
+        public static ISiteVar<string> InsectName
+        {
+            get
+            {
+                return insectName;
+            }
+        }
+        //---------------------------------------------------------------------
     }
 }

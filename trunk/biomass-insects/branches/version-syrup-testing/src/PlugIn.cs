@@ -58,7 +58,7 @@ namespace Landis.Extension.Insects
         public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
-            SiteVars.Initialize();
+            //SiteVars.Initialize();
             InputParameterParser parser = new InputParameterParser();
             parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
 
