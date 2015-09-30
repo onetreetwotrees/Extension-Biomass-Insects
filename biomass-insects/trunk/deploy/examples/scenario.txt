@@ -12,7 +12,7 @@ CellLength  30 << meters
 
 >> Succession Extension     Initialization File
 >> --------------------     -------------------
-   "Biomass Succession"     biomass-succession.txt
+   "Biomass Succession"     biomass-succession_jrf.txt
 
 
 >> Disturbance Extensions   Initialization File
@@ -26,4 +26,4 @@ CellLength  30 << meters
 >> -----------------        -------------------
 >>    "Output Biomass"		biomass.output.txt
 
->>  RandomNumberSeed  3,359                       << randomly generated using the current time
+  RandomNumberSeed  3,359                       << randomly generated using the current time

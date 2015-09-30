@@ -1,7 +1,7 @@
 //  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
 
-using Landis.Extension.Succession.Biomass;
+
 using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
@@ -38,12 +38,6 @@ namespace Landis.Extension.Insects
             // PlugIn.ModelCore.UI.WriteLine("   Calculating cohort growth reduction due to insect defoliation...");
 
             double summaryGrowthReduction = 0.0;
-
-            int siteBiomass = 0;
-
-            foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
-                foreach (ICohort spp_cohort in spp)
-                    siteBiomass += spp_cohort.Biomass;
 
             int sppIndex = cohort.Species.Index;
 
@@ -83,8 +77,6 @@ namespace Landis.Extension.Insects
 
                 double growthReduction = 1.0 - (cumulativeDefoliation * slope + intercept);
 
-                double weightedGD = (growthReduction * ((double) cohort.Biomass / (double) siteBiomass));
-                //Below looks like it should be multiplied by weightedGD above, but it isn't?? CHECK!
                 summaryGrowthReduction += growthReduction;
                 // PlugIn.ModelCore.UI.WriteLine("Time={0}, Spp={1}, SummaryGrowthReduction={2:0.00}.", PlugIn.ModelCore.CurrentTime,cohort.Species.Name, summaryGrowthReduction);
 

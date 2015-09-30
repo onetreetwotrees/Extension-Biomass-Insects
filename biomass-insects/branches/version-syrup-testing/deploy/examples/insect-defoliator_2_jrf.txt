@@ -2,17 +2,18 @@ LandisData InsectDefoliator
 
 InsectName	Insect2 << generic pine defoliator
 
-MeanDuration	2
+DurationDistribution	Normal << Weibull, Normal or Exponential.
 
-StdDevDuration	0
+DurationParameter1	2 << Exponential rate, Weibull shape, or Normal mean.
+
+DurationParameter2	0.5   << Weibull scale or Normal standard deviation. If using Exponential, set to 1 and ignore.
+
 
 MeanTimeBetweenOutbreaks	4
 
 StdDevTimeBetweenOutbreaks	1
 
 NeighborhoodSize	250	<< meters
-
-InitialPatchShapeCalibrator	1.0 	<< must be <= 1.0  Higher = Rounder; Lower = tracks host quality closer.
 
 >> Lower this number to lower probabilities of patch generation, i.e. start fewer patches. 
 InitialPatchOutbreakSensitivity	0.003 	<< must be > 0.0

@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <StartArguments>scenario-GRSF_GM_harvest_400_9pix.txt</StartArguments>
-    <StartWorkingDirectory>C:\Users\Jane\NASA_Project\Landis\GRSF9pix</StartWorkingDirectory>
-  </PropertyGroup>
-</Project>
