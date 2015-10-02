@@ -22,7 +22,7 @@ namespace Landis.Extension.Insects
         private static ISiteVar<ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
         private static ISiteVar<string> insectName;
-
+        private static ISiteVar<int> siteDefoliation; //Brian M update 
 
         //---------------------------------------------------------------------
 
@@ -36,11 +36,13 @@ namespace Landis.Extension.Insects
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             insectName = PlugIn.ModelCore.Landscape.NewSiteVar<string>();
+            siteDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<int>(); //Brian M update 
 
             //SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
             SiteVars.InsectName.ActiveSiteValues = "";
+            SiteVars.SiteDefoliation.ActiveSiteValues = 0; //Brian M update
 
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -56,6 +58,7 @@ namespace Landis.Extension.Insects
 
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.TimeOfLastEvent, "BiomassInsects.TimeOfLastEvent");
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.InsectName, "BiomassInsects.InsectName");
+            PlugIn.ModelCore.RegisterSiteVar(SiteVars.SiteDefoliation, "BiomassInsects.PctDefoliation");
 
         }
         //---------------------------------------------------------------------
@@ -133,5 +136,14 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
+        public static ISiteVar<int> SiteDefoliation  //Brian M update  
+        {
+            get
+            {
+                return siteDefoliation;
+            }
+        }
+         //---------------------------------------------------------------------  
+
     }
 }
