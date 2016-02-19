@@ -58,6 +58,10 @@ namespace Landis.Extension.Insects
             ReadVar(sdD);
             parameters.DurationParameter2 = sdD.Value;
 
+            InputVar<double> maxDur = new InputVar<double>("MaxDuration");
+            if(ReadOptionalVar(maxDur));           
+                parameters.MaxDuration = maxDur.Value;
+
             InputVar<int> mTBO = new InputVar<int>("MeanTimeBetweenOutbreaks");
             ReadVar(mTBO);
             parameters.MeanTimeBetweenOutbreaks = mTBO.Value;

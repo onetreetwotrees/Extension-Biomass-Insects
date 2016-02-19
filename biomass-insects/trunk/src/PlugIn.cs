@@ -4,6 +4,7 @@
 using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
+using Landis.Library.Metadata;
 using System.Collections.Generic;
 using Edu.Wisc.Forest.Flel.Util;
 using System.IO;
@@ -21,9 +22,10 @@ namespace Landis.Extension.Insects
     {
         public static readonly ExtensionType Type = new ExtensionType("disturbance:insects");
         public static readonly string ExtensionName = "Biomass Insects";
+        public static MetadataTable<EventsLog> eventLog;
 
         private string mapNameTemplate;
-        private StreamWriter log;
+        //private StreamWriter log;
         private static List<IInsect> manyInsect;
         private IInputParameters parameters;
         private static ICore modelCore;
@@ -80,6 +82,7 @@ namespace Landis.Extension.Insects
             mapNameTemplate = parameters.MapNamesTemplate;
             manyInsect = parameters.ManyInsect;
 
+            MetadataHandler.InitializeMetadata(parameters.Timestep, parameters.MapNamesTemplate, parameters.LogFileName, manyInsect, ModelCore);
             SiteVars.Initialize();
             Defoliate.Initialize(parameters);
             GrowthReduction.Initialize(parameters);
@@ -108,7 +111,7 @@ namespace Landis.Extension.Insects
             }
 
 
-             PlugIn.ModelCore.UI.WriteLine("   Opening BiomassInsect log file \"{0}\" ...", parameters.LogFileName);
+            /* PlugIn.ModelCore.UI.WriteLine("   Opening BiomassInsect log file \"{0}\" ...", parameters.LogFileName);
             try {
                 log = Landis.Data.CreateTextFile(parameters.LogFileName);
             }
@@ -120,6 +123,7 @@ namespace Landis.Extension.Insects
             log.AutoFlush = true;
             log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated0_33,NumSitesDefoliated33_66,NumSitesDefoliated66_100,NumOutbreakInitialSites,MortalityBiomassKg");
             log.WriteLine("");
+             * */
 
         }
 
@@ -177,7 +181,20 @@ namespace Landis.Extension.Insects
                 // First, has enough time passed since the last outbreak? This is calculated each year, 
                 // but only used in last year of an outbreak to generate next outbreak characteristics.
                 double timeBetweenOutbreaks = insect.MeanTimeBetweenOutbreaks + (insect.StdDevTimeBetweenOutbreaks * randomNum);
-                double duration = System.Math.Max(System.Math.Round(randomNumE) + 1,1); // Duration cannot be less than 1. Added to allow Normal distribution parameters.
+                double duration = System.Math.Round(randomNumE);
+                if (distDuration == DistributionType.Exponential || distDuration == DistributionType.Normal)
+                {
+                    duration = System.Math.Max(duration + 1, 1); // Duration cannot be less than 1. Added to allow Normal distribution parameters.
+                }
+                else
+                {
+                    duration = System.Math.Max(duration, 1);  // Duration cannot be less than 1. 
+                }
+
+                // Apply optional maximum - if not used maxDur = Inf
+                if (duration > insect.MaxDuration)
+                    duration = insect.MaxDuration;
+
                 double timeAfterDuration = timeBetweenOutbreaks - duration;
 
                 // Users can parameterize model to have overlapping outbreaks, but then patches will not initialize correctly. 
@@ -299,13 +316,14 @@ namespace Landis.Extension.Insects
                 {
                     totalBioRemoved += SiteVars.BiomassRemoved[site]; // kg across all defoliated sites
                 }
-
+                insect.LastBioRemoved = totalBioRemoved; //Assign variables for the logfile
                 // PlugIn.ModelCore.UI.WriteLine("   totalBioRemoved={0}.", totalBioRemoved);
 
 
                 // ONly add to log & output maps during outbreak <- Modified, JRF, add to log file each year.
                 //if ((insect.ActiveOutbreak && insect.OutbreakStartYear < PlugIn.ModelCore.CurrentTime) || (meanDefoliation > 0) || (insect.LastBioRemoved > 0))
                 //{
+                /*  Old code for log file
                     if (meanDefoliation > 0)
                     {
 
@@ -344,7 +362,33 @@ namespace Landis.Extension.Insects
                     //    log.Write(",{0}", 1);
 
                     log.WriteLine("");
+                */
 
+                eventLog.Clear();
+                EventsLog el = new EventsLog();
+
+                el.Time = PlugIn.ModelCore.CurrentTime - 1;
+                el.InsectName = insect.Name;
+                el.MeanDefoliation = meanDefoliation;
+                el.NumSitesDefoliated0_33 = numSites0_33;
+                el.NumSitesDefoliated33_66 = numSites33_66;
+                el.NumSitesDefoliated66_100 = numSites66_100;
+                el.NumOutbreakInitialSites = insect.InitialSites;
+                el.MortalityBiomass = insect.LastBioRemoved;
+
+                if (insect.ActiveOutbreak)
+                {
+                    el.StartYear = insect.OutbreakStartYear;
+                    el.StopYear = insect.OutbreakStopYear;
+                }
+                else
+                {
+                    el.StartYear = insect.LastStartYear;
+                    el.StopYear = insect.LastStopYear;
+                }
+
+                eventLog.AddObject(el);
+                eventLog.WriteToFile();
 
                     //----- Write Insect Defoliation/GrowthReduction maps --------
                     string path = MapNames.ReplaceTemplateVars(mapNameTemplate, insect.Name, PlugIn.ModelCore.CurrentTime - 1);
@@ -416,7 +460,7 @@ namespace Landis.Extension.Insects
                 //}
 
                 //insect.ThisYearDefoliation.ActiveSiteValues = 0.0;  //reset this year to 0 for all sites, this was already done at the top of loop to initialize defoliation patchs, Outbreak.cs
-                insect.LastBioRemoved = totalBioRemoved; //Assign variables for the logfile
+                
 
             }
 
@@ -436,12 +480,12 @@ namespace Landis.Extension.Insects
 
             SiteVars.BiomassRemoved[eventArgs.Site] += eventArgs.Cohort.Biomass;
         }
-        //---------------------------------------------------------------------
-        private void LogEvent(int   currentTime)
-        {
-            log.Write("{0}", currentTime);
-            log.WriteLine("");
-        }
+        ////---------------------------------------------------------------------
+        //private void LogEvent(int   currentTime)
+        //{
+        //    log.Write("{0}", currentTime);
+        //    log.WriteLine("");
+        //}
 
         //---------------------------------------------------------------------
         // Generate a Relative RelativeLocation array of neighbors.

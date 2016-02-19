@@ -153,7 +153,10 @@ namespace Landis.Extension.Insects
                             //Most mortality studies restrospectively measure mortality for a number of years post disturbance. This model requires annualized mortality relationships and parameters, and will not work correctly with longer-term relationships. An earlier version subtracted background mortality from such relationships to get the yearly estimate.
 
                             //percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100))) / 100;
-                            percentMortality = (double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100;
+
+                            //BRM - Subtract the background mortality from the curve (mortality rate for 0 cumulative defoliation)
+                            double pctMort0 = (double)Math.Exp(slope * 0 * 100 + intercept) / 100;
+                            percentMortality = ((double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100) - pctMort0;
                             // PlugIn.ModelCore.UI.WriteLine("cumulativeDefoliation={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", cumulativeDefoliation, cohort.Biomass, percentMortality);
                         }
                         // **** End new section from JRF ****

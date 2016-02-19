@@ -79,11 +79,12 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.NormalDistribution.Mu = parameter1; //mean
                 PlugIn.ModelCore.NormalDistribution.Sigma = parameter2; // std dev
                 randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
-
+                randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
             }
             if (dist == DistributionType.Exponential)
             {
                 PlugIn.ModelCore.ExponentialDistribution.Lambda = parameter1;
+                randomNum = PlugIn.ModelCore.ExponentialDistribution.NextDouble();
                 randomNum = PlugIn.ModelCore.ExponentialDistribution.NextDouble();
             }
             if(dist == DistributionType.Weibull)
@@ -91,7 +92,7 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.WeibullDistribution.Alpha = parameter1;// mean
                 PlugIn.ModelCore.WeibullDistribution.Lambda = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.WeibullDistribution.NextDouble();
-                
+                randomNum = PlugIn.ModelCore.WeibullDistribution.NextDouble();
             }
 
             if(dist == DistributionType.Gamma)
@@ -99,14 +100,14 @@ namespace Landis.Extension.Insects
                 PlugIn.ModelCore.GammaDistribution.Alpha = parameter1;// mean
                 PlugIn.ModelCore.GammaDistribution.Theta = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.GammaDistribution.NextDouble();
-
+                randomNum = PlugIn.ModelCore.GammaDistribution.NextDouble();
             }
             if(dist == DistributionType.Beta)
             {
                 PlugIn.ModelCore.BetaDistribution.Alpha = parameter1;// mean
                 PlugIn.ModelCore.BetaDistribution.Beta = parameter2;// std dev
                 randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
-
+                randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
             }
             return randomNum;
         }

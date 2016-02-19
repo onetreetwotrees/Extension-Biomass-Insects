@@ -183,6 +183,10 @@ namespace Landis.Extension.Insects
                 // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
 
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
+                if (insect.ThisYearDefoliation[site] > 1.0) // Cannot exceed 100% defoliation
+                {
+                    insect.ThisYearDefoliation[site] = 1.0;
+                }
                 totalDefoliation += defoliation;
             }
 

@@ -49,6 +49,7 @@ namespace Landis.Extension.Insects
         int LastStopYear { get; set; }
         int LastBioRemoved { get; set; }
         string AnnMort { get; set; }
+        double MaxDuration { get; set; }
 
 
     }
@@ -99,6 +100,7 @@ namespace Landis.Extension.Insects
         private ISiteVar<double> neighborhoodDefoliation;
 
         private string annMort;
+        private double maxDur;
 
         //---------------------------------------------------------------------
 
@@ -437,6 +439,18 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
+        public double MaxDuration
+        {
+            get
+            {
+                return maxDur;
+            }
+            set
+            {
+                maxDur = value;
+            }
+        }
+        //---------------------------------------------------------------------
         public InsectParameters(int sppCount)
         {
             sppTable = new List<ISppParameters>(sppCount);
@@ -458,6 +472,7 @@ namespace Landis.Extension.Insects
             lastStopYear = 0;
             lastBioRemoved = 0;
             annMort = "";
+            maxDur = int.MaxValue;
             
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)

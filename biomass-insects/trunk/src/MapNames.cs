@@ -50,5 +50,13 @@ namespace Landis.Extension.Insects
             varValues[InsectNameVar] = insectName;
             return OutputPath.ReplaceTemplateVars(template, varValues);
         }
+        //---------------------------------------------------------------------
+        public static string ReplaceTemplateVarsMetadata(string template,
+                                                 string insectName)
+        {
+            varValues[InsectNameVar] = insectName;
+            varValues[TimestepVar] = "{timestep}";
+            return OutputPath.ReplaceTemplateVars(template, varValues);
+        }
     }
 }
