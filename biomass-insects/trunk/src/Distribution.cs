@@ -78,8 +78,13 @@ namespace Landis.Extension.Insects
             {
                 PlugIn.ModelCore.NormalDistribution.Mu = parameter1; //mean
                 PlugIn.ModelCore.NormalDistribution.Sigma = parameter2; // std dev
-                randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
-                randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
+                if (parameter2 == 0)
+                    randomNum = parameter1;
+                else
+                {
+                    randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
+                    randomNum = PlugIn.ModelCore.NormalDistribution.NextDouble();
+                }
             }
             if (dist == DistributionType.Exponential)
             {
@@ -106,8 +111,15 @@ namespace Landis.Extension.Insects
             {
                 PlugIn.ModelCore.BetaDistribution.Alpha = parameter1;// mean
                 PlugIn.ModelCore.BetaDistribution.Beta = parameter2;// std dev
-                randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
-                randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
+                if (parameter1 == 0)
+                    randomNum = 0;
+                else if (parameter2 == 0)
+                    randomNum = 1;
+                else
+                {
+                    randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
+                    randomNum = PlugIn.ModelCore.BetaDistribution.NextDouble();
+                }
             }
             return randomNum;
         }

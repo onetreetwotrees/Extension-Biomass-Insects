@@ -218,6 +218,7 @@ namespace Landis.Extension.Insects
                      double randomNum1 = PlugIn.ModelCore.GenerateUniform();
                     //insect.OutbreakStartYear = (int) (timeBetweenOutbreaks / 2.0) + 1;
                      insect.OutbreakStartYear = Math.Max(2, (int) (randomNum1 * timeBetweenOutbreaks + 1)); // New, try making 1st start year more random. 1st outbreak has to occur > year1 to for InitializeDefoliationPatches to work properly.
+                     insect.OutbreakStartYear = Math.Max(insect.OutbreakStartYear, insect.StartYear);  // BRM - optional start year (first outbreak can't be before StartYear)
                      insect.OutbreakStopYear  = insect.OutbreakStartYear + (int) duration - 1;
                     // PlugIn.ModelCore.UI.WriteLine("   {0} is not active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
                 }

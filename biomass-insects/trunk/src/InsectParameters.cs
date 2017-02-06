@@ -29,7 +29,8 @@ namespace Landis.Extension.Insects
         int OutbreakStartYear {get;set;}
         int OutbreakStopYear {get;set;}
         int MortalityYear {get; set;}
-        bool SingleOutbreakYear { get; set; }     
+        bool SingleOutbreakYear { get; set; }
+        int StartYear { get; set; }
 
         List<ISppParameters> SppTable{get;set;}
         List<ISusceptible> SusceptibleTable{get;set;}
@@ -86,6 +87,7 @@ namespace Landis.Extension.Insects
         private int lastStartYear;
         private int lastStopYear;
         private int lastBioRemoved;
+        private int startYear;
 
         private bool activeOutbreak;
 
@@ -424,6 +426,18 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
+        public int StartYear
+        {
+            get
+            {
+                return startYear;
+            }
+            set
+            {
+                startYear = value;
+            }
+        }
+        //---------------------------------------------------------------------
         public string AnnMort
         {
             get
@@ -473,6 +487,7 @@ namespace Landis.Extension.Insects
             lastBioRemoved = 0;
             annMort = "";
             maxDur = int.MaxValue;
+            startYear = 0;
             
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)

@@ -46,6 +46,10 @@ namespace Landis.Extension.Insects
             ReadVar(insectName);
             parameters.Name = insectName.Value;
 
+            InputVar<int> insectStartYear = new InputVar<int>("StartYear");
+            if (ReadOptionalVar(insectStartYear))
+                parameters.StartYear = insectStartYear.Value;
+
             InputVar<DistributionType> ddt = new InputVar<DistributionType>("DurationDistribution");
             ReadVar(ddt);
             parameters.DurationDistribution = ddt.Value;
