@@ -1,6 +1,0 @@
-This file is not generated when converting a Daily Climate to Monthly.
-To enable the generation of this file:
-set 'exportToTxtFormatFile = true;' in 'if (sourceTemporalGranularity == TemporalGranularity.Daily) 
- { 
- 	 exportToTxtFormatFile = false; ' in ClimateDataConvertor class.
-Caution: Note that the right AnnualCliamte_Monthly will not be generated if this generated Monthly-climate txt file is used as a climate input file.
