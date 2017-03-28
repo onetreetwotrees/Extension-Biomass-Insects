@@ -1,0 +1,30 @@
+LandisData  Scenario
+	  
+Duration  50
+
+Species   species_GRSF_new.txt  << GRSF = Green Ridge State Forest
+
+Ecoregions      ./ecoregions10.txt
+EcoregionsMap   ./soils10classsub.gis  << A sub-set of the total Green Ridge landscape
+
+CellLength  30 << meters, so cell area = 900 m2
+
+
+>> Succession Extension     Initialization File
+>> --------------------     -------------------
+   "Biomass Succession"     biomass-succession.txt
+
+
+>> Disturbance Extensions   Initialization File
+>> ----------------------   -------------------
+     "Biomass Insects"	    BiomassInsectsInput.txt
+>>     "Base Harvest"	    harvest_prescriptions_sub.txt 
+   
+>>   DisturbancesRandomOrder  yes  << optional parameter; default = no
+
+
+>> Output Extensions        Initialization File
+>> -----------------        -------------------
+    "Output Biomass"		biomass.output.txt
+
+>>  RandomNumberSeed  3,359                       << randomly generated using the current time

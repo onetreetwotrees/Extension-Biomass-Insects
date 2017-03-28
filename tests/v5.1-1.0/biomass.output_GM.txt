@@ -1,0 +1,21 @@
+LandisData  "Output Biomass"
+
+Timestep  1
+
+Species   QUERRUBR
+	  QUERALBA
+	  QUERPRIN
+	  QUERVELU
+	  ACERSACC
+	  PINUSTRO
+ 	  ACERRUBR
+          TSUGCANA
+	  FRAXAMER
+	  TILIAMER
+
+MapNames  output/biomass/{species}-{timestep}.gis
+
+
+DeadPools woody
+
+MapNames  output/biomass/{pool}-{timestep}.gis
