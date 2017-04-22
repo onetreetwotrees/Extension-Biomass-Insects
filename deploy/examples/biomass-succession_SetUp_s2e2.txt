@@ -1,15 +1,27 @@
 LandisData  "Biomass Succession"
 
-Timestep  1
 
-SeedingAlgorithm  WardSeedDispersal
+>>--------------------
+>> REQUIRED INPUTS
+>>--------------------
 
-InitialCommunities      InitialCommunity_all.txt
-InitialCommunitiesMap   initial-communities.gis
+Timestep  			1
 
->> CalibrateMode yes
+SeedingAlgorithm		WardSeedDispersal
 
->> SpinUpMortalityFraction 0.0
+InitialCommunities		./biomass-succession_InitialCommunities_s2e2.txt
+InitialCommunitiesMap		./biomass-succession_InitialCommunities_s2e2.gis
+
+ClimateConfigFile		./biomass-succession_ClimateGenerator.txt	
+
+>> CalibrateMode 		yes
+
+>> SpinUpMortalityFraction 	0.0
+
+
+>>----------------------------
+>> LIFE HISTORY PARAMETERS
+>>----------------------------
 
 MinRelativeBiomass
 
@@ -73,9 +85,8 @@ EcoregionParameters
 eco1	600
 eco2	600
 
-DynamicInputFile	biomass-succession-dynamic-inputs.txt
- 	 
-AgeOnlyDisturbances:BiomassParameters  age-only-disturbances.txt
+DynamicInputFile			biomass-succession_DynamicInputs_s2e2.txt 
+AgeOnlyDisturbances:BiomassParameters  	biomass-succession_StdBiomassReductions.txt
  	 
 		 	 
 		 	 

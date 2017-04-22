@@ -1,0 +1,20 @@
+LandisData  "Output Biomass Reclass"
+
+Timestep   15
+
+
+ReclassMaps
+
+>> Map Name    Forest Type    Species
+>> --------    -------------  -------
+   reclass1 -> MapleHardwood  ACERSACC ACERRUBR FRAXAMER
+               NorthernPines  PINUSTRO
+               Oaks           QUERRUBR QUERALBA QUERCOCC QUERPRIN QUERVELU
+               OtherConifers  PINUECHI PINUPUNG
+               Other	      POPUTREM JUGLNIGR
+
+   reclass2 -> MapleHardwood  ACERSACC ACERRUBR FRAXAMER
+               Conifers       PINUSTRO PINUECHI PINUPUNG PINURIGI PINUSTRO PINUVIR
+
+
+MapFileNames   biomass-reclass/biomass-reclass-{reclass-map-name}-{timestep}.img
