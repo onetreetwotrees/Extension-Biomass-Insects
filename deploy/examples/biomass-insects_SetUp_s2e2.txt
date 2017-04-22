@@ -1,0 +1,25 @@
+LandisData "Biomass Insects"
+
+
+>>-------------------
+>> REQUIRED INPUTS
+>>------------------
+
+Timestep		1
+
+MapNames		insects/{insectName}-{timestep}.img		<<this is an output!
+
+LogFile			insects/Insect-log.csv				<<this is an output!
+
+InsectInputFiles	./biomass-insects_InsectDefoliator1_s2e2.txt
+			./biomass-insects_InsectDefoliator2_s2e2.txt
+
+>>----------
+>> OUTPUTS
+>>-----------
+
+
+
+
+
+

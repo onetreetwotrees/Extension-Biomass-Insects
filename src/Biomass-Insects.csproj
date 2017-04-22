@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,15 +9,11 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Landis.Extension.Insects</RootNamespace>
-    <AssemblyName>Landis.Extension.BiomassInsects</AssemblyName>
-    <StartupObject>
-    </StartupObject>
+	  <AssemblyName>Landis.Extension.BiomassInsects</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-    <OldToolsVersion>2.0</OldToolsVersion>
+    <FileAlignment>512</FileAlignment>
+  <!-- 
+    <OldToolsVersion>2.0</OldToolsVersion>  
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -33,6 +29,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+  -->  
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -47,49 +44,72 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>c:\program files\landis-ii\6.0\bin\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  <!--  
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  -->
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Edu.Wisc.Forest.Flel.Util">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\6.0\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>    
     </Reference>
+  <!--  
     <Reference Include="Landis.Console-6.0">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\Landis.Console-6.0.exe</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>   
     </Reference>
+ -->   
     <Reference Include="Landis.Core">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\6.0\Landis.Core.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Landis.Extension.Succession.Biomass">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Extension.Succession.Biomass.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Landis.Library.AgeOnlyCohorts">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.AgeOnlyCohorts.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Landis.Library.BiomassCohorts">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.BiomassCohorts.dll</HintPath>
+    <Reference Include="Landis.Library.Biomass-v1">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Landis.Library.BiomassCohorts-v2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Landis.Library.Climate">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Landis.Library.Cohorts">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Cohorts.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="Landis.Library.Metadata, Version=1.0.1.18786, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Landis.Library.Parameters-v1">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>    
+    <Reference Include="Landis.Library.Metadata">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Landis.Library.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Succession, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Landis.Library.Succession">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Succession.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Landis.SpatialModeling">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\6.0\Landis.SpatialModeling.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Troschuetz.Random">
-      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\6.0\Troschuetz.Random.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="Troschuetz.Random" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Defoliate.cs" />
@@ -110,8 +130,7 @@
     <Compile Include="Susceptible.cs" />
     <Compile Include="ShortPixel.cs" />
   </ItemGroup>
-  <ItemGroup>
-  </ItemGroup>
+<!--  
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
@@ -134,17 +153,28 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+-->  
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition=" '$(ExtraAssemblySearchDirs)' != '' ">
+  <AssemblySearchPaths>$(ExtraAssemblySearchDirs);$(AssemblySearchPaths)</AssemblySearchPaths>
+  </PropertyGroup>
+     
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
-  -->
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\extensions"</PostBuildEvent>
   </PropertyGroup>
+ -->
+
   <PropertyGroup>
     <PreBuildEvent>call $(SolutionDir)\install-libs.cmd</PreBuildEvent>
   </PropertyGroup>
