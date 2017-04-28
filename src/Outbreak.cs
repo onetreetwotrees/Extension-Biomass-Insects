@@ -2,8 +2,6 @@
 //  Authors:  Jane Foster, Robert M. Scheller
 
 using Landis.SpatialModeling;
-using Landis.Extension.Succession.Biomass;
-using Landis.Core;
 using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
 using System;
