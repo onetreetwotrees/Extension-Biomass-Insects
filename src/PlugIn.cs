@@ -5,9 +5,6 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Util;
-using System.IO;
-using System;
 using Landis.Library.Metadata;
 
 
@@ -88,9 +85,6 @@ namespace Landis.Extension.Insects
             SiteVars.Initialize();
             Defoliate.Initialize(parameters);
             GrowthReduction.Initialize(parameters);
-
-            if (Landis.Extension.Succession.Biomass.PlugIn.SuccessionTimeStep != 1)
-                 PlugIn.ModelCore.UI.WriteLine("  CAUTION!  If using Biomass Insects, Biomass Succession should be operating at an ANNUAL time step.");
 
             foreach(IInsect insect in manyInsect)
             {

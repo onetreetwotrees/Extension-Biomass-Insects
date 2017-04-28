@@ -1,11 +1,9 @@
 //  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
 
-using Landis.Extension.Succession.Biomass;
-using Landis.Core;
+//using Landis.Extension.Succession.Biomass;
 using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
-using System.Collections.Generic;
 
 namespace Landis.Extension.Insects
 {
