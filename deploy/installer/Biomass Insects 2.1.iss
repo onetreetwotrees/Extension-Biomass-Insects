@@ -47,7 +47,7 @@ Source: ..\examples\*.aux; DestDir: {#AppDir}\examples\Biomass Insects
 
 ; LANDIS-II identifies the extension with the info in this .txt file
 ; NB. New releases must modify the name of this file and the info in it
-#define InfoTxt "Biomass Insects 2.0.txt"
+#define InfoTxt "Biomass Insects 2.1.txt"
 Source: {#InfoTxt}; DestDir: {#LandisPlugInDir}
 
 
