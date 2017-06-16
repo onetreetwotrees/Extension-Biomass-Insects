@@ -1,6 +1,6 @@
 LandisData   Extension
 
-Name         "internal-to-LANDISII Biomass Insects"
+Name         "Biomass Insects"
 Version      "2.1"
 Type         disturbance:insects
 Assembly     Landis.Extension.BiomassInsects
