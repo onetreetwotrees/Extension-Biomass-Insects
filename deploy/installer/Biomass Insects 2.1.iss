@@ -1,6 +1,6 @@
 #define PackageName      "Biomass Insects"
 #define PackageNameLong  "Biomass Insects Extension"
-#define Version          "2.0"
+#define Version          "2.1"
 #define ReleaseType      "official"
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
