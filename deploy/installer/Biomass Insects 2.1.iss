@@ -37,11 +37,11 @@ Source: ..\..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#ExtDir}; Flag
 
 
 ; Complete example for testing the extension
-Source: ..\examples\*.txt; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.gis; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.bat; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.csv; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.aux; DestDir: {#AppDir}\examples\Biomass Insects
+Source: ..\examples\*.txt; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.gis; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.bat; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.csv; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.aux; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
 
 
 
