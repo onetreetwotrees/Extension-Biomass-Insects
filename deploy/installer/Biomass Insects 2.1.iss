@@ -31,11 +31,6 @@ Source: ..\..\src\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#ExtDir}; Fla
 Source: ..\..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
 
 
-; User Guides are no longer shipped with installer
-;Source: docs\LANDIS-II Biomass Insects v2.0 User Guide.pdf; DestDir: {#AppDir}\docs
-
-
-
 ; Complete example for testing the extension
 Source: ..\examples\*.txt; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
 Source: ..\examples\*.gis; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
