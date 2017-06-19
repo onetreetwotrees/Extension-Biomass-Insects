@@ -1,6 +1,6 @@
 #define PackageName      "Biomass Insects"
 #define PackageNameLong  "Biomass Insects Extension"
-#define Version          "2.0"
+#define Version          "2.1"
 #define ReleaseType      "official"
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
@@ -31,23 +31,18 @@ Source: ..\..\src\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#ExtDir}; Fla
 Source: ..\..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
 
 
-; User Guides are no longer shipped with installer
-;Source: docs\LANDIS-II Biomass Insects v2.0 User Guide.pdf; DestDir: {#AppDir}\docs
-
-
-
 ; Complete example for testing the extension
-Source: ..\examples\*.txt; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.gis; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.bat; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.csv; DestDir: {#AppDir}\examples\Biomass Insects
-Source: ..\examples\*.aux; DestDir: {#AppDir}\examples\Biomass Insects
+Source: ..\examples\*.txt; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.gis; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.bat; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.csv; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
+Source: ..\examples\*.aux; DestDir: {#AppDir}\examples\Biomass Insects; Flags: replacesameversion
 
 
 
 ; LANDIS-II identifies the extension with the info in this .txt file
 ; NB. New releases must modify the name of this file and the info in it
-#define InfoTxt "Biomass Insects 2.0.txt"
+#define InfoTxt "Biomass Insects 2.1.txt"
 Source: {#InfoTxt}; DestDir: {#LandisPlugInDir}
 
 
