@@ -14,13 +14,14 @@ namespace Landis.Extension.Insects
     public interface IInsect
     {
         string Name {get;set;}
-        double MeanDuration {get;set;}
-        int StdDevDuration {get;set;}
+        DistributionType DurationDistribution { get; set; }
+        double DurationParameter1 {get;set;}
+        double DurationParameter2 { get; set; }
         int MeanTimeBetweenOutbreaks {get;set;}
         int StdDevTimeBetweenOutbreaks {get;set;}
         int NeighborhoodDistance {get;set;}
 
-        double InitialPatchShapeCalibrator {get;set;}
+        double InitialPatchShapeCalibrator { get; set; }
         double InitialPatchOutbreakSensitivity { get; set; }
         DistributionType InitialPatchDistr { get; set; }
         double InitialPatchValue1 {get;set;}
@@ -29,6 +30,8 @@ namespace Landis.Extension.Insects
         int OutbreakStartYear {get;set;}
         int OutbreakStopYear {get;set;}
         int MortalityYear {get; set;}
+        bool SingleOutbreakYear { get; set; }
+        int StartYear { get; set; }
 
         List<ISppParameters> SppTable{get;set;}
         List<ISusceptible> SusceptibleTable{get;set;}
@@ -48,6 +51,7 @@ namespace Landis.Extension.Insects
         int LastStopYear { get; set; }
         int LastBioRemoved { get; set; }
         string AnnMort { get; set; }
+        double MaxDuration { get; set; }
 
 
     }
@@ -62,8 +66,9 @@ namespace Landis.Extension.Insects
         : IInsect
     {
         private string name;
-        private double meanDuration;
-        private int stdDevDuration;
+        private DistributionType durationDistribution;
+        private double durationParameter1;
+        private double durationParameter2;
         private int meanTimeBetweenOutbreaks;
         private int stdDevTimeBetweenOutbreaks;
         private int neighborhoodDistance;
@@ -77,12 +82,14 @@ namespace Landis.Extension.Insects
         private int outbreakStartYear;
         private int outbreakStopYear;
         private int mortalityYear;
+        private bool singleOutbreakYear;
 
         // BRM
         private int initialSites;
         private int lastStartYear;
         private int lastStopYear;
         private int lastBioRemoved;
+        private int startYear;
 
         private bool activeOutbreak;
 
@@ -97,6 +104,7 @@ namespace Landis.Extension.Insects
         private ISiteVar<double> neighborhoodDefoliation;
 
         private string annMort;
+        private double maxDur;
 
         //---------------------------------------------------------------------
 
@@ -111,28 +119,40 @@ namespace Landis.Extension.Insects
         }
 
         //---------------------------------------------------------------------
-        public double MeanDuration
+        public DistributionType DurationDistribution
+        {
+            get
+            {
+                return durationDistribution;
+            }
+            set
+            {
+                durationDistribution = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public double DurationParameter1
         {
             get {
-                return meanDuration;
+                return durationParameter1;
             }
             set {
                 if (value <= 0)
                     throw new InputValueException(value.ToString(), "Value must be  > 0.");
-                meanDuration = value;
+                durationParameter1 = value;
             }
         }
         //---------------------------------------------------------------------
-        public int StdDevDuration
+        public double DurationParameter2
         {
             get {
-                return stdDevDuration;
+                return durationParameter2;
             }
             set {
                 if (value < 0)
                         throw new InputValueException(value.ToString(),
                                                       "Value must be  > 0.");
-                 stdDevDuration = value;
+                durationParameter2 = value;
             }
         }
         //---------------------------------------------------------------------
@@ -172,18 +192,22 @@ namespace Landis.Extension.Insects
                  neighborhoodDistance = value;
             }
         }
+
         //---------------------------------------------------------------------
         public double InitialPatchShapeCalibrator
         {
-            get {
+            get
+            {
                 return initialPatchShapeCalibrator;
             }
-            set {
-                 if (value > 1.0 || value < 0.0)
-                        throw new InputValueException(value.ToString(), "Value must be  < 1.0 and > 0.0.");
-                 initialPatchShapeCalibrator = value;
+            set
+            {
+                if (value > 1.0 || value < 0.0)
+                    throw new InputValueException(value.ToString(), "Value must be  < 1.0 and > 0.0.");
+                initialPatchShapeCalibrator = value;
             }
         }
+
         //---------------------------------------------------------------------
         public double InitialPatchOutbreakSensitivity
         {
@@ -262,6 +286,18 @@ namespace Landis.Extension.Insects
             }
             set {
                 mortalityYear = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public bool SingleOutbreakYear
+        {
+            get
+            {
+                return singleOutbreakYear;
+            }
+            set
+            {
+                singleOutbreakYear = value;
             }
         }
         //---------------------------------------------------------------------
@@ -407,6 +443,18 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
+        public int StartYear
+        {
+            get
+            {
+                return startYear;
+            }
+            set
+            {
+                startYear = value;
+            }
+        }
+        //---------------------------------------------------------------------
         public string AnnMort
         {
             get
@@ -419,6 +467,18 @@ namespace Landis.Extension.Insects
                     throw new InputValueException(value.ToString(),
                                                   "Value must be  either Annual or 7Year.");
                 annMort = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        public double MaxDuration
+        {
+            get
+            {
+                return maxDur;
+            }
+            set
+            {
+                maxDur = value;
             }
         }
         //---------------------------------------------------------------------
@@ -443,7 +503,9 @@ namespace Landis.Extension.Insects
             lastStopYear = 0;
             lastBioRemoved = 0;
             annMort = "";
-            
+            maxDur = int.MaxValue;
+            startYear = 0;
+
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {

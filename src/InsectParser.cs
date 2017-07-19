@@ -46,13 +46,25 @@ namespace Landis.Extension.Insects
             ReadVar(insectName);
             parameters.Name = insectName.Value;
 
-            InputVar<double> mD = new InputVar<double>("MeanDuration");
-            ReadVar(mD);
-            parameters.MeanDuration = mD.Value;
+            InputVar<int> insectStartYear = new InputVar<int>("StartYear");
+            if (ReadOptionalVar(insectStartYear))
+                parameters.StartYear = insectStartYear.Value;
 
-            InputVar<int> sdD = new InputVar<int>("StdDevDuration");
+            InputVar<DistributionType> ddt = new InputVar<DistributionType>("DurationDistribution");
+            ReadVar(ddt);
+            parameters.DurationDistribution = ddt.Value;
+
+            InputVar<double> mD = new InputVar<double>("DurationParameter1");
+            ReadVar(mD);
+            parameters.DurationParameter1 = mD.Value;
+
+            InputVar<double> sdD = new InputVar<double>("DurationParameter2");
             ReadVar(sdD);
-            parameters.StdDevDuration = sdD.Value;
+            parameters.DurationParameter2 = sdD.Value;
+
+            InputVar<double> maxDur = new InputVar<double>("MaxDuration");
+            if(ReadOptionalVar(maxDur));           
+                parameters.MaxDuration = maxDur.Value;
 
             InputVar<int> mTBO = new InputVar<int>("MeanTimeBetweenOutbreaks");
             ReadVar(mTBO);
@@ -65,10 +77,6 @@ namespace Landis.Extension.Insects
             InputVar<int> nhs = new InputVar<int>("NeighborhoodSize");
             ReadVar(nhs);
             parameters.NeighborhoodDistance = nhs.Value;
-
-            InputVar<double> ipsc = new InputVar<double>("InitialPatchShapeCalibrator");
-            ReadVar(ipsc);
-            parameters.InitialPatchShapeCalibrator = ipsc.Value;
 
             InputVar<double> ipnc = new InputVar<double>("InitialPatchOutbreakSensitivity");
             ReadVar(ipnc);
@@ -279,8 +287,12 @@ namespace Landis.Extension.Insects
                 return DistributionType.Beta;
             else if (word == "Weibull")
                 return DistributionType.Weibull;
+            else if (word == "Normal")
+                return DistributionType.Normal;
+            else if (word == "Exponential")
+                return DistributionType.Exponential;
             else
-                throw new System.FormatException("Valid Distribution Types: Gamma, Beta, Weibull.");
+                throw new System.FormatException("Valid Distribution Types: Gamma, Beta, Weibull, Normal, Exponential.");
         }
 
         //---------------------------------------------------------------------
