@@ -21,6 +21,7 @@ namespace Landis.Extension.Insects
         int StdDevTimeBetweenOutbreaks {get;set;}
         int NeighborhoodDistance {get;set;}
 
+        double InitialPatchShapeCalibrator { get; set; }
         double InitialPatchOutbreakSensitivity { get; set; }
         DistributionType InitialPatchDistr { get; set; }
         double InitialPatchValue1 {get;set;}
@@ -72,6 +73,7 @@ namespace Landis.Extension.Insects
         private int stdDevTimeBetweenOutbreaks;
         private int neighborhoodDistance;
 
+        private double initialPatchShapeCalibrator;
         private double initialPatchOutbreakSensitivity;
         private DistributionType initialPatchDistr;
         private double initialPatchValue1;
@@ -192,6 +194,21 @@ namespace Landis.Extension.Insects
         }
 
         //---------------------------------------------------------------------
+        public double InitialPatchShapeCalibrator
+        {
+            get
+            {
+                return initialPatchShapeCalibrator;
+            }
+            set
+            {
+                if (value > 1.0 || value < 0.0)
+                    throw new InputValueException(value.ToString(), "Value must be  < 1.0 and > 0.0.");
+                initialPatchShapeCalibrator = value;
+            }
+        }
+
+        //---------------------------------------------------------------------
         public double InitialPatchOutbreakSensitivity
         {
             get
@@ -283,7 +300,7 @@ namespace Landis.Extension.Insects
                 singleOutbreakYear = value;
             }
         }
-        //---------------------------------------------------------------------    
+        //---------------------------------------------------------------------
         public bool ActiveOutbreak
         {
             get {
@@ -488,7 +505,7 @@ namespace Landis.Extension.Insects
             annMort = "";
             maxDur = int.MaxValue;
             startYear = 0;
-            
+
             //Initialize outbreaks:
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
