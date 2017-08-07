@@ -11,6 +11,7 @@ using System.IO;
 using System;
 
 
+
 namespace Landis.Extension.Insects
 {
     ///<summary>
@@ -74,10 +75,10 @@ namespace Landis.Extension.Insects
         /// <summary>
         /// Initializes the extension with a data file.
         /// </summary>
+    
         public override void Initialize()
         {
             Timestep = parameters.Timestep;
-
             Timestep = 1; //parameters.Timestep;
             mapNameTemplate = parameters.MapNamesTemplate;
             manyInsect = parameters.ManyInsect;
