@@ -20,7 +20,7 @@ Timestep			5
 >> INPUT MAP
 >>----------------------
 
-InitialFireRegionsMap		./ecoregions_s3e1.gis
+InitialFireRegionsMap		./ecoregions_s2e2.gis
 
 
 >> ---------------------------
