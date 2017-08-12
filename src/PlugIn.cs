@@ -17,7 +17,7 @@ namespace Landis.Extension.Insects
     ///<summary>
     /// A disturbance plug-in that simulates Biological Agents.
     /// </summary>
-
+    
     public class PlugIn
         : ExtensionMain
     {

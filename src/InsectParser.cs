@@ -34,7 +34,6 @@ namespace Landis.Extension.Insects
 
         protected override IInsect Parse()
         {
-
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
             if (landisData.Value.Actual != "InsectDefoliator")
@@ -95,8 +94,7 @@ namespace Landis.Extension.Insects
             parameters.InitialPatchValue2 = ipv2.Value;
 
             //--------- Read In Species Table ---------------------------------------
-             PlugIn.ModelCore.UI.WriteLine("   Begin parsing SPECIES table.");
-
+             PlugIn.ModelCore.UI.WriteLine("   Begin parsing SPECIES table.");            
             ReadName("SpeciesParameters");
 
             InputVar<string> annMort = new InputVar<string>("MortalityEstimate");
@@ -134,7 +132,7 @@ namespace Landis.Extension.Insects
 
                 ISppParameters sppParms = new SppParameters();
 
-                parameters.SppTable[species.Index] = sppParms;
+                //parameters.SppTable[species.Index] = sppParms; (commented out; BMiranda 11 Aug 2017) 
                 parameters.SppTable.Add(sppParms);
 
                 ReadValue(susc, currentLine);

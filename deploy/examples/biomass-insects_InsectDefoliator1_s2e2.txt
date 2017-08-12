@@ -6,14 +6,15 @@ LandisData	"InsectDefoliator"
 >>----------------------------------
 InsectName	Insect1
 
-MeanDuration			4
-StdDevDuration			2
+StartYear			1
+DurationDistribution		Normal		<< prob dist ==> Normal(5.0, 2.0)
+DurationParameter1		5.0		<<defining parameter; depends on the distribution, must be > 0.0
+DurationParameter2		2.0		<<defining parameter; depends on the distribution, must be > 0.0
+MaxDuration			4.0
 MeanTimeBetweenOutbreaks	7
 StdDevTimeBetweenOutbreaks	2
 
 NeighborhoodSize		250		<< meters
-
-InitialPatchShapeCalibrator	1.0 		<< must be <= 1.0  Higher = Rounder; Lower = tracks host quality closer.
 
 >> Lower this number to lower probabilities of patch generation (i.e. start fewer patches). 
 InitialPatchOutbreakSensitivity	0.0008 		<< must be > 0.0
@@ -32,7 +33,12 @@ InitialPatchValue2		25		<<depends on the distribution, must be > 0.0
 SpeciesParameters
 MortalityEstimate		7Year  		<< 'Annual' or '7Year'
 
->> Susceptibility class by species
+>> Susceptibility Class by species; all species listed in species_s3e3.txt must appear here.
+>> Insect-impacted species are listed first followed by species for which there is no insect impact. 
+>> Non-impacted species are to be listed as follows:
+>> 	sppname		3 	0	1	0	1
+
+
 >> Species	Susceptibility		Growth Reduction Parameters  	Mortality Parameters
 >>		Class			Slope	Intercept	      	Slope	Intercept
 >>------------------------------------------------------------------------------------------

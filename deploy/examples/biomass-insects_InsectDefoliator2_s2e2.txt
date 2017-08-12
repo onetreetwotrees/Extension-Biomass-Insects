@@ -30,22 +30,43 @@ InitialPatchValue2		25		<<depends on the distribution, must be > 0.0
 >>----------------------------------
 
 SpeciesParameters
-MortalityEstimate		Annual  		<< 'Annual' or '7Year'
+MortalityEstimate		Annual  	<< 'Annual' or '7Year'
 
->> Susceptibility class by species
+
+>> Susceptibility Class by species; all species listed in species_s3e3.txt must appear here.
+>> Insect-impacted species are listed first followed by species for which there is no insect impact. 
+>> Non-impacted species are to be listed as follows:
+>> 	sppname		3 	0	1	0	1
+
 >> Species	Susceptibility		Growth Reduction Parameters  	Mortality Parameters
 >>		Class			Slope	Intercept	      	Slope	Intercept
 >>------------------------------------------------------------------------------------------
-acerrubr       	2			-0.8	1			0.009	7
-acersacc       	2			-0.8	1			0.009	7
-fraxamer      	3			-0.1	1			0.006	5
-pinustro       	2			-1	1			0.016	4
-popugran       	1			-.5	1			0.009	7
-poputrem       	1			-0.8	1			0.009	7
-prunsero       	2			-0.8	1			0.009	7
-queralba       	1			-0.1	1			0.006	5
-querrubr       	1			-0.1	1			0.006	5
-tiliamer       	1			-0.1	1			0.009	7
+ACERRUBR       	2			-0.8	1			0.007	0.583
+ACERSACC       	2			-0.8	1			0.007	0.583
+CARYGLAB       	2			-0.1	1			0.006	0.547
+FRAXAMER       	3			-0.1	1			0.006	0.547
+JUGLNIGR       	2			-0.8	1			0.006	0.547
+LIRITULI       	3			-0.8	1			0.007	0.583
+MAGNACUM       	3			-0.8	1			0.006	0.547
+NYSSSYLV       	3			-0.8	1			0.007	0.583
+PINUECHI       	2			-1	1			0.016	0.429
+PINUPUNG       	2			-1	1			0.016	0.429
+PINURIGI       	3			-1	1			0.016	0.429
+PINUSTRO       	2			-1	1			0.016	0.429
+PINUVIRG       	2			-1	1			0.016	0.429
+POPUGRAN       	1			-.5	1			0.007	0.583
+POPUTREM       	1			-0.8	1			0.007	0.583
+PRUNSERO       	2			-0.8	1			0.007	0.583
+QUERALBA       	1			-0.1	1			0.006	0.547
+QUERCOCC       	1			-0.1	1			0.006	0.547
+QUERPRIN       	1			-0.1	1			0.006	0.547
+QUERRUBR       	1			-0.1	1			0.006	0.547
+QUERVELU       	1			-0.1	1			0.006	0.547
+ROBIPSEU       	3			-0.1	1			0.006	0.547
+SASSALBI       	2			-0.15	1			0.006	0.547
+TILIAMER       	1			-0.1	1			0.007	0.583
+TSUGCANA       	2			-1	1			0.016	0.429
+ULMUAMER       	2			-0.15	1			0.007	0.583	      	
    
 Susceptibilities
 >> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
