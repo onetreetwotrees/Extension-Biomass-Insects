@@ -26,7 +26,7 @@ Prescription    AspenClearcut
     StandRanking    Economic
 >> 	Species 	Economic Rank 	Minimum Age
 >> 	------- 	------------- 	-----------
-    	poputrem  	 100           40    
+    	POPUTREM  	 100           40    
     
     MinimumAge  	35
     SiteSelection	CompleteStandSpread 40 50
@@ -38,20 +38,18 @@ Prescription SelectiveNorthernHardwood
     StandRanking    Economic
 >>	Species 	EconomicRank	 Minimum Age
 >>	------- 	------------ 	-----------
-    	acerrubr   	60 	     	45
-    	acersacc   	100          	5
-    	betualle   	100	     	50
-    	fraxamer   	60	     	40
+    	ACERRUBR   	60 	     	45
+    	ACERSACC   	100          	5
+    	FRAXAMER   	60	     	40
 
     SiteSelection PatchCutting 10%  1  << ha
 
     CohortsRemoved SpeciesList
 >>	Species		Selection
 >>	-------		---------
-	acerrubr   	1-400 (50%)
-	acersacc   	1-40 (50%)  45-100 (5%) 105 (65%) 
-	betualle   	1-400 (50%)
-	fraxamer   	1-400 (50%)
+	ACERRUBR   	1-400 (50%)
+	ACERSACC   	1-40 (50%)  45-100 (5%) 105 (65%) 
+	FRAXAMER   	1-400 (50%)
 
 
 >>---- PRESCRIPTION_4 ---------------------------------------
@@ -65,17 +63,16 @@ Prescription    OakPatchCutting
    ForestTypeTable
 >>	InclusionRule	ageRange	%Cells	species
 >> 	-------------	--------	------	-------
-	Forbidden	1-131		(60%)	acersacc
-	Required	100-450		(20%)	querrubr 
+	Forbidden	1-131		(60%)	ACERSACC
+	Required	100-450		(20%)	QUERRUBR 
 	
     SiteSelection	PatchCutting	75%	50
 
     CohortsRemoved	SpeciesList
 >>	Species		Selection
 >>	------- 	---------
-	abiebals 	All
-	querrubr 	AllExceptOldest
-	pinubank 	All
+	QUERRUBR 	AllExceptOldest
+	PINUVIRG 	All
 
 
 
