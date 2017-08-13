@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,10 +9,10 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Landis.Extension.Insects</RootNamespace>
-	  <AssemblyName>Landis.Extension.BiomassInsects</AssemblyName>
+    <AssemblyName>Landis.Extension.BiomassInsects</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-  <!-- 
+    <!-- 
     <OldToolsVersion>2.0</OldToolsVersion>  
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -29,7 +29,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-  -->  
+  -->
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -48,21 +48,21 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  <!--  
+    <!--  
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   -->
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Edu.Wisc.Forest.Flel.Util">
       <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>    
+      <Private>False</Private>
     </Reference>
-  <!--  
+    <!--  
     <Reference Include="Landis.Console-6.0">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>   
     </Reference>
- -->   
+ -->
     <Reference Include="Landis.Core">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
@@ -94,12 +94,12 @@
     <Reference Include="Landis.Library.Parameters-v1">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
-    </Reference>    
+    </Reference>
     <Reference Include="Landis.Library.Metadata">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Landis.Library.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Succession">
+    <Reference Include="Landis.Library.Succession-v2">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -130,7 +130,7 @@
     <Compile Include="Susceptible.cs" />
     <Compile Include="ShortPixel.cs" />
   </ItemGroup>
-<!--  
+  <!--  
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
@@ -153,7 +153,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
--->  
+-->
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -161,9 +161,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(ExtraAssemblySearchDirs)' != '' ">
-  <AssemblySearchPaths>$(ExtraAssemblySearchDirs);$(AssemblySearchPaths)</AssemblySearchPaths>
+    <AssemblySearchPaths>$(ExtraAssemblySearchDirs);$(AssemblySearchPaths)</AssemblySearchPaths>
   </PropertyGroup>
-     
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -174,8 +173,8 @@
     <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\extensions"</PostBuildEvent>
   </PropertyGroup>
  -->
-
   <PropertyGroup>
-    <PreBuildEvent>call $(SolutionDir)\install-libs.cmd</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

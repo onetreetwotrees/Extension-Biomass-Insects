@@ -42,7 +42,7 @@ CellLength  	30 << meters
 
 >> 	Disturbance Extension	Initialization File
 >>	--------------------	-------------------
->>	"Base Fire"		base-fire_SetUp_s2e2p.txt
+>>	"Base Fire"		base-fire_SetUp_s2e2.txt
 >>	"Base Wind"		base-wind_SetUp_s2e2.txt
 >>	"Biomass Harvest"	biomass-harvest_SetUp_s2e2.txt
 	"Biomass Insects"	biomass-insects_SetUp_s2e2.txt
