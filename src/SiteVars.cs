@@ -56,9 +56,9 @@ namespace Landis.Extension.Insects
                 throw new System.ApplicationException(mesg);
             }
 
-            PlugIn.ModelCore.RegisterSiteVar(SiteVars.TimeOfLastEvent, "BiomassInsects.TimeOfLastEvent");
-            PlugIn.ModelCore.RegisterSiteVar(SiteVars.InsectName, "BiomassInsects.InsectName");
-            PlugIn.ModelCore.RegisterSiteVar(SiteVars.SiteDefoliation, "BiomassInsects.PctDefoliation");
+            //PlugIn.ModelCore.RegisterSiteVar(SiteVars.TimeOfLastEvent, "BiomassInsects.TimeOfLastEvent");//Commented out - JRF because already registered above...
+            //PlugIn.ModelCore.RegisterSiteVar(SiteVars.InsectName, "BiomassInsects.InsectName");//See comment above
+            //PlugIn.ModelCore.RegisterSiteVar(SiteVars.SiteDefoliation, "BiomassInsects.PctDefoliation");
 
         }
         //---------------------------------------------------------------------
