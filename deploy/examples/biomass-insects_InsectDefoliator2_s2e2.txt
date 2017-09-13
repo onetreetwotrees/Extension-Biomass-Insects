@@ -7,22 +7,22 @@ LandisData	"InsectDefoliator"
 InsectName	Insect2
 
 StartYear			5
-DurationDistribution		Normal		<< prob dist ==> Normal(5.0, 2.0)
-DurationParameter1		5.0		<<defining parameter; depends on the distribution, must be > 0.0
-DurationParameter2		2.0		<<defining parameter; depends on the distribution, must be > 0.0
-MaxDuration			4.0
+DurationDistribution		Exponential	<< prob dist ==> Normal(5.0, 2.0)
+DurationParameter1		0.8		<<defining parameter; depends on the distribution, must be > 0.0
+DurationParameter2		0		<<defining parameter; depends on the distribution, must be > 0.0
+MaxDuration			6.0
 MeanTimeBetweenOutbreaks	7
-StdDevTimeBetweenOutbreaks	2
+StdDevTimeBetweenOutbreaks	1
 
-NeighborhoodSize		250		<< meters
+NeighborhoodSize		100		<< meters
 
 >> Lower this number to lower probabilities of patch generation, i.e. start fewer patches. 
-InitialPatchOutbreakSensitivity	1.0 		<< must be > 0.0
+InitialPatchOutbreakSensitivity	0.0008 		<< must be > 0.0
 
 >> Patch size distribution could be based on patch radius distribution or patch area distribution. Watch units.
 InitialPatchDistribution	Weibull		<<Weibull, Beta, or Gamma
-InitialPatchValue1		0.7		<<depends on the distribution, must be > 0.0
-InitialPatchValue2		25		<<depends on the distribution, must be > 0.0
+InitialPatchValue1		1.1		<<depends on the distribution, must be > 0.0
+InitialPatchValue2		350		<<depends on the distribution, must be > 0.0
 
 
 >>---------------------------------
@@ -30,7 +30,7 @@ InitialPatchValue2		25		<<depends on the distribution, must be > 0.0
 >>----------------------------------
 
 SpeciesParameters
-MortalityEstimate		Annual  	<< 'Annual' or '7Year'
+MortalityEstimate		7Year  	<< 'Annual' or '7Year'
 
 
 >> Susceptibility Class by species; all species listed in species_s3e3.txt must appear here.
@@ -41,32 +41,32 @@ MortalityEstimate		Annual  	<< 'Annual' or '7Year'
 >> Species	Susceptibility		Growth Reduction Parameters  	Mortality Parameters
 >>		Class			Slope	Intercept	      	Slope	Intercept
 >>------------------------------------------------------------------------------------------
-ACERRUBR       	2			-0.8	1			0.007	0.583
-ACERSACC       	2			-0.8	1			0.007	0.583
-CARYGLAB       	2			-0.1	1			0.006	0.547
-FRAXAMER       	3			-0.1	1			0.006	0.547
-JUGLNIGR       	2			-0.8	1			0.006	0.547
-LIRITULI       	3			-0.8	1			0.007	0.583
-MAGNACUM       	3			-0.8	1			0.006	0.547
-NYSSSYLV       	3			-0.8	1			0.007	0.583
-PINUECHI       	2			-1	1			0.016	0.429
-PINUPUNG       	2			-1	1			0.016	0.429
-PINURIGI       	3			-1	1			0.016	0.429
-PINUSTRO       	2			-1	1			0.016	0.429
-PINUVIRG       	2			-1	1			0.016	0.429
-POPUGRAN       	1			-.5	1			0.007	0.583
-POPUTREM       	1			-0.8	1			0.007	0.583
-PRUNSERO       	2			-0.8	1			0.007	0.583
-QUERALBA       	1			-0.1	1			0.006	0.547
-QUERCOCC       	1			-0.1	1			0.006	0.547
-QUERPRIN       	1			-0.1	1			0.006	0.547
-QUERRUBR       	1			-0.1	1			0.006	0.547
-QUERVELU       	1			-0.1	1			0.006	0.547
-ROBIPSEU       	3			-0.1	1			0.006	0.547
-SASSALBI       	2			-0.15	1			0.006	0.547
-TILIAMER       	1			-0.1	1			0.007	0.583
-TSUGCANA       	2			-1	1			0.016	0.429
-ULMUAMER       	2			-0.15	1			0.007	0.583	      	
+ACERRUBR       2	-0.8	1	0.009	7
+ACERSACC       2	-0.8	1	0.009	7
+CARYGLAB       2	-0.1	1	0.006	5
+FRAXAMER       3	-0.1	1	0.006	5
+JUGLNIGR       2	-0.8	1	0.006	5
+LIRITULI       3	-0.8	1	0.009	7
+MAGNACUM       3	-0.8	1	0.006	5
+NYSSSYLV       3	-0.8	1	0.009	7
+PINUECHI       2	-1	1	0.016	4
+PINUPUNG       2	-1	1	0.016	4
+PINURIGI       3	-1	1	0.016	4
+PINUSTRO       2	-1	1	0.016	4
+PINUVIRG       2	-1	1	0.016	4
+POPUGRAN       1	-.5	1	0.009	7
+POPUTREM       1	-0.8	1	0.009	7
+PRUNSERO       2	-0.8	1	0.009	7
+QUERALBA       1	-0.1	1	0.006	5
+QUERCOCC       1	-0.1	1	0.006	5
+QUERPRIN       1	-0.1	1	0.006	5
+QUERRUBR       1	-0.1	1	0.006	5
+QUERVELU       1	-0.1	1	0.006	5
+ROBIPSEU       3	-0.1	1	0.006	5
+SASSALBI       2	-0.15	1	0.006	5
+TILIAMER       1	-0.1	1	0.009	7
+TSUGCANA       2	-1	1	0.016	4
+ULMUAMER       2	-0.15	1	0.009	7	      	
    
 Susceptibilities
 >> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
