@@ -1,6 +1,6 @@
 LandisData  "Output Biomass"
 
-Timestep  5
+Timestep  1
 
 MakeTable yes  << Optional parameter
 
@@ -14,8 +14,8 @@ Species    ACERRUBR
 	   TILIAMER
 	   ULMUAMER
 
-MapNames  biomass/biomass-{species}-{timestep}.img
+MapNames  biomass/biomass-{species}-{timestep}.bin
 
 DeadPools both
 	  
-MapNames  biomass/biomass-{pool}-{timestep}.img
+MapNames  biomass/biomass-{pool}-{timestep}.bin

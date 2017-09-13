@@ -4,7 +4,7 @@ LandisData "Biomass Insects"
 
 Timestep		1
 
-MapNames		outputs/insects/{insectName}-{timestep}.img		<<this is an output!
+MapNames		outputs/insects/{insectName}-{timestep}.bin		<<this is an output!
 
 LogFile			outputs/insects/Insect-log.csv				<<this is an output!
 

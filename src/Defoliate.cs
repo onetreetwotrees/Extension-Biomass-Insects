@@ -1,8 +1,9 @@
 //  Copyright 2006-2011 University of Wisconsin, Portland State University
 //  Authors:  Jane Foster, Robert M. Scheller
 
+using Landis.Core;
 using Landis.SpatialModeling;
-using Landis.Library.BiomassCohorts;
+using Landis.Library.Biomass;
 using System.Collections.Generic;
 using System;
 
@@ -30,13 +31,30 @@ namespace Landis.Extension.Insects
         // This method replaces the delegate method.  It is called every year when
         // ACT_ANPP is calculated, for each cohort.  Therefore, this method is operating at
         // an ANNUAL time step and separate from the normal extension time step.
+        //static int LastYearDefoliationCohortWasCalled = int.MinValue; // Add this for error capture. Ensure timestep for succession is annual. Previous method doesn't work with new biomass library.
+        //static bool TimeStepChecked = false;
 
-        public static double DefoliateCohort(ICohort cohort, ActiveSite site, int siteBiomass)
+        public static double DefoliateCohort(ActiveSite site,
+                                         ISpecies species,
+                                         int cohortBiomass,
+                                         int siteBiomass)
         {
+        //    if (TimeStepChecked == false)
+        //    {
+        //       if (LastYearDefoliationCohortWasCalled > 0 && PlugIn.ModelCore.CurrentTime - LastYearDefoliationCohortWasCalled > 1)
+	    //            {
+        //                throw new System.Exception("  CAUTION! If using Biomass Insects, Succession Extension should be operating at an ANNUAL time step.");
+	    //            }
+	    //        LastYearDefoliationCohortWasCalled = PlugIn.ModelCore.CurrentTime;
+	   //         TimeStepChecked = true;
+       //    }
+
+        //public static double DefoliateCohort(ICohort cohort, ActiveSite site, int siteBiomass)
+        //{
 
             // PlugIn.ModelCore.UI.WriteLine("   Calculating insect defoliation...");
 
-            int sppIndex = cohort.Species.Index;
+            int sppIndex = species.Index;
             double totalDefoliation = 0.0;
 
             foreach(IInsect insect in manyInsect)
@@ -45,6 +63,7 @@ namespace Landis.Extension.Insects
                     continue;
 
                 double defoliation = 0.0;
+                double weightedDefoliation = 0.0;
                 int suscIndex = insect.SppTable[sppIndex].Susceptibility - 1;
 
                 if (suscIndex < 0) suscIndex = 0;
@@ -75,11 +94,7 @@ namespace Landis.Extension.Insects
                         if (neighbor != null && neighbor.IsActive)
                         {
                             neighborCnt++;
-
-                            // The previous year...
-                            //if(SiteVars.DefoliationByYear[neighbor].ContainsKey(PlugIn.ModelCore.CurrentTime - 1))
-                            //    sumNeighborhoodDefoliation += SiteVars.DefoliationByYear[neighbor][PlugIn.ModelCore.CurrentTime - 1];
-                            sumNeighborhoodDefoliation = Math.Min(1.0, insect.LastYearDefoliation[neighbor]);
+                            sumNeighborhoodDefoliation += insect.LastYearDefoliation[neighbor];
                         }
                     }
 
@@ -163,8 +178,14 @@ namespace Landis.Extension.Insects
                 }
 
                 // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, defoliation={3}.", cohort.Age, cohort.Species.Name, (suscIndex -1), defoliation);
+                // For first insect in a given year, actual defoliation equals the potential defoliation drawn from insect distributions.
+                // For second insect in a given year, actual defoliation can only be as high as the amount of canopy foliage left by first insect.
+                // This change makes sure next year's neighborhoodDefoliation will reflect actual defoliation, rather than "potential" defoliation.
+                // It should also ensure that the sum of defoliation maps for all insects adds up to 1 for a given year.
 
-                double weightedDefoliation = (defoliation * Math.Min(1.0, (double) cohort.Biomass / (double) siteBiomass));
+                weightedDefoliation = (Math.Min((1 - totalDefoliation), defoliation) * ((double)cohortBiomass / (double)siteBiomass));
+                //double weightedDefoliation = (defoliation * Math.Min(1.0, (double) cohort.Biomass / (double) siteBiomass));
+
                 // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
 
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
