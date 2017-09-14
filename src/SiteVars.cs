@@ -21,7 +21,7 @@ namespace Landis.Extension.Insects
         private static ISiteVar<double> initialOutbreakProb;
         private static ISiteVar<ISiteCohorts> cohorts;
         private static ISiteVar<int> cohortsPartiallyDamaged;
-        private static ISiteVar<string> insectName;
+        //private static ISiteVar<string> insectName;
         private static ISiteVar<int> siteDefoliation; //Brian M update 
 
         //---------------------------------------------------------------------
@@ -35,13 +35,13 @@ namespace Landis.Extension.Insects
             initialOutbreakProb     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohorts                 = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.BiomassCohorts");
             cohortsPartiallyDamaged = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            insectName = PlugIn.ModelCore.Landscape.NewSiteVar<string>();
+            //insectName = PlugIn.ModelCore.Landscape.NewSiteVar<string>();
             siteDefoliation = PlugIn.ModelCore.Landscape.NewSiteVar<int>(); //Brian M update 
 
             //SiteVars.NeighborhoodDefoliation.ActiveSiteValues = 0.0;
             SiteVars.TimeOfLastEvent.ActiveSiteValues = -10000;
             SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
-            SiteVars.InsectName.ActiveSiteValues = "";
+            //SiteVars.InsectName.ActiveSiteValues = "";
             SiteVars.SiteDefoliation.ActiveSiteValues = 0; //Brian M update
 
             //Initialize outbreaks:
@@ -127,14 +127,14 @@ namespace Landis.Extension.Insects
                 return timeOfLastEvent;
             }
         }
-        //---------------------------------------------------------------------
+        /*//---------------------------------------------------------------------
         public static ISiteVar<string> InsectName
         {
             get
             {
                 return insectName;
             }
-        }
+        }*/
         //---------------------------------------------------------------------
         public static ISiteVar<int> SiteDefoliation  //Brian M update  
         {

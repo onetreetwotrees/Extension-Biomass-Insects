@@ -106,7 +106,7 @@ namespace Landis.Extension.Insects
                 if(meanNeighborhoodDefoliation > 1.0 || meanNeighborhoodDefoliation < 0)
                 {
                      PlugIn.ModelCore.UI.WriteLine("MeanNeighborhoodDefoliation={0}; NeighborCnt={1}.", meanNeighborhoodDefoliation, neighborCnt);
-                    throw new ApplicationException("Error: Mean Neighborhood GrowthReduction is not between 1.0 and 0.0");
+                    throw new ApplicationException("Error: Mean Neighborhood Defoliation is not between 1.0 and 0.0");
                 }
 
                 // First assume that there are no neighbors whatsoever:
@@ -183,8 +183,12 @@ namespace Landis.Extension.Insects
                 // This change makes sure next year's neighborhoodDefoliation will reflect actual defoliation, rather than "potential" defoliation.
                 // It should also ensure that the sum of defoliation maps for all insects adds up to 1 for a given year.
 
-                weightedDefoliation = (Math.Min((1 - totalDefoliation), defoliation) * ((double)cohortBiomass / (double)siteBiomass));
-                //double weightedDefoliation = (defoliation * Math.Min(1.0, (double) cohort.Biomass / (double) siteBiomass));
+                // Maybe need this here: To correct for error reporting Mean Neighborhood Defoliation < 0. 
+                // Looping over multiple insects in same year could produce totalDefoliation > 1. If this year's total defoliation = 1, next insect can't defoliate more.
+                defoliation = Math.Min((1 - totalDefoliation),defoliation);
+                // Then: 
+                weightedDefoliation = defoliation * ((double)cohortBiomass / (double)siteBiomass);
+                //weightedDefoliation = (Math.Min((1 - totalDefoliation), defoliation) * ((double)cohortBiomass / (double)siteBiomass));
 
                 // PlugIn.ModelCore.UI.WriteLine("Cohort age={0}, species={1}, suscIndex={2}, cohortDefoliation={3}, weightedDefolation={4}.", cohort.Age, cohort.Species.Name, (suscIndex+1), defoliation, weightedDefoliation);
 

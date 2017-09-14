@@ -151,17 +151,17 @@ namespace Landis.Extension.Insects
                 if (insect.MortalityYear != PlugIn.ModelCore.CurrentTime)
                     insect.LastBioRemoved = 0;
 
-                // Copy the data from current to last, this appears to be added by BRM for proper log file assembly. - JRF
+                // Copy the data from current to last, this appears to be added by BRM for log file assembly. - JRF
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                 {
                     double thisYearDefol = insect.ThisYearDefoliation[site];
                     insect.LastYearDefoliation[site] = thisYearDefol;
                     SiteVars.SiteDefoliation[site] += (int)Math.Round(thisYearDefol * 100);
-                    if (thisYearDefol > 0)
+                    /*if (thisYearDefol > 0)
                     {
-                        //SiteVars.TimeOfLastEvent[site] = PlugIn.ModelCore.CurrentTime - 1; //Already registered in Outbreak.cs - JRF
+                        SiteVars.TimeOfLastEvent[site] = PlugIn.ModelCore.CurrentTime - 1; //Already registered in Outbreak.cs - JRF
                         SiteVars.InsectName[site] = insect.Name;
-                    }
+                    }*/
                 }
 
 
@@ -309,7 +309,7 @@ namespace Landis.Extension.Insects
                         insect.InitialSites = numInitialSites;
 
                     if (numSites0_33 + numSites33_66 + numSites66_100 > 0)
-                        meanDefoliation = sumDefoliation / (double)numSitesActive;
+                        meanDefoliation = (double)sumDefoliation / (double)numSitesActive;
                      //PlugIn.ModelCore.UI.WriteLine("   sumDefoliation={0}, numSites={1}.", sumDefoliation, numSites0_33 + numSites33_66 + numSites66_100);
                 }
 
@@ -369,16 +369,33 @@ namespace Landis.Extension.Insects
                 eventLog.Clear();
                 EventsLog el = new EventsLog();
 
-                el.Time = PlugIn.ModelCore.CurrentTime - 1;
-                el.InsectName = insect.Name;
-                el.MeanDefoliation = meanDefoliation;
-                el.NumSitesDefoliated0_33 = numSites0_33;
-                el.NumSitesDefoliated33_66 = numSites33_66;
-                el.NumSitesDefoliated66_100 = numSites66_100;
-                el.NumOutbreakInitialSites = insect.InitialSites;
-                el.MortalityBiomass = insect.LastBioRemoved;
-
-                if (insect.ActiveOutbreak)
+                if (meanDefoliation > 0)
+                {
+                    el.Time = PlugIn.ModelCore.CurrentTime - 1;
+                    el.InsectName = insect.Name;
+                    el.MeanDefoliation = meanDefoliation;
+                    el.NumSitesDefoliated0_33 = numSites0_33;
+                    el.NumSitesDefoliated33_66 = numSites33_66;
+                    el.NumSitesDefoliated66_100 = numSites66_100;
+                    el.NumOutbreakInitialSites = insect.InitialSites;
+                    el.MortalityBiomass = insect.LastBioRemoved;
+                    el.StartYear = insect.LastStartYear;
+                    el.StopYear = insect.LastStopYear;
+                }
+                else
+                {
+                    el.Time = PlugIn.ModelCore.CurrentTime - 1;
+                    el.InsectName = insect.Name;
+                    el.MeanDefoliation = meanDefoliation;
+                    el.NumSitesDefoliated0_33 = numSites0_33;
+                    el.NumSitesDefoliated33_66 = numSites33_66;
+                    el.NumSitesDefoliated66_100 = numSites66_100;
+                    el.NumOutbreakInitialSites = 0;
+                    el.MortalityBiomass = insect.LastBioRemoved;
+                    el.StartYear = 0;
+                    el.StopYear = 0;
+                }
+                /*if (insect.ActiveOutbreak)
                 {
                     el.StartYear = insect.OutbreakStartYear;
                     el.StopYear = insect.OutbreakStopYear;
@@ -387,7 +404,7 @@ namespace Landis.Extension.Insects
                 {
                     el.StartYear = insect.LastStartYear;
                     el.StopYear = insect.LastStopYear;
-                }
+                }*/
 
                 eventLog.AddObject(el);
                 eventLog.WriteToFile();
