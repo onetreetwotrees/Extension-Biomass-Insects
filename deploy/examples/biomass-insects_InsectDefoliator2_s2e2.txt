@@ -4,9 +4,9 @@ LandisData	"InsectDefoliator"
 >> INSECT DATA
 >>----------------------------------
 
-InsectName	Insect2
+InsectName	Insect2 << Gypsy Moth like
 
-StartYear			5
+StartYear			3
 DurationDistribution		Exponential	<< prob dist ==> Normal(5.0, 2.0)
 DurationParameter1		0.8		<<defining parameter; depends on the distribution, must be > 0.0
 DurationParameter2		0		<<defining parameter; depends on the distribution, must be > 0.0
@@ -21,8 +21,8 @@ InitialPatchOutbreakSensitivity	0.0008 		<< must be > 0.0
 
 >> Patch size distribution could be based on patch radius distribution or patch area distribution. Watch units.
 InitialPatchDistribution	Weibull		<<Weibull, Beta, or Gamma
-InitialPatchValue1		1.1		<<depends on the distribution, must be > 0.0
-InitialPatchValue2		350		<<depends on the distribution, must be > 0.0
+InitialPatchValue1		0.7		<<depends on the distribution, must be > 0.0
+InitialPatchValue2		25		<<depends on the distribution, must be > 0.0
 
 
 >>---------------------------------

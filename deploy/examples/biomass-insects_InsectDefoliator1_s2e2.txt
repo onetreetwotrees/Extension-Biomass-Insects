@@ -6,23 +6,23 @@ LandisData	"InsectDefoliator"
 >>----------------------------------
 InsectName	Insect1
 
-StartYear			1
-DurationDistribution		Normal		<< prob dist ==> Normal(5.0, 2.0)
-DurationParameter1		5.0		<<defining parameter; depends on the distribution, must be > 0.0
-DurationParameter2		2.0		<<defining parameter; depends on the distribution, must be > 0.0
-MaxDuration			4.0
+StartYear			0
+DurationDistribution		Exponential	<< prob dist ==> Normal(5.0, 2.0)
+DurationParameter1		0.8		<<defining parameter; depends on the distribution, must be > 0.0
+DurationParameter2		0		<<defining parameter; depends on the distribution, must be > 0.0
+MaxDuration			6.0
 MeanTimeBetweenOutbreaks	7
-StdDevTimeBetweenOutbreaks	2
+StdDevTimeBetweenOutbreaks	1
 
-NeighborhoodSize		250		<< meters
+NeighborhoodSize		100		<< meters
 
 >> Lower this number to lower probabilities of patch generation (i.e. start fewer patches). 
 InitialPatchOutbreakSensitivity	0.0008 		<< must be > 0.0
 
 >> Patch size distribution could be based on patch radius distribution or patch area distribution. Watch units.
 InitialPatchDistribution	Weibull		<<Weibull, Beta, or Gamma
-InitialPatchValue1		0.7		<<depends on the distribution, must be > 0.0
-InitialPatchValue2		25		<<depends on the distribution, must be > 0.0
+InitialPatchValue1		1.1		<<depends on the distribution, must be > 0.0
+InitialPatchValue2		350		<<depends on the distribution, must be > 0.0
 
 
 
@@ -71,6 +71,6 @@ ULMUAMER       	2			-0.15	1			0.009	7
    
 Susceptibilities
 >> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
-1	Beta	0.84	0.20	Beta	0.84	0.33	Beta	1.14	1.18	Beta	0.50	2.00	Beta	0.5	6.0
-2	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.7	2.00	Beta	0.5	3.00	Beta	0.5	6.0
-3	Beta	1	1	Beta	0.8	1.68	Beta	0.7	2.00	Beta	0.5	6.00	Beta	0.2	6.0
+1	Beta	1.06	0.81	Beta	1.06	0.81	Beta	1.06	0.81	Beta	1.17	2.64	Beta	0.29	4.12
+2	Beta	0.73	0.75	Beta	0.73	0.75	Beta	0.73	0.75	Beta	0.76	2.13	Beta	0.26	4.92
+3	Beta	0.51	1.01	Beta	0.51	1.01	Beta	0.51	1.01	Beta	0.65	1.66	Beta	0.25	6.09

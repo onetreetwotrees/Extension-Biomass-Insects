@@ -111,8 +111,8 @@ namespace Landis.Extension.Insects
 
             }
 
-
             /* PlugIn.ModelCore.UI.WriteLine("   Opening BiomassInsect log file \"{0}\" ...", parameters.LogFileName);
+
             try {
                 log = Landis.Data.CreateTextFile(parameters.LogFileName);
             }
@@ -124,7 +124,7 @@ namespace Landis.Extension.Insects
             log.AutoFlush = true;
             log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated0_33,NumSitesDefoliated33_66,NumSitesDefoliated66_100,NumOutbreakInitialSites,MortalityBiomassKg");
             log.WriteLine("");
-             * */
+             */
 
         }
 
@@ -138,7 +138,7 @@ namespace Landis.Extension.Insects
             running = true;
             PlugIn.ModelCore.UI.WriteLine("   Processing landscape for Biomass Insect events ...");
 
-            SiteVars.SiteDefoliation.ActiveSiteValues = 0; 
+            //SiteVars.SiteDefoliation.ActiveSiteValues = 0; 
 
             foreach(IInsect insect in manyInsect)
             {
@@ -151,21 +151,24 @@ namespace Landis.Extension.Insects
                 if (insect.MortalityYear != PlugIn.ModelCore.CurrentTime)
                     insect.LastBioRemoved = 0;
 
-                // Copy the data from current to last, this appears to be added by BRM for log file assembly. - JRF
+                // Copy the data from current to last, Commented out code appears to be added by BRM for his log file assembly? - JRF
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
+                    insect.LastYearDefoliation[site] = insect.ThisYearDefoliation[site];
+                /*
                 {
+
                     double thisYearDefol = insect.ThisYearDefoliation[site];
                     insect.LastYearDefoliation[site] = thisYearDefol;
                     SiteVars.SiteDefoliation[site] += (int)Math.Round(thisYearDefol * 100);
-                    /*if (thisYearDefol > 0)
+                    if (thisYearDefol > 0)
                     {
                         SiteVars.TimeOfLastEvent[site] = PlugIn.ModelCore.CurrentTime - 1; //Already registered in Outbreak.cs - JRF
                         SiteVars.InsectName[site] = insect.Name;
-                    }*/
-                }
+                    }
+                }*/
 
 
-                insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
+                    insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
 
                 insect.ActiveOutbreak = false;
                 insect.SingleOutbreakYear = false;
@@ -202,7 +205,7 @@ namespace Landis.Extension.Insects
                 // Do below to prevent overlapping outbreaks of same insect. This will affect the realized distribution of time between outbreaks somewhat. 
                 while (timeAfterDuration <= 1.0)
                 {
-                    PlugIn.ModelCore.UI.WriteLine("CAUTION: Time Between Outbreaks TOO SMALL (< 1), you may need to adjust timing parameters:  {0}.", timeAfterDuration);
+                    PlugIn.ModelCore.UI.WriteLine("CAUTION: Time Between Outbreaks TOO SMALL (< 1), you may need to adjust timing parameters for: {0}, timeAfterDuration = {1:0.00}, timeBetweenOutbreaks = {2:0.00}, duration = {3:0}, {4}.", insect.Name, timeAfterDuration, timeBetweenOutbreaks, duration, insect.MeanTimeBetweenOutbreaks);
                     timeBetweenOutbreaks = timeBetweenOutbreaks + 1;
                     timeAfterDuration = timeBetweenOutbreaks - duration;
                 }
@@ -263,7 +266,7 @@ namespace Landis.Extension.Insects
                     insect.OutbreakStartYear = PlugIn.ModelCore.CurrentTime + (int) timeBetweenOutbreaks;
                     insect.OutbreakStopYear = insect.OutbreakStartYear + (int) duration - 1;
                 }
-                PlugIn.ModelCore.UI.WriteLine("  Insect Start Time = {0}, Stop Time = {1}.", insect.OutbreakStartYear, insect.OutbreakStopYear);
+                PlugIn.ModelCore.UI.WriteLine("  {0}, Start Time = {1}, Stop Time = {2}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear);
 
                 // Now that logic determining when an outbreak will be active is done, tell model what to do when outbreak is occurring.
                 if(insect.ActiveOutbreak)
@@ -369,7 +372,7 @@ namespace Landis.Extension.Insects
                 eventLog.Clear();
                 EventsLog el = new EventsLog();
 
-                if (meanDefoliation > 0)
+                if(meanDefoliation > 0)
                 {
                     el.Time = PlugIn.ModelCore.CurrentTime - 1;
                     el.InsectName = insect.Name;

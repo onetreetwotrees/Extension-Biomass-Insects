@@ -22,7 +22,7 @@ namespace Landis.Extension.Insects
         [DataFieldAttribute(Unit = FieldUnits.Year, Desc = "Stop Year")]
         public int StopYear { set; get; }
 
-        [DataFieldAttribute(Unit = FieldUnits.Percentage, Desc = "Average Defoliation", Format = "0.00")]
+        [DataFieldAttribute(Unit = FieldUnits.Percentage, Desc = "Average Defoliation", Format = "0.0000")]
         public double MeanDefoliation { set; get; }
 
         [DataFieldAttribute(Unit = FieldUnits.Count, Desc = "Number of Sites Defoliated 0-33%")]

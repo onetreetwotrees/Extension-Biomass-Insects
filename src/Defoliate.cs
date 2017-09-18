@@ -68,7 +68,7 @@ namespace Landis.Extension.Insects
 
                 if (suscIndex < 0) suscIndex = 0;
 
-                // Get the Neighborhood GrowthReduction Density
+                // Get the Neighborhood Mean Defoliation surrounding current site. This needs to be reset to zero here at the start of a new outbreak.
                 double meanNeighborhoodDefoliation = 0.0;
                 int neighborCnt = 0;
 
