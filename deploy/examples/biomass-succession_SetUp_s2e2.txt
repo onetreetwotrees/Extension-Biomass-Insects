@@ -30,11 +30,11 @@ MinRelativeBiomass
 >> ----------	--------------------	
 	        eco1   eco2  
 
-	1	15%    15%
-	2	25%    25%
-	3	50%    50%
-	4	80%    80%
-	5	95%    95%
+	1	2%    	2%
+	2	6%    	6%
+	3	8%    	8%
+	4	11%    	11%
+	5	14%    	14%
 
 SufficientLight
 >> Spp Shade	Probability

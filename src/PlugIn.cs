@@ -67,7 +67,7 @@ namespace Landis.Extension.Insects
 
             // Add local event handler for cohorts death due to age-only
             // disturbances.
-            Cohort.AgeOnlyDeathEvent += CohortKilledByAgeOnlyDisturbance;
+            //Cohort.AgeOnlyDeathEvent += CohortKilledByAgeOnlyDisturbance;
 
         }
 
@@ -99,32 +99,10 @@ namespace Landis.Extension.Insects
                      PlugIn.ModelCore.UI.WriteLine("  Caution!  Insect Parameters NOT loading correctly.");
 
                 insect.Neighbors = GetNeighborhood(insect.NeighborhoodDistance);
-
-                //int i=0;
-
-                //foreach(RelativeLocation location in insect.Neighbors)
-                //    i++;
-
-                //if(insect.Neighbors != null)
-                    // PlugIn.ModelCore.UI.WriteLine("   Biomass Insects:  Dispersal Neighborhood = {0} neighbors.", i);
+                // PlugIn.ModelCore.UI.WriteLine("   Biomass Insects:  Dispersal Neighborhood = {0} neighbors.", i);
                 insect.LastBioRemoved = 0;
 
             }
-
-            /* PlugIn.ModelCore.UI.WriteLine("   Opening BiomassInsect log file \"{0}\" ...", parameters.LogFileName);
-
-            try {
-                log = Landis.Data.CreateTextFile(parameters.LogFileName);
-            }
-            catch (Exception err) {
-                string mesg = string.Format("{0}", err.Message);
-                throw new System.ApplicationException(mesg);
-            }
-
-            log.AutoFlush = true;
-            log.Write("Time,InsectName,StartYear,StopYear,MeanDefoliation,NumSitesDefoliated0_33,NumSitesDefoliated33_66,NumSitesDefoliated66_100,NumOutbreakInitialSites,MortalityBiomassKg");
-            log.WriteLine("");
-             */
 
         }
 
@@ -138,7 +116,7 @@ namespace Landis.Extension.Insects
             running = true;
             PlugIn.ModelCore.UI.WriteLine("   Processing landscape for Biomass Insect events ...");
 
-            //SiteVars.SiteDefoliation.ActiveSiteValues = 0; 
+            SiteVars.SiteDefoliation.ActiveSiteValues = 0; 
 
             foreach(IInsect insect in manyInsect)
             {
@@ -151,21 +129,21 @@ namespace Landis.Extension.Insects
                 if (insect.MortalityYear != PlugIn.ModelCore.CurrentTime)
                     insect.LastBioRemoved = 0;
 
-                // Copy the data from current to last, Commented out code appears to be added by BRM for his log file assembly? - JRF
+                // Copy the data from current year to last year, Commented out code appears to be added by BRM for his log file assembly? - JRF
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                     insect.LastYearDefoliation[site] = insect.ThisYearDefoliation[site];
-                /*
-                {
-
-                    double thisYearDefol = insect.ThisYearDefoliation[site];
-                    insect.LastYearDefoliation[site] = thisYearDefol;
-                    SiteVars.SiteDefoliation[site] += (int)Math.Round(thisYearDefol * 100);
-                    if (thisYearDefol > 0)
+                
                     {
-                        SiteVars.TimeOfLastEvent[site] = PlugIn.ModelCore.CurrentTime - 1; //Already registered in Outbreak.cs - JRF
-                        SiteVars.InsectName[site] = insect.Name;
+
+                        //double thisYearDefol = insect.ThisYearDefoliation[site];
+                        //insect.LastYearDefoliation[site] = thisYearDefol;
+                        //SiteVars.SiteDefoliation[site] += (int)Math.Round(thisYearDefol * 100);
+                        /*if (thisYearDefol > 0)
+                        {
+                            SiteVars.TimeOfLastEvent[site] = PlugIn.ModelCore.CurrentTime - 1; //Already registered in Outbreak.cs - JRF
+                            SiteVars.InsectName[site] = insect.Name;
+                        }*/
                     }
-                }*/
 
 
                     insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
@@ -231,7 +209,7 @@ namespace Landis.Extension.Insects
                 {
                     // PlugIn.ModelCore.UI.WriteLine("   An outbreak starts or continues.  Start and stop time do not change.");
                     insect.ActiveOutbreak = true;
-                     PlugIn.ModelCore.UI.WriteLine("   {0} is active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
+                    PlugIn.ModelCore.UI.WriteLine("   {0} is active.  StartYear={1}, StopYear={2}, CurrentYear={3}.", insect.Name, insect.OutbreakStartYear, insect.OutbreakStopYear, PlugIn.ModelCore.CurrentTime);
 
                     insect.MortalityYear = PlugIn.ModelCore.CurrentTime + 1;
                     insect.LastStartYear = insect.OutbreakStartYear; // Added here for Brian's log file.
@@ -252,7 +230,7 @@ namespace Landis.Extension.Insects
                     insect.OutbreakStartYear = PlugIn.ModelCore.CurrentTime + (int)timeBetweenOutbreaks;
                     insect.OutbreakStopYear = insect.OutbreakStartYear + (int)duration - 1;
                 }
-
+                //Last year of a multiyear outbreak.
                 else if(insect.OutbreakStopYear <= PlugIn.ModelCore.CurrentTime
                     && timeAfterDuration > PlugIn.ModelCore.CurrentTime - insect.OutbreakStopYear)
                 {
@@ -274,9 +252,10 @@ namespace Landis.Extension.Insects
                    //  PlugIn.ModelCore.UI.WriteLine("   OutbreakStartYear={0}.", insect.OutbreakStartYear);
 
                     if (insect.OutbreakStartYear == PlugIn.ModelCore.CurrentTime || insect.SingleOutbreakYear)
-                        // Initialize neighborhoodGrowthReduction with patches
+                        // Initialize neighborhood defoliation with patches in first year of outbreaks.
                         Outbreak.InitializeDefoliationPatches(insect);
                     else
+                        // Use neighborhood defoliation from prior years' defoliation on subsequent years of an outbreak.
                         insect.NeighborhoodDefoliation.ActiveSiteValues = 0;
 
                 }
@@ -320,6 +299,7 @@ namespace Landis.Extension.Insects
                 foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
                 {
                     totalBioRemoved += SiteVars.BiomassRemoved[site]; // kg across all defoliated sites
+                    //totalBioRemoved = SiteVars.BiomassRemoved[site]; // Try this to clean up maps that attribute mortality to multiple insects
                 }
                 //insect.LastBioRemoved = totalBioRemoved; //Assign variables for the logfile - JRF Moving this to original location below to test.
                 // PlugIn.ModelCore.UI.WriteLine("   totalBioRemoved={0}.", totalBioRemoved);

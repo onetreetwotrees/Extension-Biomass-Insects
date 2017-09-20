@@ -57,7 +57,8 @@ namespace Landis.Extension.Insects
             int sppIndex = species.Index;
             double totalDefoliation = 0.0;
 
-            foreach(IInsect insect in manyInsect)
+            //foreach(IInsect insect in manyInsect)
+            foreach (IInsect insect in PlugIn.ManyInsect) // This the construction used by GrowthReduction and PartialDisturbance, why was above different? Defoliation seems to calculate out of order...
             {
                 if(!insect.ActiveOutbreak)
                     continue;
@@ -68,11 +69,12 @@ namespace Landis.Extension.Insects
 
                 if (suscIndex < 0) suscIndex = 0;
 
-                // Get the Neighborhood Mean Defoliation surrounding current site. This needs to be reset to zero here at the start of a new outbreak.
+                // Get the Neighborhood Mean Defoliation surrounding current site. 
+                //This needs to be reset to zero here at the start of a new outbreak.
                 double meanNeighborhoodDefoliation = 0.0;
                 int neighborCnt = 0;
 
-                // If it is the first year, the neighborhood growth reduction
+                // If it is the first year, the neighborhood defoliation
                 // will have been initialized in Outbreak.InitializeDefoliationPatches
 
                 if(insect.NeighborhoodDefoliation[site] > 0)
@@ -153,6 +155,9 @@ namespace Landis.Extension.Insects
                     if(insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] <= 0.00000000)
                     {
                         defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
+                        // Maybe need this here and in each else statement: To correct for error reporting Mean Neighborhood Defoliation < 0. 
+                        // Looping over multiple insects in same year could produce totalDefoliation > 1. If this year's total defoliation = 1, next insect can't defoliate more.
+                        defoliation = Math.Min((1 - totalDefoliation),defoliation);
                         insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                     }
                     else
@@ -162,6 +167,7 @@ namespace Landis.Extension.Insects
                 {
                     insect.HostDefoliationByYear[site].Add(PlugIn.ModelCore.CurrentTime, new Double[3]{0.0, 0.0, 0.0});
                     defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
+                    defoliation = Math.Min((1 - totalDefoliation), defoliation);
                     //if (meanNeighborhoodDefoliation <= 0.0 && defoliation > 0.0)
                     //     PlugIn.ModelCore.UI.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
 
@@ -185,7 +191,8 @@ namespace Landis.Extension.Insects
 
                 // Maybe need this here: To correct for error reporting Mean Neighborhood Defoliation < 0. 
                 // Looping over multiple insects in same year could produce totalDefoliation > 1. If this year's total defoliation = 1, next insect can't defoliate more.
-                defoliation = Math.Min((1 - totalDefoliation),defoliation);
+                // This needs to be moved within each if-else statement above before assigning defoliation to HostDefoliationByYear...Doing now...
+                //defoliation = Math.Min((1 - totalDefoliation),defoliation);
                 // Then: 
                 weightedDefoliation = defoliation * ((double)cohortBiomass / (double)siteBiomass);
                 //weightedDefoliation = (Math.Min((1 - totalDefoliation), defoliation) * ((double)cohortBiomass / (double)siteBiomass));

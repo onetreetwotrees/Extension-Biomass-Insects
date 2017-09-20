@@ -107,7 +107,7 @@ namespace Landis.Extension.Insects
                      PlugIn.ModelCore.UI.WriteLine("SuscIndex < 0 || > 2.  Site R/C={0}/{1},suscIndex={2},suscIndexSum={3},sumBio={4}.", site.Location.Row, site.Location.Column, suscIndex,suscIndexSum,sumBio);
                     throw new ApplicationException("Error: SuscIndex is not between 2.0 and 0.0");
                 }
-                // Assume that there are no neighbors whatsoever:
+                // Assume that there are no neighbors and draw initial defoliation from the most intense neighborhood distribution:
                 DistributionType dist = insect.SusceptibleTable[suscIndex].Distribution_80.Name;
 
 
@@ -121,6 +121,11 @@ namespace Landis.Extension.Insects
                      PlugIn.ModelCore.UI.WriteLine("Initial Defoliation Probility < 0 || > 1.  Site R/C={0}/{1}.", site.Location.Row, site.Location.Column);
                     throw new ApplicationException("Error: Probability is not between 1.0 and 0.0");
                 }
+                // Try cleaning up defoliation patterns so areas outside main patches are less defoliated 
+                /*if (probability < 0.10)
+                {
+                    probability = 0;
+                }*/
                 
                 SiteVars.InitialOutbreakProb[site] = probability;
                 // PlugIn.ModelCore.UI.WriteLine("Susceptiblity index={0}.  Outbreak Probability={1:0.00}.  R/C={2}/{3}.", suscIndex, probability, site.Location.Row, site.Location.Column);

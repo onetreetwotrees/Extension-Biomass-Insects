@@ -136,7 +136,7 @@ namespace Landis.Extension.Insects
             }
         }*/
         //---------------------------------------------------------------------
-        public static ISiteVar<int> SiteDefoliation  //Brian M update  
+        public static ISiteVar<int> SiteDefoliation  //Brian M update for BDA interaction  
         {
             get
             {
