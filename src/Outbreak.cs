@@ -55,6 +55,7 @@ namespace Landis.Extension.Insects
                 if (SiteVars.BiomassRemoved[site] > 0)
                     SiteVars.BiomassRemoved[site] = 0;
 
+                PlugIn.ModelCore.UI.WriteLine("  Reducing cohort biomass for {0}...", insect.Name);
                 PartialDisturbance.ReduceCohortBiomass(site);
                     
                 if (SiteVars.BiomassRemoved[site] > 0) 
@@ -122,6 +123,7 @@ namespace Landis.Extension.Insects
                     throw new ApplicationException("Error: Probability is not between 1.0 and 0.0");
                 }
                 // Try cleaning up defoliation patterns so areas outside main patches are less defoliated 
+                // How about using Brian's patch shape calibrator here instead. Divide probability by susIndex * PSC, to tie initial patch probs. more closely to host abundance...
                 /*if (probability < 0.10)
                 {
                     probability = 0;

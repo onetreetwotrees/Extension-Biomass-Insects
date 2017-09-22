@@ -71,6 +71,6 @@ ULMUAMER       	2			-0.15	1			0.009	7
    
 Susceptibilities
 >> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
-1	Beta	1.06	0.81	Beta	1.06	0.81	Beta	1.06	0.81	Beta	1.17	2.64	Beta	0.00	4.12
-2	Beta	0.73	0.75	Beta	0.73	0.75	Beta	0.73	0.75	Beta	0.76	2.13	Beta	0.00	4.92
-3	Beta	0.51	1.01	Beta	0.51	1.01	Beta	0.51	1.01	Beta	0.65	1.66	Beta	0.00	6.09
+1	Beta	1.06	0.81	Beta	1.06	0.81	Beta	1.06	0.81	Beta	1.17	2.64	Beta	0.29	4.12
+2	Beta	0.73	0.75	Beta	0.73	0.75	Beta	0.73	0.75	Beta	0.76	2.13	Beta	0.26	4.92
+3	Beta	0.51	1.01	Beta	0.51	1.01	Beta	0.00	1.01	Beta	0.00	1.66	Beta	0.00	6.09

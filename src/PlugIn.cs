@@ -24,6 +24,7 @@ namespace Landis.Extension.Insects
         public static readonly ExtensionType Type = new ExtensionType("disturbance:insects");
         public static readonly string ExtensionName = "Biomass Insects";
         public static MetadataTable<EventsLog> eventLog;
+        public static int activeInsectIndex;
 
         private string mapNameTemplate;
         //private StreamWriter log;
@@ -31,6 +32,7 @@ namespace Landis.Extension.Insects
         private IInputParameters parameters;
         private static ICore modelCore;
         private bool running;
+        //private int activeInsectIndex;
 
         //---------------------------------------------------------------------
 
@@ -57,7 +59,6 @@ namespace Landis.Extension.Insects
             }
         }
         //---------------------------------------------------------------------
-
         public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
@@ -82,6 +83,7 @@ namespace Landis.Extension.Insects
             Timestep = 1; //parameters.Timestep;
             mapNameTemplate = parameters.MapNamesTemplate;
             manyInsect = parameters.ManyInsect;
+            activeInsectIndex = 0;
 
             MetadataHandler.InitializeMetadata(parameters.Timestep, parameters.MapNamesTemplate, parameters.LogFileName, manyInsect, ModelCore);
             SiteVars.Initialize();
@@ -116,13 +118,15 @@ namespace Landis.Extension.Insects
             running = true;
             PlugIn.ModelCore.UI.WriteLine("   Processing landscape for Biomass Insect events ...");
 
-            SiteVars.SiteDefoliation.ActiveSiteValues = 0; 
+            SiteVars.SiteDefoliation.ActiveSiteValues = 0;
+            activeInsectIndex = 0;
 
             foreach(IInsect insect in manyInsect)
             {
                 //SiteVars.BiomassRemoved.ActiveSiteValues = 0;
                 //SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
-
+                activeInsectIndex++;
+                PlugIn.ModelCore.UI.WriteLine("   Active Insect = {0}.",activeInsectIndex);
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
 
@@ -455,6 +459,10 @@ namespace Landis.Extension.Insects
                                 pixel.MapCode.Value = 0;
                             }
                             outputRaster.WriteBufferPixel();
+                            if (totalBioRemoved > 0)
+                            {
+                                PlugIn.ModelCore.UI.WriteLine("   {0}:,  LastBioRemoved={1:0.000}, totalBioRemoved={2:0.000}, SiteVars.BiomassRemoved[site]={3:0.000}", insect.Name, insect.LastBioRemoved, totalBioRemoved, SiteVars.BiomassRemoved[site]);
+                            }
                             //Zero out the BiomassRemoved after the last insect mortality event in a given year.
                             SiteVars.BiomassRemoved[site] = 0;
                         }
@@ -463,6 +471,7 @@ namespace Landis.Extension.Insects
 
                 //insect.ThisYearDefoliation.ActiveSiteValues = 0.0;  //reset this year to 0 for all sites, this was already done at the top of loop to initialize defoliation patchs, Outbreak.cs
                 insect.LastBioRemoved = totalBioRemoved; //Assign variables for the logfile - This is original ordered location for this. JRF.
+
             }
 
 
