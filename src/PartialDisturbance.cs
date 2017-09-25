@@ -62,6 +62,7 @@ namespace Landis.Extension.Insects
             int sppIndex = cohort.Species.Index;
             double cumulativeDefoliationManyInsects = 0.0;
             int insectIndex = 0;
+            double activeInsectCurrentDefoliation = 0.0;
 
             foreach (IInsect insect in PlugIn.ManyInsect)
             {
@@ -83,37 +84,45 @@ namespace Landis.Extension.Insects
                 {
                     thisInsectIndex++;
                     annualDefoliation = insect.HostDefoliationByYear[currentSite][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
-                    PlugIn.ModelCore.UI.WriteLine("{0} 1st Host Defoliation By Year:  Time={1}, spp={2}, annualDefoliation={3:0.000}.", thisInsect, (PlugIn.ModelCore.CurrentTime - yearBack), cohort.Species.Name, annualDefoliation);
+                    PlugIn.ModelCore.UI.WriteLine("{0} 1st Host Defoliation By Year:  Time={1}, spp={2}, annualDefoliation={3:0.00000}, cumulativeDefoliationManyInsects={4:0.00000}.", thisInsect, (PlugIn.ModelCore.CurrentTime - yearBack), cohort.Species.Name, annualDefoliation,cumulativeDefoliationManyInsects);
                     // PlugIn.ModelCore.UI.WriteLine("Host Defoliation By Year:  Time={0}, suscIndex={1}, spp={2}, annualDefoliation={3}.", (PlugIn.ModelCore.CurrentTime - yearBack), suscIndex + 1, cohort.Species.Name, annualDefoliation);
                 }
                 PlugIn.ModelCore.UI.WriteLine(" {0}  insectIndex={1}, activeInsectIndex={2}.", thisInsect, insectIndex, PlugIn.activeInsectIndex);
+                // Try adding if statement below. Only evaluate additional biomassMortality if current insect defoliated this cohort last year.
+                /*if (annualDefoliation > 0 && insectIndex == PlugIn.activeInsectIndex)
+                	continue;
+                */
+                if (insectIndex == PlugIn.activeInsectIndex)
+                {
+                    activeInsectCurrentDefoliation = annualDefoliation;
+                }
+
                 if (annualDefoliation == 0)
                 {
                     thisInsectIndex = insectIndex;
                 }
   
-                // Give cumulativeDefoliation initial value. Will be 0 if no other insects defoliated this cohort in prior year. Otherwise, cumulativeDefoliation starts at the most recent level.
+                // Give cumulativeDefoliation initial value or update to most recent value. Will be 0 if no other insects defoliated this cohort in prior year. Otherwise, cumulativeDefoliation starts at the most recent level.
                 double cumulativeDefoliation = cumulativeDefoliationManyInsects;
                 double lastYearsCumulativeDefoliation = cumulativeDefoliationManyInsects;
 
                 // For first insect in manyInsect, start tallying cumulative defoliation experienced by cohort over consecutive years.
-                // If current cohort has not been defoliated by this or any other insect in prior year, initialize for current outbreaks here.
-                if (cumulativeDefoliation == 0.0)
+                // If current cohort has not been defoliated by this or any other insect in prior year, initialize for current insect and its outbreaks here.
+                if (cumulativeDefoliation == 0.0 && insectIndex == 1)
                 {
                     cumulativeDefoliation = annualDefoliation;
                     lastYearsCumulativeDefoliation = 0.0;
-                    PlugIn.ModelCore.UI.WriteLine(" {0}, Yr 1 cumulativeDefoliation={1:0.000},annualDefoliation={2:0.000}, lastYearsCumulativeDefoliation {3:0.000}.", thisInsect, cumulativeDefoliation, annualDefoliation, lastYearsCumulativeDefoliation);
+                    PlugIn.ModelCore.UI.WriteLine(" {0}, Yr 1 cumulativeDefoliation={1:0.00000},annualDefoliation={2:0.00000}, lastYearsCumulativeDefoliation {3:0.00000}.", thisInsect, cumulativeDefoliation, annualDefoliation, lastYearsCumulativeDefoliation);
                 }
 
                 // For cohorts that were defoliated 1 or more years prior by one or more insects, accumulate that defoliation here...
                 while (annualDefoliation > 0.0)
                 {
                     // If current cohort was defoliated by this or any other insect in prior year, earlier in the spring, acrue for current outbreaks here. 
-                    // Only acrue defoliation from 1 year prior if it was caused by insects before current active Insect within the same year, in order specified in Insect Setup File.
+                    // Only acrue defoliation from 1 year prior if it was caused by insects before current Insect was active within the same year, in order specified in Insect Setup File.
                     if (insectIndex <= PlugIn.activeInsectIndex && yearBack == 1 && thisInsectIndex < insectIndex)
                     {
                         thisInsectIndex++;
-                        lastYearsCumulativeDefoliation = lastYearsCumulativeDefoliation - annualDefoliation;
                     }
                     else
                     {
@@ -127,8 +136,8 @@ namespace Landis.Extension.Insects
                         if(annualDefoliation > 0.0)
                         {
                             cumulativeDefoliation += annualDefoliation;
-                            lastYearsCumulativeDefoliation += annualDefoliation;
-                            PlugIn.ModelCore.UI.WriteLine("{0} While Host Defoliation By Year:  Time={1}, spp={2}, annualDefoliation={3:0.000}.", thisInsect, (PlugIn.ModelCore.CurrentTime - yearBack), cohort.Species.Name, annualDefoliation);
+                            lastYearsCumulativeDefoliation = cumulativeDefoliation - activeInsectCurrentDefoliation;
+                            PlugIn.ModelCore.UI.WriteLine("{0} While Host Defoliation By Year:  Time={1}, spp={2}, annualDefoliation={3:0.00000}.", thisInsect, (PlugIn.ModelCore.CurrentTime - yearBack), cohort.Species.Name, annualDefoliation);
                         }
 
                         //PlugIn.ModelCore.UI.WriteLine("cumulativeDefoliation={0:0.000},annualDefoliation={1:0.000}, lastYearsCumulativeDefoliation {2:0.000}.", cumulativeDefoliation, annualDefoliation, lastYearsCumulativeDefoliation);
@@ -140,7 +149,7 @@ namespace Landis.Extension.Insects
                      * */
                     if (annualDefoliation > 0.0)
                     {
-                        PlugIn.ModelCore.UI.WriteLine("cumulativeDefoliation={0:0.000},annualDefoliation={1:0.000}, lastYearsCumulativeDefoliation {2:0.000}.", cumulativeDefoliation, annualDefoliation, lastYearsCumulativeDefoliation);
+                        PlugIn.ModelCore.UI.WriteLine("cumulativeDefoliation={0:0.00000},annualDefoliation={1:0.00000}, lastYearsCumulativeDefoliation {2:0.00000}.", cumulativeDefoliation, annualDefoliation, lastYearsCumulativeDefoliation);
                     }
                 }
                 // Update cumulativeDefoliationManyInsects
@@ -161,20 +170,20 @@ namespace Landis.Extension.Insects
                     {
                         //Most mortality studies restrospectively measure mortality for a number of years post disturbance. We need to subtract background mortality to get the yearly estimate. Subtract 7, assuming 1% mortality/year for 7 years, a typical time since disturbance in mortality papers. 
                         percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
-                        PlugIn.ModelCore.UI.WriteLine(" {0}, cumulativeDefoliation={1:0.000}, cohort.Biomass={2:0.000}, percentMortality={3:0.00}, cumDefoManyInsects={4:0.000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality, cumulativeDefoliationManyInsects);
+                        PlugIn.ModelCore.UI.WriteLine(" {0}, cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMortality={3:0.00000}, cumDefoManyInsects={4:0.00000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality, cumulativeDefoliationManyInsects);
                     }
 
                     // Second year or more of defoliation mortality discounts the first year's mortality amount.
-                    if (cumulativeDefoliation >= 0.50 && lastYearsCumulativeDefoliation >= 0.50 && cumulativeDefoliation != lastYearsCumulativeDefoliation)
+                    if (cumulativeDefoliation >= 0.50 && lastYearsCumulativeDefoliation >= 0.50 && !insect.SingleOutbreakYear)
                     {
                         double lastYearPercentMortality = ((intercept) * (double)Math.Exp((slope * lastYearsCumulativeDefoliation * 100)) - 7) / 100;
                         percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;                        
                         percentMortality -= lastYearPercentMortality;
-                        PlugIn.ModelCore.UI.WriteLine(" {0}, cumulativeDefoliation={1:0.000}, cohort.Biomass={2:0.000}, percentMortality={3:0.00}, cumDefoManyInsects={4:0.000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality, cumulativeDefoliationManyInsects);
+                        PlugIn.ModelCore.UI.WriteLine(" {0}, cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMortality={3:0.0000}, cumDefoManyInsects={4:0.00000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality, cumulativeDefoliationManyInsects);
                     }
 
                     // Special case for when you have only one year of defoliation that is >50%, so no discounting necessary. There is probably a better way to write this.
-                    if (cumulativeDefoliation >= 0.50 && lastYearsCumulativeDefoliation >= 0.50 && yearDefoliationDiff < 0.00000000000000000001)
+                    if (cumulativeDefoliation >= 0.50 && lastYearsCumulativeDefoliation >= 0.50 && yearDefoliationDiff < 0.00000000000000000001 && insect.SingleOutbreakYear)
                     { 
 
                         percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
@@ -205,7 +214,7 @@ namespace Landis.Extension.Insects
                 {
                     // Calculate how much biomass is lost to this percent mortality
                     biomassMortality += (int) ((double) cohort.Biomass * percentMortality);
-                    PlugIn.ModelCore.UI.WriteLine(" In insect loop, biomassMortality={0:0.000}, cohort.Biomass={1:0.000}, percentMortality={2:0.00}, cumulativeDefoliation={3:0.000}, cumulativeDefoliationManyInsects={4:0:000}.", biomassMortality, cohort.Biomass, percentMortality,cumulativeDefoliation,cumulativeDefoliationManyInsects);
+                    PlugIn.ModelCore.UI.WriteLine(" In insect loop, biomassMortality={0}, cohort.Biomass={1}, percentMortality={2:0.0000}, cumulativeDefoliation={3:0.00000}, cumulativeDefoliationManyInsects={4:0:00000}.", biomassMortality, cohort.Biomass, percentMortality,cumulativeDefoliation,cumulativeDefoliationManyInsects);
 
                 }
 
@@ -218,7 +227,7 @@ namespace Landis.Extension.Insects
             SiteVars.BiomassRemoved[currentSite] += biomassMortality;
             if (biomassMortality > 0)
             {
-                PlugIn.ModelCore.UI.WriteLine(" biomassMortality={0:0.000}, BiomassRemoved={1:0.000}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
+                PlugIn.ModelCore.UI.WriteLine(" biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
             }
 
             if(biomassMortality > cohort.Biomass || biomassMortality < 0)
