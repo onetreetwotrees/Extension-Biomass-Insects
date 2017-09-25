@@ -130,7 +130,8 @@ namespace Landis.Extension.Insects
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
 
-                if (insect.MortalityYear != PlugIn.ModelCore.CurrentTime)
+                //if (insect.MortalityYear != PlugIn.ModelCore.CurrentTime)
+                if (insect.MortalityYear < PlugIn.ModelCore.CurrentTime-1)
                     insect.LastBioRemoved = 0;
 
                 // Copy the data from current year to last year, Commented out code appears to be added by BRM for his log file assembly? - JRF
