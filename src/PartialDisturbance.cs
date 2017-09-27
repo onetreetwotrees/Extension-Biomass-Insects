@@ -63,6 +63,7 @@ namespace Landis.Extension.Insects
             double cumulativeDefoliationManyInsects = 0.0;
             int insectIndex = 0;
             double activeInsectCurrentDefoliation = 0.0;
+            double priorInsectDefoliationThisYear = 0.0;
 
             foreach (IInsect insect in PlugIn.ManyInsect)
             {
@@ -70,12 +71,12 @@ namespace Landis.Extension.Insects
                 if (!insect.ActiveOutbreak)
                     continue;
               
-                insectIndex++;
-                int thisInsectIndex = 0;
                 int suscIndex = insect.SppTable[sppIndex].Susceptibility - 1;
-                string thisInsect = insect.Name;
                 int yearBack = 1;
                 double annualDefoliation = 0.0;
+                int thisInsectIndex = 0;
+                string thisInsect = insect.Name;
+                insectIndex++;
 
                 //PlugIn.ModelCore.UI.WriteLine(" {0}  Checking cohort for mortality caused by Insect # {1}, Site R/C={2}/{3}.", thisInsect, PlugIn.activeInsectIndex, currentSite.Location.Row, currentSite.Location.Column);
 
@@ -118,6 +119,9 @@ namespace Landis.Extension.Insects
                     if (insectIndex <= PlugIn.activeInsectIndex && yearBack == 1 && thisInsectIndex < insectIndex)
                     {
                         thisInsectIndex++;
+                        priorInsectDefoliationThisYear += annualDefoliation;
+                        //PlugIn.ModelCore.UI.WriteLine(" {0}, priorInsectDefoliationThisYear={1:0.00000},annualDefoliation={2:0.00000}, lastYearsCumulativeDefoliation {3:0.00000}.", thisInsect, priorInsectDefoliationThisYear, annualDefoliation, lastYearsCumulativeDefoliation);
+
                     }
                     else
                     {
@@ -181,16 +185,25 @@ namespace Landis.Extension.Insects
                 }
                 else if (insect.AnnMort == "Annual") // Need to update this Annual method to discount cumulative defoliation from other insects in THIS year.
                 {
+                    double priorPercentMortalityThisYear = 0.0;
                     // **** New section from JRF ****
-                    // Defoliation mortality doesn't start until at least 50% cumulative defoliation is reached.
-                    // The first year of mortality follows normal background relationships...
-                    if (cumulativeDefoliation >= 0.50)
+                    // Defoliation mortality doesn't start until at least 50% cumulative defoliation is reached, and isn't calculated until loop has cycled through potential defoliation of all insects.
+                    // Mortality when cumulative defoliation is <50% follows normal background relationships...
+                    if (cumulativeDefoliation >= 0.50 && thisInsectIndex == insectIndex)
                     {
                         //Most mortality studies restrospectively measure mortality for a number of years post disturbance. This model requires annualized mortality relationships and parameters, and will not work correctly with longer-term relationships. An earlier version subtracted background mortality from such relationships to get the yearly estimate.
+                        //Calculate subannual increment of mortality that occurred from prior insect activity in this year. Use this to discount mortality of subsequent insects.
+                        if (lastYearsCumulativeDefoliation >= 0.50 && priorInsectDefoliationThisYear > 0.0)
+                        {
+                            priorPercentMortalityThisYear = ((double)Math.Exp(slope * (lastYearsCumulativeDefoliation) * 100 + intercept) / 100);
+                            //PlugIn.ModelCore.UI.WriteLine(" {0}, priorPercentMortalityThisYear={1:0.00000},annualDefoliation={2:0.00000}, lastYearsCumulativeDefoliation {3:0.00000}.", thisInsect, priorPercentMortalityThisYear, annualDefoliation, lastYearsCumulativeDefoliation);
 
-                        //percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100))) / 100;
-                        percentMortality = (double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100;
-                        // PlugIn.ModelCore.UI.WriteLine("cumulativeDefoliation={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", cumulativeDefoliation, cohort.Biomass, percentMortality);
+                        }
+                        //percentMortality = (double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100;
+                        //BRM - Subtract the background mortality from the curve (mortality rate for 0 cumulative defoliation)
+                        double pctMort0 = (double)Math.Exp(slope * 0 * 100 + intercept) / 100;
+                        percentMortality = Math.Max(0,((double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100) - pctMort0 - priorPercentMortalityThisYear);
+                        //PlugIn.ModelCore.UI.WriteLine("cumulativeDefoliation={0}, cohort.Biomass={1}, percentMortality={2:0.00}.", cumulativeDefoliation, cohort.Biomass, percentMortality);
                     }
                     // **** End new section from JRF ****
                 }

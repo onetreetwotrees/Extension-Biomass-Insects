@@ -3,13 +3,9 @@ LandisData "Initial Communities"
 MapCode    0
 
 MapCode     1
-ACERSACC   80 105
-FRAXAMER   80 100
-NYSSSYLV  100
 QUERALBA   80 105
 QUERPRIN  100 105
 QUERRUBR   80 105
-TILIAMER   80 100 105
 
 MapCode     2
 ACERSACC   68

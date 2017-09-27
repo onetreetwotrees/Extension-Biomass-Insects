@@ -57,8 +57,8 @@ namespace Landis.Extension.Insects
             int sppIndex = species.Index;
             double totalDefoliation = 0.0;
 
-            //foreach(IInsect insect in manyInsect)
-            foreach (IInsect insect in PlugIn.ManyInsect) // This the construction used by GrowthReduction and PartialDisturbance, why was above different? Defoliation seems to calculate out of order...
+            foreach(IInsect insect in manyInsect)
+            //foreach (IInsect insect in PlugIn.ManyInsect) // This the construction used by GrowthReduction and PartialDisturbance, why was above different? Defoliation seems to calculate out of order...
             {
                 if(!insect.ActiveOutbreak)
                     continue;
@@ -147,17 +147,24 @@ namespace Landis.Extension.Insects
                     value2 = insect.SusceptibleTable[suscIndex].Distribution_0.Value2;
                 }
 
-                // Next, ensure that all cohorts of the same susceptibility class
-                // receive the same level of defoliation.
+                // Next, draw defoliation value and apply to all cohorts of the same susceptibility class on current site.
 
                 if(insect.HostDefoliationByYear[site].ContainsKey(PlugIn.ModelCore.CurrentTime))
                 {
                     if(insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] <= 0.00000000)
                     {
                         defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
-                        // Maybe need this here and in each else statement: To correct for error reporting Mean Neighborhood Defoliation < 0. 
+                        // New, only consider cohort defoliation > 1%.
+                        if (defoliation < 0.01)
+                        {
+                            defoliation = 0.0;
+                        }
+                        // Need this here and in each else statement: To correct for error reporting Mean Neighborhood Defoliation < 0. Bug arises when tested with 3+ insects.
                         // Looping over multiple insects in same year could produce totalDefoliation > 1. If this year's total defoliation = 1, next insect can't defoliate more.
+                        if (defoliation > 0) 
+                        {
                         defoliation = Math.Min((1 - totalDefoliation),defoliation);
+                        }
                         insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                     }
                     else
@@ -167,7 +174,16 @@ namespace Landis.Extension.Insects
                 {
                     insect.HostDefoliationByYear[site].Add(PlugIn.ModelCore.CurrentTime, new Double[3]{0.0, 0.0, 0.0});
                     defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
+                    if (defoliation < 0.01)
+                    {
+                        defoliation = 0.0;
+                    }
+                    // Need this here and in each else statement: To correct for error reporting Mean Neighborhood Defoliation < 0. Bug arises when tested with 3+ insects.
+                    // Looping over multiple insects in same year could produce totalDefoliation > 1. If this year's total defoliation = 1, next insect can't defoliate more.
+                    if (defoliation > 0) 
+                    {
                     defoliation = Math.Min((1 - totalDefoliation), defoliation);
+                    }
                     //if (meanNeighborhoodDefoliation <= 0.0 && defoliation > 0.0)
                     //     PlugIn.ModelCore.UI.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
 
@@ -179,7 +195,7 @@ namespace Landis.Extension.Insects
                 // the same susceptibility.
                 if(defoliation > 1.0 || defoliation < 0)
                 {
-                     PlugIn.ModelCore.UI.WriteLine("DEFOLIATION TOO BIG or SMALL:  {0}, {1}, {2}, {3}.", dist, value1, value2, defoliation);
+                    PlugIn.ModelCore.UI.WriteLine("DEFOLIATION TOO BIG or SMALL:  {0}, {1:0.00000000}, {2:0.000000000}, {3:0.000000000}, {4:0.000000000}.", dist, value1, value2, defoliation, meanNeighborhoodDefoliation);
                     throw new ApplicationException("Error: New defoliation is not between 1.0 and 0.0");
                 }
 
@@ -206,10 +222,10 @@ namespace Landis.Extension.Insects
             if(totalDefoliation > 1.0)  // Cannot exceed 100% defoliation
                 totalDefoliation = 1.0;
 
-            if(totalDefoliation > 1.1 || totalDefoliation < 0)
+            if(totalDefoliation > 1.0 || totalDefoliation < 0)
             {
                  PlugIn.ModelCore.UI.WriteLine("Cohort Total Defoliation = {0:0.00}.  Site R/C={1}/{2}.", totalDefoliation, site.Location.Row, site.Location.Column);
-                throw new ApplicationException("Error: Total Defoliation is not between 1.1 and 0.0");
+                throw new ApplicationException("Error: Total Defoliation is not between 1.0 and 0.0");
             }
 
 

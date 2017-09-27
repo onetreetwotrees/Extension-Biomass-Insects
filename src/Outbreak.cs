@@ -55,7 +55,7 @@ namespace Landis.Extension.Insects
                 if (SiteVars.BiomassRemoved[site] > 0)
                     SiteVars.BiomassRemoved[site] = 0;
 
-                PlugIn.ModelCore.UI.WriteLine("  Reducing cohort biomass for {0}...", insect.Name);
+                //PlugIn.ModelCore.UI.WriteLine("  Reducing cohort biomass for {0}...", insect.Name);
                 PartialDisturbance.ReduceCohortBiomass(site);
                     
                 if (SiteVars.BiomassRemoved[site] > 0) 

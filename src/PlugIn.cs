@@ -462,7 +462,7 @@ namespace Landis.Extension.Insects
                             outputRaster.WriteBufferPixel();
                             if (totalBioRemoved > 0)
                             {
-                                PlugIn.ModelCore.UI.WriteLine("   {0}:,  LastBioRemoved={1:0.000}, totalBioRemoved={2:0.000}, SiteVars.BiomassRemoved[site]={3:0.000}", insect.Name, insect.LastBioRemoved, totalBioRemoved, SiteVars.BiomassRemoved[site]);
+                                //PlugIn.ModelCore.UI.WriteLine("   {0}:,  LastBioRemoved={1:0.000}, totalBioRemoved={2:0.000}, SiteVars.BiomassRemoved[site]={3:0.000}", insect.Name, insect.LastBioRemoved, totalBioRemoved, SiteVars.BiomassRemoved[site]);
                             }
                             //Zero out the BiomassRemoved after the last insect mortality event in a given year.
                             SiteVars.BiomassRemoved[site] = 0;
