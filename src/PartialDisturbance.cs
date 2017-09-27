@@ -85,6 +85,11 @@ namespace Landis.Extension.Insects
                 {
                     thisInsectIndex++;
                     annualDefoliation = insect.HostDefoliationByYear[currentSite][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
+                    // New - only consider defoliation > 1% for cumulative stress that causes mortality.
+                    if (annualDefoliation < 0.01)
+                    {
+                        annualDefoliation = 0.0;
+                    }
                     //PlugIn.ModelCore.UI.WriteLine("{0} 1st Host Defoliation By Year:  Time={1}, spp={2}, annualDefoliation={3:0.00000}, cumulativeDefoliationManyInsects={4:0.00000}.", thisInsect, (PlugIn.ModelCore.CurrentTime - yearBack), cohort.Species.Name, annualDefoliation,cumulativeDefoliationManyInsects);
                 }
                 //PlugIn.ModelCore.UI.WriteLine(" {0}  insectIndex={1}, activeInsectIndex={2}.", thisInsect, insectIndex, PlugIn.activeInsectIndex);
@@ -131,6 +136,11 @@ namespace Landis.Extension.Insects
                     if (insect.HostDefoliationByYear[currentSite].ContainsKey(PlugIn.ModelCore.CurrentTime - yearBack))
                     {
                         annualDefoliation = insect.HostDefoliationByYear[currentSite][PlugIn.ModelCore.CurrentTime - yearBack][suscIndex];
+                        // New - only consider defoliation > 1% for cumulative stress that causes mortality.
+                        if (annualDefoliation < 0.01)
+                        {
+                            annualDefoliation = 0.0;
+                        }
 
                         if(annualDefoliation > 0.0)
                         {
@@ -189,7 +199,7 @@ namespace Landis.Extension.Insects
                     // **** New section from JRF ****
                     // Defoliation mortality doesn't start until at least 50% cumulative defoliation is reached, and isn't calculated until loop has cycled through potential defoliation of all insects.
                     // Mortality when cumulative defoliation is <50% follows normal background relationships...
-                    if (cumulativeDefoliation >= 0.50 && thisInsectIndex == insectIndex)
+                    if (cumulativeDefoliation >= 0.50 && thisInsectIndex == insectIndex && activeInsectCurrentDefoliation > 0.0)
                     {
                         //Most mortality studies restrospectively measure mortality for a number of years post disturbance. This model requires annualized mortality relationships and parameters, and will not work correctly with longer-term relationships. An earlier version subtracted background mortality from such relationships to get the yearly estimate.
                         //Calculate subannual increment of mortality that occurred from prior insect activity in this year. Use this to discount mortality of subsequent insects.

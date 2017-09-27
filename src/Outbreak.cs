@@ -128,8 +128,7 @@ namespace Landis.Extension.Insects
                 {
                     probability = 0;
                 }*/
-                
-                SiteVars.InitialOutbreakProb[site] = probability;
+                SiteVars.InitialOutbreakProb[site] = probability / ((double) suscIndex + 1);
                 // PlugIn.ModelCore.UI.WriteLine("Susceptiblity index={0}.  Outbreak Probability={1:0.00}.  R/C={2}/{3}.", suscIndex, probability, site.Location.Row, site.Location.Column);
             }
 
