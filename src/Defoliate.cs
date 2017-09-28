@@ -152,17 +152,22 @@ namespace Landis.Extension.Insects
 
                 if(insect.HostDefoliationByYear[site].ContainsKey(PlugIn.ModelCore.CurrentTime))
                 {   
-                    // Should we have an if-statement here that captures the Beta value1  = 0 case? To set defoliation to 0 for any of these cases instead of looping through below? For BRM.
+                    // These cases depend on Beta distribution always drawing a positive, non-zero value even if very small. Trying to zero defoliation here causes problems.
                     if(insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] <= 0.00000000)
                     {
                         defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
                         // Need this here and in each else statement: To correct for error reporting Mean Neighborhood Defoliation < 0. Bug arises when tested with 3+ insects.
                         // Looping over multiple insects in same year could produce totalDefoliation > 1. If this year's total defoliation = 1, next insect can't defoliate more.
                         defoliation = Math.Min((1 - totalDefoliation),defoliation);
+                        defoliation = Math.Max(0.0001, defoliation);
                         insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                     }
                     else
                         defoliation = insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex];
+                        // Not sure why below is needed, but somehow higher defoliation is getting assigned to insect.HostDefoliationByYear[site][suscIndex] with 3rd insect.
+                        defoliation = Math.Min((1 - totalDefoliation), defoliation);
+                        defoliation = Math.Max(0.0001, defoliation);
+                        insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                     //if (defoliation <= 0.0)
                     //PlugIn.ModelCore.UI.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
 
@@ -174,9 +179,9 @@ namespace Landis.Extension.Insects
                     // Need this here and in each else statement: To correct for error reporting Mean Neighborhood Defoliation < 0. Bug arises when tested with 3+ insects.
                     // Looping over multiple insects in same year could produce totalDefoliation > 1. If this year's total defoliation = 1, next insect can't defoliate more.
                     defoliation = Math.Min((1 - totalDefoliation), defoliation);
+                    defoliation = Math.Max(0.0001, defoliation);
                     //if (meanNeighborhoodDefoliation <= 0.0 && defoliation > 0.0)
                     //     PlugIn.ModelCore.UI.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
-
                     insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                 }
 
@@ -200,6 +205,7 @@ namespace Landis.Extension.Insects
                 // This needs to be moved within each if-else statement above before assigning defoliation to HostDefoliationByYear...Doing now...
                 //defoliation = Math.Min((1 - totalDefoliation),defoliation);
                 // Then: 
+
                 weightedDefoliation = defoliation * ((double)cohortBiomass / (double)siteBiomass);
                 //weightedDefoliation = (Math.Min((1 - totalDefoliation), defoliation) * ((double)cohortBiomass / (double)siteBiomass));
 
@@ -208,13 +214,13 @@ namespace Landis.Extension.Insects
                 insect.ThisYearDefoliation[site] += weightedDefoliation;
                 totalDefoliation += defoliation;
 
-                if (totalDefoliation > 1)
-                PlugIn.ModelCore.UI.WriteLine("suscIndex={0}, cohortDefoliation={1}, weightedDefolation={2},insect={3}.", (suscIndex+1), defoliation, weightedDefoliation,insect.Name);
+                if (totalDefoliation > 1.1)
+                PlugIn.ModelCore.UI.WriteLine("suscIndex={0}, cohortDefoliation={1}, weightedDefolation={2},insect={3}, totalDefoliation={4}.", (suscIndex+1), defoliation, weightedDefoliation,insect.Name,totalDefoliation);
 
             }
 
-            /*if (totalDefoliation > 1.0)  // Cannot exceed 100% defoliation, this needs to be within insect loop.
-                totalDefoliation = 1.0;*/
+            if (totalDefoliation > 1.0)  // Cannot exceed 100% defoliation.
+                totalDefoliation = 1.0;
 
             if(totalDefoliation > 1.0 || totalDefoliation < 0)
             {
