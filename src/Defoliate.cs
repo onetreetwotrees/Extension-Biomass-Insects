@@ -149,10 +149,11 @@ namespace Landis.Extension.Insects
                 }
 
                 // Next, draw defoliation value and apply to all cohorts of the same susceptibility class on current site.
-
+                // If a defoliation has happened on the site...
                 if(insect.HostDefoliationByYear[site].ContainsKey(PlugIn.ModelCore.CurrentTime))
                 {   
-                    // These cases depend on Beta distribution always drawing a positive, non-zero value even if very small. Trying to zero defoliation here causes problems.
+                    // These cases depend on Beta distribution always drawing a positive, non-zero value even if very small. Trying to zero-out defoliation here causes problems.
+                    // If no value for defoliation of this susceptibility class has been drawn yet, draw one here from correct distribution...
                     if(insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] <= 0.00000000)
                     {
                         defoliation = Distribution.GenerateRandomNum(dist, value1, value2);
@@ -162,6 +163,7 @@ namespace Landis.Extension.Insects
                         defoliation = Math.Max(0.0001, defoliation);
                         insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex] = defoliation;
                     }
+                        //If a value for this susceptibility class already exists, use already drawn value.
                     else
                         defoliation = insect.HostDefoliationByYear[site][PlugIn.ModelCore.CurrentTime][suscIndex];
                         // Not sure why below is needed, but somehow higher defoliation is getting assigned to insect.HostDefoliationByYear[site][suscIndex] with 3rd insect.
@@ -172,6 +174,7 @@ namespace Landis.Extension.Insects
                     //PlugIn.ModelCore.UI.WriteLine("THAT'S WEIRD!!  meanNeighborhoodDefoliation = {0}, defoliation={1}.", meanNeighborhoodDefoliation, defoliation);
 
                 }
+                    // Else if no defoliation for this SITE has been drawn yet, draw the SITE-LEVEL defoliation value...then draw and assign the SUSCEPTIBILITY CLASS value.
                 else
                 {
                     insect.HostDefoliationByYear[site].Add(PlugIn.ModelCore.CurrentTime, new Double[3]{0.0, 0.0, 0.0});

@@ -68,7 +68,7 @@ namespace Landis.Extension.Insects
 
             // Add local event handler for cohorts death due to age-only
             // disturbances.
-            //Cohort.AgeOnlyDeathEvent += CohortKilledByAgeOnlyDisturbance;
+            Cohort.AgeOnlyDeathEvent += CohortKilledByAgeOnlyDisturbance;
 
         }
 
@@ -151,7 +151,7 @@ namespace Landis.Extension.Insects
                     }
 
 
-                    insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
+                insect.ThisYearDefoliation.ActiveSiteValues = 0.0;
 
                 insect.ActiveOutbreak = false;
                 insect.SingleOutbreakYear = false;
@@ -399,6 +399,36 @@ namespace Landis.Extension.Insects
                 eventLog.AddObject(el);
                 eventLog.WriteToFile();
 
+
+                    //----- Write Initial Patch maps --------
+                    // Change to only write initial patch maps in the first year of an outbreak. These are mostly for debugging...
+                    if (insect.LastStartYear == PlugIn.ModelCore.CurrentTime)
+                    {
+                        string path2 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("InitialPatchMap" + insect.Name), PlugIn.ModelCore.CurrentTime);
+                        using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
+                        {
+                            ShortPixel pixel = outputRaster.BufferPixel;
+                            foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                            {
+                                if (site.IsActive)
+                                {
+                                    if (insect.Disturbed[site])
+                                        pixel.MapCode.Value = (short)(SiteVars.InitialOutbreakProb[site] * 100);
+                                    else
+                                        pixel.MapCode.Value = 0;
+                                }
+                                else
+                                {
+                                    //  Inactive site
+                                    pixel.MapCode.Value = 0;
+                                }
+                                outputRaster.WriteBufferPixel();
+                                //Zero out the InitialOutbreakProb after output maps are written.
+                                SiteVars.InitialOutbreakProb[site] = 0;
+                            }
+                        }
+                    }
+
                     //----- Write Insect Defoliation/GrowthReduction maps --------
                     string path = MapNames.ReplaceTemplateVars(mapNameTemplate, insect.Name, PlugIn.ModelCore.CurrentTime - 1);
                     using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path, modelCore.Landscape.Dimensions))
@@ -408,37 +438,22 @@ namespace Landis.Extension.Insects
                         foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                         {
                             if (site.IsActive)
-                                pixel.MapCode.Value = (short)(insect.LastYearDefoliation[site] * 100.0);
-                            else
-                                //  Inactive site
-                                pixel.MapCode.Value = 0;
-
-                            outputRaster.WriteBufferPixel();
-                        }
-                    }
-
-                    //----- Write Initial Patch maps --------
-                    string path2 = MapNames.ReplaceTemplateVars(mapNameTemplate, ("InitialPatchMap" + insect.Name), PlugIn.ModelCore.CurrentTime);
-                    using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
-                    {
-                        ShortPixel pixel = outputRaster.BufferPixel;
-                        foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
-                        {
-                            if (site.IsActive)
                             {
-                                if (insect.Disturbed[site])
-                                    pixel.MapCode.Value = (short)(SiteVars.InitialOutbreakProb[site] * 100);
-                                else
+                                if (insect.LastYearDefoliation[site] <= 0.0001)
                                     pixel.MapCode.Value = 0;
+                                else
+                                    pixel.MapCode.Value = (short)(insect.LastYearDefoliation[site] * 100.0);
                             }
                             else
-                            {
                                 //  Inactive site
                                 pixel.MapCode.Value = 0;
-                            }
+
                             outputRaster.WriteBufferPixel();
-                            //Zero out the InitialOutbreakProb after output maps are written.
-                            SiteVars.InitialOutbreakProb[site] = 0;
+                            if (insect.LastStartYear != PlugIn.ModelCore.CurrentTime)
+                            {
+                                //Zero out the InitialOutbreakProb after output maps are written.
+                                SiteVars.InitialOutbreakProb[site] = 0;
+                            }
                         }
                     }
 

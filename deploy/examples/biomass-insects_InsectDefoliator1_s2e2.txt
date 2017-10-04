@@ -6,7 +6,7 @@ LandisData	"InsectDefoliator"
 >>----------------------------------
 InsectName	Insect1
 
-StartYear			1
+StartYear			4
 DurationDistribution		Exponential	<< prob dist ==> Normal(5.0, 2.0)
 DurationParameter1		0.8		<<defining parameter; depends on the distribution, must be > 0.0
 DurationParameter2		0		<<defining parameter; depends on the distribution, must be > 0.0
@@ -42,32 +42,32 @@ MortalityEstimate		7Year  		<< 'Annual' or '7Year'
 >> Species	Susceptibility		Growth Reduction Parameters  	Mortality Parameters
 >>		Class			Slope	Intercept	      	Slope	Intercept
 >>------------------------------------------------------------------------------------------
-ACERRUBR       	2			-0.8	1			0.009	7
-ACERSACC       	2			-0.8	1			0.009	7
-CARYGLAB       	2			-0.1	1			0.006	5
-FRAXAMER      	3			-0.1	1			0.006	5
-JUGLNIGR       	2			-0.8	1			0.006	5
-LIRITULI       	3			-0.8	1			0.009	7
-MAGNACUM       	3			-0.8	1			0.006	5
-NYSSSYLV       	3			-0.8	1			0.009	7
-PINUECHI       	2			-1	1			0.016	4
-PINUPUNG       	2			-1	1			0.016	4
-PINURIGI       	3			-1	1			0.016	4
-PINUSTRO       	2			-1	1			0.016	4
-PINUVIRG       	2			-1	1			0.016	4
-POPUGRAN       	1			-.5	1			0.009	7
-POPUTREM       	1			-0.8	1			0.009	7
-PRUNSERO       	2			-0.8	1			0.009	7
-QUERALBA       	1			-0.1	1			0.006	5
-QUERCOCC       	1			-0.1	1			0.006	5
-QUERPRIN       	1			-0.1	1			0.006	5
-QUERRUBR       	1			-0.1	1			0.006	5
-QUERVELU       	1			-0.1	1			0.006	5
-ROBIPSEU       	3			-0.1	1			0.006	5
-SASSALBI       	2			-0.15	1			0.006	5
-TILIAMER       	1			-0.1	1			0.009	7
-TSUGCANA       	2			-1	1			0.016	4
-ULMUAMER       	2			-0.15	1			0.009	7		      	
+ACERRUBR       	1	-0.8	1	0.009	2.011
+ACERSACC       	1	-0.8	1	0.009	2.011
+CARYGLAB       	1	-0.1	1	0.009	2.011
+FRAXAMER       	3	-0.1	1	0.009	2.011
+JUGLNIGR       	1	-0.8	1	0.009	2.011
+LIRITULI       	3	-0.8	1	0.009	2.011
+MAGNACUM       	3	-0.8	1	0.009	2.011
+NYSSSYLV       	3	-0.8	1	0.009	2.011
+PINUECHI       	1	-1	1	0.030	-0.801
+PINUPUNG       	1	-1	1	0.030	-0.801
+PINURIGI       	3	-1	1	0.030	-0.801
+PINUSTRO       	1	-1	1	0.030	-0.801
+PINUVIRG       	2	-1	1	0.030	-0.801
+POPUGRAN       	1	-.5	1	0.009	2.011
+POPUTREM       	1	-0.8	1	0.009	2.011
+PRUNSERO       	1	-0.8	1	0.009	2.011
+QUERALBA       	1	-0.1	1	0.009	2.011
+QUERCOCC       	1	-0.1	1	0.009	2.011
+QUERPRIN       	1	-0.1	1	0.009	2.011
+QUERRUBR       	1	-0.1	1	0.009	2.011
+QUERVELU       	1	-0.1	1	0.009	2.011
+ROBIPSEU       	3	-0.1	1	0.009	2.011
+SASSALBI       	1	-0.15	1	0.009	2.011
+TILIAMER       	1	-0.1	1	0.009	2.011
+TSUGCANA       	1	-1	1	0.030	-0.801
+ULMUAMER       	1	-0.15	1	0.009	2.011	      	
    
 Susceptibilities
 >> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0

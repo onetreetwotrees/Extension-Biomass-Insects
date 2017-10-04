@@ -57,6 +57,7 @@ namespace Landis.Extension.Insects
 
                 //PlugIn.ModelCore.UI.WriteLine("  Reducing cohort biomass for {0}...", insect.Name);
                 PartialDisturbance.ReduceCohortBiomass(site);
+                // PartialDisturbance.AddPartialMortalityToWoodyDebris(site);
                     
                 if (SiteVars.BiomassRemoved[site] > 0) 
                 {
@@ -124,10 +125,7 @@ namespace Landis.Extension.Insects
                 }
                 // Try cleaning up defoliation patterns so areas outside main patches are less defoliated 
                 // How about using Brian's patch shape calibrator here instead. Divide probability by susIndex * PSC, to tie initial patch probs. more closely to host abundance...
-                /*if (probability < 0.10)
-                {
-                    probability = 0;
-                }*/
+                //SiteVars.InitialOutbreakProb[site] = probability;
                 SiteVars.InitialOutbreakProb[site] = probability / ((double) suscIndex + 1);
                 // PlugIn.ModelCore.UI.WriteLine("Susceptiblity index={0}.  Outbreak Probability={1:0.00}.  R/C={2}/{3}.", suscIndex, probability, site.Location.Row, site.Location.Column);
             }

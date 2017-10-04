@@ -10,7 +10,7 @@ LogFile			outputs/insects/Insect-log.csv				<<this is an output!
 
 InsectInputFiles	./biomass-insects_InsectDefoliator1_s2e2.txt
 			./biomass-insects_InsectDefoliator2_s2e2.txt
-			>>./biomass-insects_InsectDefoliator3_s2e2.txt
+			./biomass-insects_InsectDefoliator3_s2e2.txt
 
 
 
