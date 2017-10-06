@@ -68,7 +68,7 @@ namespace Landis.Extension.Insects
 
             // Add local event handler for cohorts death due to age-only
             // disturbances.
-            Cohort.AgeOnlyDeathEvent += CohortKilledByAgeOnlyDisturbance;
+            //Cohort.AgeOnlyDeathEvent += CohortKilledByAgeOnlyDisturbance;
 
         }
 
@@ -126,7 +126,7 @@ namespace Landis.Extension.Insects
                 //SiteVars.BiomassRemoved.ActiveSiteValues = 0;
                 //SiteVars.InitialOutbreakProb.ActiveSiteValues = 0.0;
                 activeInsectIndex++;
-                PlugIn.ModelCore.UI.WriteLine("   Active Insect = {0}.",activeInsectIndex);
+                //PlugIn.ModelCore.UI.WriteLine("   Active Insect = {0}.",activeInsectIndex);
                 if(insect.MortalityYear == PlugIn.ModelCore.CurrentTime)
                     Outbreak.Mortality(insect);
 
@@ -498,7 +498,7 @@ namespace Landis.Extension.Insects
         //---------------------------------------------------------------------
 
         // Event handler when a cohort is killed by an age-only disturbance.
-        public void CohortKilledByAgeOnlyDisturbance(object                 sender,
+        /*public void CohortKilledByAgeOnlyDisturbance(object                 sender,
                                                      DeathEventArgs eventArgs)
         {
             // If this plug-in is not running, then some base disturbance
@@ -507,7 +507,8 @@ namespace Landis.Extension.Insects
                 return;
 
             SiteVars.BiomassRemoved[eventArgs.Site] += eventArgs.Cohort.Biomass;
-        }
+        }*/
+
         ////---------------------------------------------------------------------
         //private void LogEvent(int   currentTime)
         //{

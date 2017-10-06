@@ -5,14 +5,15 @@ Timestep  1
 MakeTable yes  << Optional parameter
 
 Species    ACERRUBR
-	   ACERSACC
-	   CARYGLAB
-	   FRAXAMER
+	   NYSSSYLV
+	   PINUPUNG
 	   PINUSTRO
-	   POPUTREM
+	   PINUVIRG
+	   PRUNSERO
+	   QUERPRIN
 	   QUERRUBR
-	   TILIAMER
-	   ULMUAMER
+	   QUERALBA
+	   TSUGCANA
 
 MapNames  biomass/biomass-{species}-{timestep}.bin
 

@@ -57,7 +57,7 @@ namespace Landis.Extension.Insects
 
                 //PlugIn.ModelCore.UI.WriteLine("  Reducing cohort biomass for {0}...", insect.Name);
                 PartialDisturbance.ReduceCohortBiomass(site);
-                // PartialDisturbance.AddPartialMortalityToWoodyDebris(site);
+                //PartialDisturbance.AddPartialMortalityToWoodyDebris(site);
                     
                 if (SiteVars.BiomassRemoved[site] > 0) 
                 {
@@ -86,6 +86,7 @@ namespace Landis.Extension.Insects
 
 
                 foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+                //foreach (ISpeciesCohorts speciesCohorts in (Landis.Library.BiomassCohorts.ISpeciesCohorts) SiteVars.Cohorts[site]) // Rob's suggestion. Raised an error...
                 {
                     foreach (ICohort cohort in speciesCohorts) 
                     {

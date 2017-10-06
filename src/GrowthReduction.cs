@@ -34,7 +34,7 @@ namespace Landis.Extension.Insects
         public static double ReduceCohortGrowth(ICohort cohort, ActiveSite site)//, int siteBiomass)
         {
             // PlugIn.ModelCore.UI.WriteLine("   Calculating cohort growth reduction due to insect defoliation...");
-
+            // Set summaryGrowthReduction to zero before checking the cohort for defoliation by 1 to many insects...
             double summaryGrowthReduction = 0.0;
             int sppIndex = cohort.Species.Index;
             bool currentActiveOutbreak = false;
@@ -104,8 +104,15 @@ namespace Landis.Extension.Insects
 
                     double slope = insect.SppTable[sppIndex].GrowthReduceSlope;
                     double intercept = insect.SppTable[sppIndex].GrowthReduceIntercept;
+                    double growthReduction = 0.0;
 
-                    double growthReduction = 1.0 - (cumulativeDefoliation * slope + intercept);
+                    if (cumulativeDefoliation > 0)
+                        growthReduction = 1.0 - (cumulativeDefoliation * slope + intercept);
+                    // The intercept parameter can be larger or smaller than 1, which would produce growth reduction even when do cumulative defoliation  = 0
+                    if (growthReduction < 0)
+                        growthReduction = 0.0;
+                    if (growthReduction > 1)
+                        growthReduction = 1.0;
                     // Sum total growth reduction caused by multiple insects in this year. This is returned and applied to ANPP in Succession Extension.
                     summaryGrowthReduction += growthReduction;
                     // PlugIn.ModelCore.UI.WriteLine("Time={0}, Spp={1}, SummaryGrowthReduction={2:0.00}.", PlugIn.ModelCore.CurrentTime,cohort.Species.Name, summaryGrowthReduction);

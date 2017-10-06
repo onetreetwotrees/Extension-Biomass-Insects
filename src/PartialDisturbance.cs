@@ -57,6 +57,7 @@ namespace Landis.Extension.Insects
         private static double reductionPartialMortalityToWoody;
 
         int IDisturbance.ReduceOrKillMarkedCohort(ICohort cohort)
+
         {
             int biomassMortality = 0;
             double percentMortality = 0.0;
@@ -101,7 +102,7 @@ namespace Landis.Extension.Insects
                 //int thisInsectIndex = 0;
                 string thisInsect = insect.Name;
 
-                PlugIn.ModelCore.UI.WriteLine(" {0}  Adding up defoliation on cohort for mortality caused by Insect#{1}, Site R/C={2}/{3}.", thisInsect, PlugIn.activeInsectIndex, currentSite.Location.Row, currentSite.Location.Column);
+                //PlugIn.ModelCore.UI.WriteLine(" {0}  Adding up defoliation on cohort for mortality caused by Insect#{1}, Site R/C={2}/{3}.", thisInsect, PlugIn.activeInsectIndex, currentSite.Location.Row, currentSite.Location.Column);
 
                 // First, check one year back for defoliation on this cohort from this insect in manyInsect loop.
                 if (insect.HostDefoliationByYear[currentSite].ContainsKey(PlugIn.ModelCore.CurrentTime - yearBack))
@@ -152,7 +153,7 @@ namespace Landis.Extension.Insects
                     }
                 }
 
-                PlugIn.ModelCore.UI.WriteLine("Endwhile cumulativeDefoliation={0},annualDefoliation={1}, lastYearsCumulativeDefoliation {2}.", cumulativeDefoliation, annualDefoliation, lastYearsCumulativeDefoliation);
+                //PlugIn.ModelCore.UI.WriteLine("Endwhile cumulativeDefoliation={0},annualDefoliation={1}, lastYearsCumulativeDefoliation {2}.", cumulativeDefoliation, annualDefoliation, lastYearsCumulativeDefoliation);
 
                 double slope = insect.SppTable[sppIndex].MortalitySlope;
                 double intercept = insect.SppTable[sppIndex].MortalityIntercept;
@@ -163,6 +164,7 @@ namespace Landis.Extension.Insects
                     // ***** New Section 2017 ****
                     // Defoliation mortality doesn't start until at least 50% cumulative defoliation is reached.
                     // The first year of mortality follows normal background relationships...
+                    // This will be the recommended method, as the Cumulative method is the only one that compresses mortality
                     if (cumulativeDefoliation >= 0.50 && activeInsectCurrentDefoliation > 0.01 && insectIndex == PlugIn.ManyInsect.Count)
                     {
                         // To test, new single if-statement below should take care of all cases now that lastYearsCumulativeDefoliation is always correct...
@@ -173,47 +175,42 @@ namespace Landis.Extension.Insects
                         {   // If this is the first year with mortality causing cumulative defoliation, discount mortality at zero defoliation from estimated mortality.
                             double pctMort0 = (double)Math.Exp(slope * 0 * 100 + intercept) / 100;
                             lastYearPercentMortality = pctMort0;
-                            PlugIn.ModelCore.UI.WriteLine(" {0}, if2a cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMort0={3:0.00000},percentMortality={4:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, pctMort0,percentMortality);
+                            //PlugIn.ModelCore.UI.WriteLine(" {0}, if2a cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMort0={3:0.00000},percentMortality={4:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, pctMort0,percentMortality);
 
                         }
                         else
-                            {   // If cumulative defoliation last year was >= 0.50, get the amount of mortality from last year to discount from this years estimate.
+                            {   // If cumulative defoliation last year was >= 0.50, get the amount of mortality from last year to discount from this year's estimate.
                                 lastYearPercentMortality = Math.Max(0, ((double)Math.Exp(slope * lastYearsCumulativeDefoliation * 100 + intercept) / 100));
                             }
                         // Cumulative mortality predicted at this cumulative defoliation level, discounted for the level of cumulative defoliation last year.    
                         percentMortality = Math.Max(0, ((double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100) - lastYearPercentMortality);
-                        PlugIn.ModelCore.UI.WriteLine(" {0}, if2 cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMortality={3:0.0000}, lastYearPercentMortality={4:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality,lastYearPercentMortality);
+                        //PlugIn.ModelCore.UI.WriteLine(" {0}, if2 cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMortality={3:0.0000}, lastYearPercentMortality={4:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality,lastYearPercentMortality);
 
                         //double pctMort0 = (double)Math.Exp(slope * 0 * 100 + intercept) / 100;
 
-                        // **** Old Section ****
+                        // **** Old Section **** This Method is Deprecated in 2017 and replaced with above method to be called "Cumulative" mortality. Implementation of percentMortality is no longer
+                        // Compatible with parameter settings used by J. R. Foster i(2011) Dissertation Univ. Wisc. Updated methods are compatible with parameters derived in Foster J.R., 2017, Tree Physiology.
                         /*if (lastYearsCumulativeDefoliation < 0.50)
                         {
                             //Most mortality studies restrospectively measure mortality for a number of years post disturbance. We need to subtract background mortality to get the yearly estimate. Subtract 7, assuming 1% mortality/year for 7 years, a typical time since disturbance in mortality papers. 
-                            percentMortality = Math.Max(0, ((double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100) - pctMort0);
-                            //PlugIn.ModelCore.UI.WriteLine(" {0}, if1a cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMort0={3:0.00000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, pctMort0);
-                            //percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
+                            percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
                             //PlugIn.ModelCore.UI.WriteLine(" {0}, if1 cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMortality={3:0.00000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality);
                         }
 
                         // Second year or more of defoliation mortality discounts the first year's mortality amount.
                         if (lastYearsCumulativeDefoliation >= 0.50 && !insect.SingleOutbreakYear)
                         {
-                            double lastYearPercentMortality = Math.Max(0, ((double)Math.Exp(slope * lastYearsCumulativeDefoliation * 100 + intercept) / 100));
-                            percentMortality = Math.Max(0, ((double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100) - lastYearPercentMortality);
-                            //PlugIn.ModelCore.UI.WriteLine(" {0}, if2a cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMort0={3:0.00000},percentMortality={4:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, pctMort0,percentMortality);
-                            //double lastYearPercentMortality = ((intercept) * (double)Math.Exp((slope * lastYearsCumulativeDefoliation * 100)) - 7) / 100;
-                            //percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
-                            //percentMortality -= lastYearPercentMortality; // Now do this in line above...
+                             double lastYearPercentMortality = ((intercept) * (double)Math.Exp((slope * lastYearsCumulativeDefoliation * 100)) - 7) / 100;
+                            percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
+                            percentMortality -= lastYearPercentMortality; // Now do this in line above...
                             //PlugIn.ModelCore.UI.WriteLine(" {0}, if2 cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMortality={3:0.0000}, lastYearPercentMortality={4:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality,lastYearPercentMortality);
                         }
 
                         // Special case for when you have only one year of defoliation that is >50%, so no discounting necessary. There is probably a better way to write this.
                         if (activeInsectCurrentDefoliation >= 0.50 && insect.SingleOutbreakYear)
                         {
-                            percentMortality = Math.Max(0, ((double)Math.Exp(slope * cumulativeDefoliation * 100 + intercept) / 100) - pctMort0);
-                            //percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100))) / 100 - pctMort0;
-                            //percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
+                            percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100))) / 100 - pctMort0;
+                            percentMortality = ((intercept) * (double)Math.Exp((slope * cumulativeDefoliation * 100)) - 7) / 100;
                             //PlugIn.ModelCore.UI.WriteLine(" {0}, if3 cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMortality={3:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, percentMortality);
                         }*/
                         // **** End Old Section ****
@@ -251,7 +248,7 @@ namespace Landis.Extension.Insects
                     // Calculate how much biomass is lost to this percent mortality
                     //To get to correct cumulative defoliation, code has to loop through all active insects in any time step. Set equal to the final biomassMortality computed in the loop (NOT +=).
                     biomassMortality = (int)((double)cohort.Biomass * percentMortality);
-                    PlugIn.ModelCore.UI.WriteLine(" In insect loop, biomassMortality={0}, cohort.Biomass={1}, percentMortality={2:0.0000}, cumulativeDefoliation={3:0.00000}.", biomassMortality, cohort.Biomass, percentMortality,cumulativeDefoliation);
+                    //PlugIn.ModelCore.UI.WriteLine(" In insect loop, biomassMortality={0}, cohort.Biomass={1}, percentMortality={2:0.0000}, cumulativeDefoliation={3:0.00000}.", biomassMortality, cohort.Biomass, percentMortality,cumulativeDefoliation);
 
                 }
 
@@ -271,8 +268,8 @@ namespace Landis.Extension.Insects
 
             if (biomassMortality > 0)
             {
-                PlugIn.ModelCore.UI.WriteLine(" biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
-                PlugIn.ModelCore.UI.WriteLine("Cohort Partial Mortality={0:0.0000}, biomassMortality={1}, Cohort Biomass={2}. Site R/C={3}/{4}.", reductionPartialMortalityToWoody, biomassMortality, cohort.Biomass, currentSite.Location.Row, currentSite.Location.Column);
+                //PlugIn.ModelCore.UI.WriteLine(" biomassMortality={0}, BiomassRemoved={1}.", biomassMortality, SiteVars.BiomassRemoved[currentSite]);
+                //PlugIn.ModelCore.UI.WriteLine("Cohort Partial Mortality={0:0.0000}, biomassMortality={1}, Cohort Biomass={2}. Site R/C={3}/{4}.", reductionPartialMortalityToWoody, biomassMortality, cohort.Biomass, currentSite.Location.Row, currentSite.Location.Column);
             }
 
             if(biomassMortality > cohort.Biomass || biomassMortality < 0)
@@ -299,16 +296,13 @@ namespace Landis.Extension.Insects
         }
 
         // Event handler when a cohort is killed by a partial disturbance. This is needed to transfer the dead wood to the woody pool on the forest floor. I'm not sure how to implement??!
-        public static void AddPartialMortalityToWoodyDebris(object sender, PartialDeathEventArgs eventArgs, ActiveSite site, ICohort cohort, ExtensionType disturbanceType)
+        // The goal of this section is to assign the percentMortality to a variable that is called by Biomass Succession extensions called PartialMortality in the PlugIn.cs class
+        /*public static void AddPartialMortalityToWoodyDebris(object sender, PartialDeathEventArgs eventArgs)//, ActiveSite site, Landis.Library.BiomassCohorts.SpeciesCohorts cohort, ExtensionType disturbanceType)
         {
             float reduction = (float)reductionPartialMortalityToWoody;
-            currentSite = site;
-            
-            // Options below are all wrong! ( HELP! How do I implement this????? );
-            Cohort.PartialMortality(singleton, cohort,site,disturbanceType,reduction);
-            //Cohort.PartialMortality(singleton, eventArgs.Cohort, eventArgs.Site, eventArgs.DisturbanceType, reduction);
-            //Cohort.PartialMortality += reduction;
-            //Cohort.PartialDeathEvent += reduction;
-        }
+            eventArgs.Reduction = reduction;
+            if (reduction > 0)
+                Cohort.PartialDeathEvent += ;
+        }*/
     }
 }
