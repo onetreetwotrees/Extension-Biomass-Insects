@@ -54,7 +54,6 @@ namespace Landis.Extension.Insects
         }
 
         //---------------------------------------------------------------------
-        private static double reductionPartialMortalityToWoody;
 
         int IDisturbance.ReduceOrKillMarkedCohort(ICohort cohort)
 
@@ -70,7 +69,6 @@ namespace Landis.Extension.Insects
             int activeInsectStartYear = 0;
             int activeInsectStopYear = 0;
             int tempInsectIndex = 0;
-            reductionPartialMortalityToWoody = 0.0;
 
             // New loop, first loop through all insects to find Outbreak start and stop years of current active Insect.
             foreach (IInsect insect in PlugIn.ManyInsect)
@@ -173,10 +171,9 @@ namespace Landis.Extension.Insects
 
                         if (lastYearsCumulativeDefoliation < 0.50)
                         {   // If this is the first year with mortality causing cumulative defoliation, discount mortality at zero defoliation from estimated mortality.
-                            double pctMort0 = (double)Math.Exp(slope * 0 * 100 + intercept) / 100;
+                            double pctMort0 = Math.Max(0,(double)Math.Exp(slope * 0 * 100 + intercept) / 100);
                             lastYearPercentMortality = pctMort0;
                             //PlugIn.ModelCore.UI.WriteLine(" {0}, if2a cumulativeDefoliation={1:0.00000}, cohort.Biomass={2}, percentMort0={3:0.00000},percentMortality={4:0.0000}.", thisInsect, cumulativeDefoliation, cohort.Biomass, pctMort0,percentMortality);
-
                         }
                         else
                             {   // If cumulative defoliation last year was >= 0.50, get the amount of mortality from last year to discount from this year's estimate.
@@ -242,6 +239,9 @@ namespace Landis.Extension.Insects
                 {
                     throw new System.ApplicationException("Error: Mortality parameter is not Annual or 7Year");
                 }
+                // Percent mortality should be between 0 and 1.
+                if (percentMortality < 0.0)
+                    percentMortality = 0.0;
 
                 if (percentMortality > 0.0)
                 {
@@ -256,15 +256,11 @@ namespace Landis.Extension.Insects
 
             if (biomassMortality > cohort.Biomass)
                 biomassMortality = cohort.Biomass;
+            // Add to avoid strange bug. When a brand new cohort starts on otherwise empty cell with very small biomass and is defoliated, somehow got a very negative cohort biomass. Not clear if bug is here or in Biomass succession...
+            if (biomassMortality < cohort.Biomass)
+                biomassMortality = 0;
 
             SiteVars.BiomassRemoved[currentSite] += biomassMortality;
-
-            // Once you've looped through all insects, calculate total percent mortality for use by PartialDeathEvent to transfer dead wood to woody pool.           
-            //reductionPartialMortalityToWoody += percentMortality; // Below is better.
-            reductionPartialMortalityToWoody = (double)biomassMortality / (double)cohort.Biomass;
-            //PlugIn.ModelCore.UI.WriteLine("Cohort Partial Mortality={0:0.0000}, biomassMortality={1}, Cohort Biomass={2}. Site R/C={3}/{4}.", reductionPartialMortalityToWoody, biomassMortality, cohort.Biomass, currentSite.Location.Row, currentSite.Location.Column);
-            if (reductionPartialMortalityToWoody > 1)
-                reductionPartialMortalityToWoody = 1.0;
 
             if (biomassMortality > 0)
             {
@@ -274,7 +270,7 @@ namespace Landis.Extension.Insects
 
             if(biomassMortality > cohort.Biomass || biomassMortality < 0)
             {
-                 //PlugIn.ModelCore.UI.WriteLine("Cohort Total Mortality={0}. Cohort Biomass={1}. Site R/C={2}/{3}.", biomassMortality, cohort.Biomass, currentSite.Location.Row, currentSite.Location.Column);
+                 PlugIn.ModelCore.UI.WriteLine("Cohort Total Mortality={0}. Cohort Biomass={1}. Site R/C={2}/{3}, Percent Mortality={4:0.0000}, Cohort Species={5}.", biomassMortality, cohort.Biomass, currentSite.Location.Row, currentSite.Location.Column, percentMortality, cohort.Species.Name);
                 throw new System.ApplicationException("Error: Total Mortality is not between 0 and cohort biomass");
             }
 
@@ -288,21 +284,11 @@ namespace Landis.Extension.Insects
         /// Reduces the biomass of cohorts that have been marked for partial
         /// reduction.
         /// </summary>
-        /// // Question, is killed cohort biomass being added to the woody biomass pool correctly? It does not appear obvious in the woody biomass output maps. Help? BRM? Rob?
+        /// // Question, is killed cohort biomass being added to the woody biomass pool correctly? Needs to be corrected in Library-Biomass-Cohorts, see JRF edits in GitHub.
         public static void ReduceCohortBiomass(ActiveSite site)
         {
             currentSite = site;
             SiteVars.Cohorts[site].ReduceOrKillBiomassCohorts(singleton);
         }
-
-        // Event handler when a cohort is killed by a partial disturbance. This is needed to transfer the dead wood to the woody pool on the forest floor. I'm not sure how to implement??!
-        // The goal of this section is to assign the percentMortality to a variable that is called by Biomass Succession extensions called PartialMortality in the PlugIn.cs class
-        /*public static void AddPartialMortalityToWoodyDebris(object sender, PartialDeathEventArgs eventArgs)//, ActiveSite site, Landis.Library.BiomassCohorts.SpeciesCohorts cohort, ExtensionType disturbanceType)
-        {
-            float reduction = (float)reductionPartialMortalityToWoody;
-            eventArgs.Reduction = reduction;
-            if (reduction > 0)
-                Cohort.PartialDeathEvent += ;
-        }*/
     }
 }
