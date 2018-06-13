@@ -32,7 +32,8 @@ CellLength  	30 << meters
 
 >>	Succession Extension     Initialization File
 >> 	--------------------     -------------------
-   	"Biomass Succession"     biomass-succession_SetUp_s2e2.txt
+>>   	"Biomass Succession"     biomass-succession_SetUp_s2e2.txt
+   	"Biomass Succession vJRF"     biomass-succession_SetUp_s2e2.txt
 
 
 

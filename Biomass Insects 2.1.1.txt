@@ -1,0 +1,9 @@
+LandisData   Extension
+
+Name         "Biomass Insects"
+Version      2.1.1
+Type         disturbance:insects
+Assembly     Landis.Extension.BiomassInsects
+Class        Landis.Extension.Insects.PlugIn
+Description  "Biomass Insects Brian's Updates GitHub"
+CoreVersion  6.0

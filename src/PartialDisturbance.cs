@@ -257,7 +257,7 @@ namespace Landis.Extension.Insects
             if (biomassMortality > cohort.Biomass)
                 biomassMortality = cohort.Biomass;
             // Add to avoid strange bug. When a brand new cohort starts on otherwise empty cell with very small biomass and is defoliated, somehow got a very negative cohort biomass. Not clear if bug is here or in Biomass succession...
-            if (biomassMortality < cohort.Biomass)
+            if (biomassMortality < 0)
                 biomassMortality = 0;
 
             SiteVars.BiomassRemoved[currentSite] += biomassMortality;
