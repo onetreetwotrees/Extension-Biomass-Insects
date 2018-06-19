@@ -1,0 +1,75 @@
+LandisData	"InsectDefoliator"
+
+>>---------------------------------
+>> INSECT DATA
+>>----------------------------------
+
+InsectName	Insect3 << generic pine defoliator
+
+StartYear			0
+DurationDistribution		Normal << prob dist ==> Exponential(2.0)
+DurationParameter1		2.0		<<defining parameter; depends on the distribution, must be > 0.0
+DurationParameter2		0.5		<<defining parameter; depends on the distribution, must be > 0.0
+MaxDuration			3.0
+MeanTimeBetweenOutbreaks	5
+StdDevTimeBetweenOutbreaks	1
+
+NeighborhoodSize		250		<< meters
+
+>> Lower this number to lower probabilities of patch generation, i.e. start fewer patches. 
+InitialPatchOutbreakSensitivity	0.003 		<< must be > 0.0
+
+>> Patch size distribution could be based on patch radius distribution or patch area distribution. Watch units.
+InitialPatchDistribution	Weibull		<<Weibull, Beta, or Gamma
+InitialPatchValue1		1		<<depends on the distribution, must be > 0.0
+InitialPatchValue2		25		<<depends on the distribution, must be > 0.0
+
+
+>>---------------------------------
+>> INSECT EFFECTS
+>>----------------------------------
+
+SpeciesParameters
+MortalityEstimate		Annual	<< 'Annual' or '7Year'
+
+
+>> Susceptibility Class by species; all species listed in species_s3e3.txt must appear here.
+>> Insect-impacted species are listed first followed by species for which there is no insect impact. 
+>> Non-impacted species are to be listed as follows:
+>> 	sppname		3 	0	1	0	1
+
+>> Species	Susceptibility		Growth Reduction Parameters  	Mortality Parameters
+>>		Class			Slope	Intercept	      	Slope	Intercept
+>>------------------------------------------------------------------------------------------
+ACERRUBR       3			-0.8	1			0.008	0.687
+ACERSACC       3			-0.8	1			0.008	0.687
+CARYGLAB       3			-0.1	1			0.008	0.687
+FRAXAMER       3			-0.1	1			0.008	0.687
+JUGLNIGR       3			-0.8	1			0.008	0.687
+LIRITULI       3			-0.8	1			0.008	0.687
+MAGNACUM       3			-0.8	1			0.008	0.687
+NYSSSYLV       3			-0.8	1			0.008	0.687
+PINUECHI       1			-1	1			0.014	-0.040
+PINUPUNG       1			-1	1			0.014	-0.040
+PINURIGI       1			-1	1			0.014	-0.040
+PINUSTRO       1			-1	1			0.014	-0.040
+PINUVIRG       1			-1	1			0.014	-0.040
+POPUGRAN       3			-.5	1			0.008	0.687
+POPUTREM       3			-0.8	1			0.008	0.687
+PRUNSERO       3			-0.8	1			0.008	0.687
+QUERALBA       3			-0.1	1			0.008	0.687
+QUERCOCC       3			-0.1	1			0.008	0.687
+QUERPRIN       3			-0.1	1			0.008	0.687
+QUERRUBR       3			-0.1	1			0.008	0.687
+QUERVELU       3			-0.1	1			0.008	0.687
+ROBIPSEU       3			-0.1	1			0.008	0.687
+SASSALBI       3			-0.15	1			0.008	0.687
+TILIAMER       3			-0.1	1			0.008	0.687
+TSUGCANA       3			-1	1			-0.467	0.031
+ULMUAMER       3			-0.15	1			0.008	0.687 	
+   
+Susceptibilities
+>> Host	Dist80	S1_80	S2_80	Dist60	S1_60	S2_60	Dist40	S1_40	S2_40	Dist20	S1_20	S2_20	Dist0	S1_0	S2_0
+1	Beta	0.84	0.20	Beta	0.84	0.33	Beta	1.14	1.18	Beta	0.50	2.00	Beta	0.50	6.0
+2	Beta	1.27	0.68	Beta	1.14	1.18	Beta	0.7	2.00	Beta	0.5	3.00	Beta	0.50	6.0
+3	Beta	0.00	0.0	Beta	0.00	0.0	Beta	0.00	0.0	Beta	0.00	0.0	Beta	0.00	0.0

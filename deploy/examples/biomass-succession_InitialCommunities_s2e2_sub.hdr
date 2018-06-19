@@ -1,0 +1,18 @@
+ENVI
+description = {
+  File Resize Result, x resize factor: 1.000000, y resize factor: 1.000000.
+  [Thu Sep 28 13:48:30 2017]}
+samples = 14
+lines   = 13
+bands   = 1
+header offset = 0
+file type = ENVI Standard
+data type = 1
+interleave = bsq
+sensor type = Unknown
+byte order = 0
+x start = 30
+y start = 29
+wavelength units = Unknown
+band names = {
+ Resize (Resize (Band 1:biomass-succession_InitialCommunities_s2e2.gis):biomass-succession_InitialCommunities_s2e2_sub_30x30.gis)}
